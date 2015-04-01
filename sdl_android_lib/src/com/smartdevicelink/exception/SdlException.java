@@ -1,7 +1,7 @@
 package com.smartdevicelink.exception;
+import java.io.Serializable;
 
-
-public class SdlException extends Exception {
+public class SdlException extends Exception implements Serializable {
 	
 	private static final long serialVersionUID = 5922492291870772815L;
 	

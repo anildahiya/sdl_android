@@ -25,7 +25,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	 */
 	@Deprecated
 	public SdlProxy(IProxyListener listener) throws SdlException {
-		super(	listener, 
+		super(null,	listener, 
 				/*application context*/null, 
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ null,
@@ -40,7 +40,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/null,
 				/*autoActivateID*/null,
 				/*callbackToUIThread*/ true,
-				new BTTransportConfig());
+				new BTTransportConfig(), null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener.", SDL_LIB_TRACE_KEY);
 	}
@@ -55,7 +55,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	 */
 	@Deprecated
 	public SdlProxy(IProxyListener listener, String sAppName, String sAppID) throws SdlException {
-		super(	listener, 
+		super(null,	listener, 
 				/*application context*/null, 
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ sAppName,
@@ -70,7 +70,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/sAppID,
 				/*autoActivateID*/null,
 				/*callbackToUIThread*/ true,
-				new BTTransportConfig());
+				new BTTransportConfig(),null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener.", SDL_LIB_TRACE_KEY);
 	}	
@@ -85,7 +85,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	@Deprecated
 	public SdlProxy(IProxyListener listener, SdlProxyConfigurationResources sdlProxyConfigurationResources) 
 		throws SdlException {
-		super(	listener, 
+		super(null,	listener, 
 				sdlProxyConfigurationResources, 
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ null,
@@ -100,7 +100,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/null,
 				/*autoActivateID*/null,
 				/*callbackToUIThread*/ true,
-				new BTTransportConfig());
+				new BTTransportConfig(), null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener, SdlProxyConfigurationResources.", SDL_LIB_TRACE_KEY);
 	}
@@ -114,7 +114,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	 */
 	@Deprecated
 	public SdlProxy(IProxyListener listener, boolean callbackToUIThread) throws SdlException {
-		super(	listener,  
+		super(null,	listener,  
 				/*sdl proxy configuration resources*/null,
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ null,
@@ -129,7 +129,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/null,
 				/*autoActivateID*/null,
 				callbackToUIThread,
-				new BTTransportConfig());
+				new BTTransportConfig(), null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener, callBackToUIThread.", SDL_LIB_TRACE_KEY);
 	}
@@ -145,7 +145,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	@Deprecated
 	public SdlProxy(IProxyListener listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
 			boolean callbackToUIThread) throws SdlException {
-		super(	listener,  
+		super(null,	listener,  
 				sdlProxyConfigurationResources,
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ null,
@@ -160,7 +160,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/null,
 				/*autoActivateID*/null,
 				callbackToUIThread,
-				new BTTransportConfig());
+				new BTTransportConfig(), null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener, callBackToUIThread.", SDL_LIB_TRACE_KEY);
 	}
@@ -176,7 +176,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	 */
 	@Deprecated
 	public SdlProxy(IProxyListener listener, BaseTransportConfig transportConfig) throws SdlException {
-		super(	listener, 
+		super(null,	listener, 
 				/*application context*/null, 
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ null,
@@ -191,7 +191,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/null,
 				/*autoActivateID*/null,
 				/*callbackToUIThread*/ true,
-				transportConfig);
+				transportConfig, null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener.", SDL_LIB_TRACE_KEY);
 	}
@@ -208,7 +208,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	public SdlProxy(IProxyListener listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
 					BaseTransportConfig transportConfig) 
 		throws SdlException {
-		super(	listener, 
+		super(null,	listener, 
 				sdlProxyConfigurationResources, 
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ null,
@@ -223,7 +223,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/null,
 				/*autoActivateID*/null,
 				/*callbackToUIThread*/ true,
-				transportConfig);
+				transportConfig, null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener, SdlProxyConfigurationResources.", SDL_LIB_TRACE_KEY);
 	}
@@ -238,7 +238,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	 */
 	@Deprecated
 	public SdlProxy(IProxyListener listener, boolean callbackToUIThread, BaseTransportConfig transportConfig) throws SdlException {
-		super(	listener,  
+		super(null,	listener,  
 				/*sdl proxy configuration resources*/null,
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ null,
@@ -253,7 +253,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/null,
 				/*autoActivateID*/null,
 				callbackToUIThread,
-				transportConfig);
+				transportConfig, null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener, callBackToUIThread.", SDL_LIB_TRACE_KEY);
 	}
@@ -270,7 +270,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 	@Deprecated
 	public SdlProxy(IProxyListener listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
 			boolean callbackToUIThread, BaseTransportConfig transportConfig) throws SdlException {
-		super(	listener,  
+		super(null,	listener,  
 				sdlProxyConfigurationResources,
 				/*enable advanced lifecycle management*/false, 
 				/*app name*/ null,
@@ -285,7 +285,7 @@ public class SdlProxy extends SdlProxyBase<IProxyListener> {
 				/*App ID*/null,
 				/*autoActivateID*/null,
 				callbackToUIThread,
-				transportConfig);
+				transportConfig, null);
 		
 		SdlTrace.logProxyEvent("Application constructed SdlProxy instance passing in: IProxyListener, callBackToUIThread.", SDL_LIB_TRACE_KEY);
 	}

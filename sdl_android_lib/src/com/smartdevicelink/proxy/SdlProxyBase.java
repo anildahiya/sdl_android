@@ -20,7 +20,25 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.UUID;
 import java.util.Vector;
+
+import android.R;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.widget.Toast;
+import com.smartdevicelink.SdlConnection.MessengerClient;
 
 import android.app.Service;
 import android.content.Context;
@@ -87,13 +105,17 @@ import com.smartdevicelink.transport.BaseTransportConfig;
 import com.smartdevicelink.transport.SiphonServer;
 import com.smartdevicelink.transport.TransportType;
 import com.smartdevicelink.util.DebugTool;
+import com.smartdevicelink.proxy.rpc.enums.SdlDisconnectedReason;
 
 public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase> {
 	// Used for calls to Android Log class.
 	public static final String TAG = "SdlProxy";
 	private static final String SDL_LIB_TRACE_KEY = "42baba60-eb57-11df-98cf-0800200c9a66";
 	private static final int PROX_PROT_VER_ONE = 1;
-	
+	private boolean bIsConnected = false;
+	private UUID sessionUUID = null;
+
+
 	private SdlSession sdlSession = null;
 	private proxyListenerType _proxyListener = null;
 	
@@ -196,10 +218,14 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	protected Boolean _bResumeSuccess = false;
 	
 	protected byte _wiproVersion = 1;
-	
+	private LockScreenManager lockScreenMan = null;
+
 	// Interface broker
 	private SdlInterfaceBroker _interfaceBroker = null;
-	
+	Messenger mService = null;
+    boolean mBound;
+    public final Messenger mMessenger = new Messenger(new IncomingHandler());
+
 	// Private Class to Interface with SdlConnection
 	private class SdlInterfaceBroker implements ISdlConnectionListener {
 		
@@ -242,7 +268,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		@Override
 		public void onProtocolSessionStarted(SessionType sessionType,
 				byte sessionID, byte version, String correlationID) {
-			
+			bIsConnected = true;
 			Intent sendIntent = createBroadcastIntent();
 			updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "onProtocolSessionStarted");
 			updateBroadcastIntent(sendIntent, "COMMENT1", "SessionID: " + sessionID);
@@ -304,6 +330,15 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 			
 		}
 	}
+	private boolean isPackageInstalled(String packagename, Context context) {
+	    PackageManager pm = context.getPackageManager();
+	    try {
+	        pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
+	        return true;
+	    } catch (NameNotFoundException e) {
+	        return false;
+	    }
+ 	}	
 
 	/**
 	 * Constructor.
@@ -326,24 +361,106 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @param transportConfig Configuration of transport to be used by underlying connection.
 	 * @throws SdlException
 	 */
-	protected SdlProxyBase(proxyListenerType listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
+	protected SdlProxyBase(Service appService, proxyListenerType listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
 			boolean enableAdvancedLifecycleManagement, String appName, Vector<TTSChunk> ttsName, 
 			String ngnMediaScreenAppName, Vector<String> vrSynonyms, Boolean isMediaApp, SdlMsgVersion sdlMsgVersion, 
 			Language languageDesired, Language hmiDisplayLanguageDesired, Vector<AppHMIType> appType, String appID, 
-			String autoActivateID, boolean callbackToUIThread, BaseTransportConfig transportConfig) 
+			String autoActivateID, boolean callbackToUIThread, BaseTransportConfig transportConfig, UUID theUUID) 
 			throws SdlException {
 				
-			performBaseCommon(listener, sdlProxyConfigurationResources, enableAdvancedLifecycleManagement, appName, ttsName, ngnMediaScreenAppName, vrSynonyms, isMediaApp,
-				sdlMsgVersion, languageDesired, hmiDisplayLanguageDesired, appType, appID, autoActivateID, callbackToUIThread, null, null, null, transportConfig);	
+			performBaseCommon(appService, listener, sdlProxyConfigurationResources, enableAdvancedLifecycleManagement, appName, ttsName, ngnMediaScreenAppName, vrSynonyms, isMediaApp,
+				sdlMsgVersion, languageDesired, hmiDisplayLanguageDesired, appType, appID, autoActivateID, callbackToUIThread, null, null, null, transportConfig, theUUID);	
 	}
-	
-	private void performBaseCommon(proxyListenerType listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
+
+	@SuppressWarnings("deprecation")
+	public void showStatusBarNote(Context ctx, String sAppName)
+	{
+	    // Set the icon, scrolling text and timestamp
+	    Notification notification = new Notification(R.drawable.ic_menu_help,
+	    		sAppName + ": " + "AppLinkService Not Installed", System.currentTimeMillis());
+	    Intent notificationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://rink.hockeyapp.net"));
+	    // The PendingIntent to launch our activity if the user selects this
+	    // notification
+	    PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0,
+	    		notificationIntent, 0);
+	    // Set the info for the views that show in the notification panel.
+	    notification.setLatestEventInfo(ctx, sAppName + ": " + "AppLinkService Not Installed", "Download the AppLinkService Manager",
+	            contentIntent);
+	    NotificationManager notificationManager = (NotificationManager) ctx.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+	    // Send the notification.
+	    notificationManager.notify("Title", 0, notification);	
+	}
+
+	private void performBaseCommon(Service appService, proxyListenerType listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
 			boolean enableAdvancedLifecycleManagement, String appName, Vector<TTSChunk> ttsName, 
 			String ngnMediaScreenAppName, Vector<String> vrSynonyms, Boolean isMediaApp, SdlMsgVersion sdlMsgVersion, 
 			Language languageDesired, Language hmiDisplayLanguageDesired, Vector<AppHMIType> appType, String appID, 
 			String autoActivateID, boolean callbackToUIThread, Boolean preRegister, String sHashID, Boolean bAppResumeEnab,
-			BaseTransportConfig transportConfig) throws SdlException
+			BaseTransportConfig transportConfig, UUID theUUID) throws SdlException
 	{
+		_appService = appService;
+		lockScreenMan  = new LockScreenManager();
+		Service myService = null;
+		Context myContext = null;
+
+		if (listener != null && listener instanceof Service)
+		{
+			myService = (Service) listener;				
+		}
+		else if (appService != null)
+		{
+			myService = appService;
+		}
+		else if (listener != null && listener instanceof Context)
+		{
+			myContext = (Context) listener;
+		}
+		else
+		{
+			return;
+		}
+
+		if (theUUID != null)
+			sessionUUID = theUUID;
+		//Intent intent = new Intent("com.ford.service.syncConnection.MessengerService");
+		_transportConfig = transportConfig;
+		boolean bPrereqInstalled = isPackageInstalled("com.smartdevicelink.applinkservmgr", myService.getApplicationContext());
+
+		if (!bPrereqInstalled)
+		{
+			showStatusBarNote(myService, appName);
+			Toast.makeText(myService.getApplicationContext(), "Error: Applink connectivity not available.  Download the AppLinkService Manager prior to launching app.", Toast.LENGTH_LONG).show();
+			return;
+		}
+		/*if (!bPrereqInstalled)
+		{
+					File file = new File(Environment.getExternalStorageDirectory() + "/" + "YourApp.apk");
+					Intent playstoreintent = new Intent(Intent.ACTION_VIEW);
+					playstoreintent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+					playstoreintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					myService.getApplicationContext().startActivity(playstoreintent);
+					//return;
+		}
+			while(!bPrereqInstalled)
+			{ 
+				synchronized(APP_INTERFACE_REGISTERED_LOCK) {
+					try {
+						APP_INTERFACE_REGISTERED_LOCK.wait(3000);
+						Toast.makeText(myService.getApplicationContext(), "Waiting for Service Installation", Toast.LENGTH_LONG).show();
+						bPrereqInstalled = isPackageInstalled("com.ford.applinkservmgr", myService.getApplicationContext());
+					} catch (InterruptedException e) {
+						// Do nothing
+					}
+				}
+			}*/
+			//Intent intent = new Intent();
+			//intent.setClassName("com.ford.service.syncConnection", "com.ford.service.syncConnection.MessengerService");
+		Intent intent = new Intent("com.smartdevicelink.service.sdlConnection.MessengerService");
+		boolean bBound;
+
+		if (myService != null)
+			bBound = myService.getApplicationContext().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
 		setWiProVersion((byte)PROX_PROT_VER_ONE);
 		
 		if (preRegister != null && preRegister)
@@ -378,7 +495,6 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		_appType = appType;
 		_appID = appID;
 		_autoActivateIdDesired = autoActivateID;
-		_transportConfig = transportConfig;
 				
 		// Test conditions to invalidate the proxy
 		if (listener == null) {
@@ -525,15 +641,15 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		SdlTrace.logProxyEvent("SdlProxy Created, instanceID=" + this.toString(), SDL_LIB_TRACE_KEY);		
 	}
 	
-	protected SdlProxyBase(proxyListenerType listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
+	protected SdlProxyBase(Service sAppService, proxyListenerType listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
 			boolean enableAdvancedLifecycleManagement, String appName, Vector<TTSChunk> ttsName, 
 			String ngnMediaScreenAppName, Vector<String> vrSynonyms, Boolean isMediaApp, SdlMsgVersion sdlMsgVersion, 
 			Language languageDesired, Language hmiDisplayLanguageDesired, Vector<AppHMIType> appType, String appID, 
 			String autoActivateID, boolean callbackToUIThread, boolean preRegister, String sHashID, Boolean bEnableResume, BaseTransportConfig transportConfig) 
 			throws SdlException 
 	{
-			performBaseCommon(listener, sdlProxyConfigurationResources, enableAdvancedLifecycleManagement, appName, ttsName, ngnMediaScreenAppName, vrSynonyms, isMediaApp,
-				sdlMsgVersion, languageDesired, hmiDisplayLanguageDesired, appType, appID, autoActivateID, callbackToUIThread, preRegister, sHashID, bEnableResume, transportConfig);
+			performBaseCommon(sAppService, listener, sdlProxyConfigurationResources, enableAdvancedLifecycleManagement, appName, ttsName, ngnMediaScreenAppName, vrSynonyms, isMediaApp,
+				sdlMsgVersion, languageDesired, hmiDisplayLanguageDesired, appType, appID, autoActivateID, callbackToUIThread, preRegister, sHashID, bEnableResume, transportConfig, null);
 	}
 	
 	
@@ -560,15 +676,15 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @param transportConfig Configuration of transport to be used by underlying connection.
 	 * @throws SdlException
 	 */	
-	protected SdlProxyBase(proxyListenerType listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
+	protected SdlProxyBase(Service sAppService, proxyListenerType listener, SdlProxyConfigurationResources sdlProxyConfigurationResources, 
 			boolean enableAdvancedLifecycleManagement, String appName, Vector<TTSChunk> ttsName, 
 			String ngnMediaScreenAppName, Vector<String> vrSynonyms, Boolean isMediaApp, SdlMsgVersion sdlMsgVersion, 
 			Language languageDesired, Language hmiDisplayLanguageDesired, Vector<AppHMIType> appType, String appID, 
-			String autoActivateID, boolean callbackToUIThread, boolean preRegister, BaseTransportConfig transportConfig) 
+			String autoActivateID, boolean callbackToUIThread, boolean preRegister, BaseTransportConfig transportConfig, UUID theUUID) 
 			throws SdlException 
 	{
-			performBaseCommon(listener, sdlProxyConfigurationResources, enableAdvancedLifecycleManagement, appName, ttsName, ngnMediaScreenAppName, vrSynonyms, isMediaApp,
-				sdlMsgVersion, languageDesired, hmiDisplayLanguageDesired, appType, appID, autoActivateID, callbackToUIThread, preRegister, null, null, transportConfig);
+			performBaseCommon(sAppService, listener, sdlProxyConfigurationResources, enableAdvancedLifecycleManagement, appName, ttsName, ngnMediaScreenAppName, vrSynonyms, isMediaApp,
+				sdlMsgVersion, languageDesired, hmiDisplayLanguageDesired, appType, appID, autoActivateID, callbackToUIThread, preRegister, null, null, transportConfig, theUUID);
 	}
 
 	private Intent createBroadcastIntent()
@@ -612,7 +728,8 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	
 	private void sendBroadcastIntent(Intent sendIntent)
 	{
-		Service myService = null;		
+		Service myService = null;
+		Context myContext = null;
 		if (_proxyListener != null && _proxyListener instanceof Service)
 		{
 			myService = (Service) _proxyListener;				
@@ -621,13 +738,18 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		{
 			myService = _appService;
 		}
+		else if (_proxyListener != null && _proxyListener instanceof Context)
+		{
+			myContext = (Context) _proxyListener;
+		}
 		else
 		{
 			return;
 		}
 		try
 		{
-			Context myContext = myService.getApplicationContext();
+			if (myContext == null)
+		        myContext = myService.getApplicationContext();
 			if (myContext != null) myContext.sendBroadcast(sendIntent);
 		}
 		catch(Exception ex)
@@ -899,7 +1021,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 			   
 			if (getIsConnected()) 
 			{			    	
-				sendRPCRequestPrivate(mySystemRequest);
+				sendRPCRequestPrivate(mySystemRequest, false);
 				Log.i("sendOnSystemRequestToUrl", "sent to sdl");											
 										
 				updateBroadcastIntent(sendIntent2, "RPC_NAME", FunctionID.SYSTEM_REQUEST);
@@ -985,9 +1107,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	
 	// Protected isConnected method to allow legacy proxy to poll isConnected state
 	public Boolean getIsConnected() {
-		if (sdlSession == null) return false;
-		
-		return sdlSession.getIsConnected();
+		return bIsConnected;
 	}
 	
 	/**
@@ -1002,27 +1122,122 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	}
 
 	// Function to initialize new proxy connection
-	private void initializeProxy() throws SdlException {		
+	private void initializeProxy() throws SdlException {
 		// Reset all of the flags and state variables
 		_haveReceivedFirstNonNoneHMILevel = false;
 		_haveReceivedFirstFocusLevel = false;
 		_haveReceivedFirstFocusLevelFull = false;
+		bIsConnected = false;
 		if (_preRegisterd) 
 			_appInterfaceRegisterd = true;
 		else
 			_appInterfaceRegisterd = false;
 		
 		_sdlIntefaceAvailablity = SdlInterfaceAvailability.SDL_INTERFACE_UNAVAILABLE;
-				
-		// Setup SdlConnection
-		synchronized(CONNECTION_REFERENCE_LOCK) {
-			this.sdlSession = SdlSession.createSession(_wiproVersion,_interfaceBroker, _transportConfig);	
+	}	
+    class IncomingHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MessengerClient.MSG_SEND_ON_TRANSPORT_DISCONNECT:
+                	String info = msg.getData().getString("info");
+
+                	if (_interfaceBroker != null)
+                    	_interfaceBroker.onTransportDisconnected(info);
+                	break;
+
+                case MessengerClient.MSG_SESSION_UUID:
+                	UUID temp = (UUID) msg.getData().getSerializable("sessionUUID");
+                	sessionUUID = temp;
+                	break;
+
+                case MessengerClient.MSG_SEND_ON_TRANSPORT_ERROR:
+                	Exception ex = (Exception) msg.getData().getSerializable("exception");
+                	info = msg.getData().getString("info");
+                	if (_interfaceBroker != null)
+                    	_interfaceBroker.onTransportError(info, ex);
+                	break;
+
+                case MessengerClient.MSG_START_SESSION_RESPONSE:
+                	Bundle b = msg.getData();
+                	byte by1 = b.getByte("sessionType");
+                	byte by2 = b.getByte("sessionID");
+                    byte by3 = b.getByte("version");
+                    String s1 = b.getString("correlationID");
+                    if (_interfaceBroker != null)
+                    	_interfaceBroker.onProtocolSessionStarted(SessionType.valueOf(by1), by2, by3, s1);
+                    break;                                   
+
+                case MessengerClient.MSG_SEND_RPC_RESPONSE:
+                	ProtocolMessage proto = (ProtocolMessage) msg.getData().getSerializable("key");
+                    if (_interfaceBroker != null)
+                    	_interfaceBroker.onProtocolMessageReceived(proto);
+                	break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }	
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+
+        	Log.i("onServiceDisconnected", "onServiceDisconnected called");
+
+        	mService = null;
+            mBound = false;
+            cycleProxy(SdlDisconnectedReason.TRANSPORT_ERROR);
+        }
+
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+	         mService = new Messenger(service);
+	         mBound = true;
+		        if (!mBound) return;
+		            sdlSession = null;
+	        		sendStartSession();
 		}
-		
-		synchronized(CONNECTION_REFERENCE_LOCK) {
-			this.sdlSession.startSession();
-				sendTransportBroadcast();
-			}
+    };
+
+    public synchronized void closeSession()
+    {
+        if (sessionUUID == null) return;
+    	Message msg = Message.obtain(null, MessengerClient.MSG_SESSION_CLOSE_SESSION, 0, 0);
+        msg.replyTo = mMessenger;
+
+        //Send data
+        Bundle b = new Bundle();
+        b.putSerializable("sessionUUID", sessionUUID);        
+
+        msg.setData(b);
+        try {
+            if (mService != null)
+            	mService.send(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+	public synchronized void sendStartSession()
+	{       
+
+    	// Create and send a message to the service, using a supported 'what' value
+        Message msg = Message.obtain(null, MessengerClient.MSG_START_SESSION_REQUEST, 0, 0);
+        msg.replyTo = mMessenger;
+
+        Bundle b = new Bundle();
+        b.putSerializable("transportConfig", _transportConfig);
+
+        msg.setData(b);
+        try {
+			if (mService != null)
+        		mService.send(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+		}
 	}
 	
 	public void sendTransportBroadcast()
@@ -1109,31 +1324,16 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 				firstTimeFull = true;
 			
 				// Should we wait for the interface to be unregistered?
+				@SuppressWarnings("unused")
 				Boolean waitForInterfaceUnregistered = false;
 				// Unregister app interface
 				synchronized(CONNECTION_REFERENCE_LOCK) {
-					if (sdlSession != null && sdlSession.getIsConnected() && getAppInterfaceRegistered()) {
-						waitForInterfaceUnregistered = true;
-						unregisterAppInterfacePrivate(UNREGISTER_APP_INTERFACE_CORRELATION_ID);
-					}
-				}
-				
-				// Wait for the app interface to be unregistered
-				if (waitForInterfaceUnregistered) {
-					synchronized(APP_INTERFACE_REGISTERED_LOCK) {
-						try {
-							APP_INTERFACE_REGISTERED_LOCK.wait(3000);
-						} catch (InterruptedException e) {
-							// Do nothing
-						}
-					}
+					waitForInterfaceUnregistered = true;
+					unregisterAppInterfacePrivate(UNREGISTER_APP_INTERFACE_CORRELATION_ID);
 				}
 			}
 			
-			// Clean up SDL Connection
-			synchronized(CONNECTION_REFERENCE_LOCK) {
-				if (sdlSession != null) sdlSession.close();
-			}		
+			closeSession();	
 		} catch (SdlException e) {
 			throw e;
 		} finally {
@@ -1239,7 +1439,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	private void dispatchIncomingMessage(ProtocolMessage message) {
 		try{
 			// Dispatching logic
-			if (message.getSessionType().equals(SessionType.RPC)) {
+			if (message.getSessionType().value() == SessionType.RPC.value()) {
 				try {
 					if (_wiproVersion == 1) {
 						if (message.getVersion() > 1) setWiProVersion(message.getVersion());
@@ -1274,7 +1474,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 						final Hashtable<String, Object> mhash = JsonRPCMarshaller.unmarshall(message.getData());
 						hash = mhash;
 					}
-					handleRPCMessage(hash);							
+					handleRPCMessage(hash, message.getSessionID());
 				} catch (final Exception excp) {
 					DebugTool.logError("Failure handling protocol message: " + excp.toString(), excp);
 					passErrorToProxyListener("Error handing incoming protocol message.", excp);
@@ -1318,11 +1518,24 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	}
 	
 	private void dispatchOutgoingMessage(ProtocolMessage message) {
-		synchronized(CONNECTION_REFERENCE_LOCK) {
-			if (sdlSession != null) {
-				sdlSession.sendMessage(message);
-			}
-		}		
+				
+		        if (sessionUUID == null) 
+					return;
+
+		        // Create and send a message to the service, using a supported 'what' value
+		        Message msg = Message.obtain(null, MessengerClient.MSG_SEND_RPC_REQUEST, 0, 0);
+		        msg.replyTo = mMessenger;
+		        //Send data as a String
+	            Bundle b = new Bundle();
+	            b.putSerializable("sessionUUID", sessionUUID);
+	            b.putSerializable("key", message);	           
+		        msg.setData(b);
+		        try {
+		        	if (mService != null)
+		        		mService.send(msg);
+		        } catch (RemoteException e) {
+		            e.printStackTrace();
+		        }
 		SdlTrace.logProxyEvent("SdlProxy sending Protocol Message: " + message.toString(), SDL_LIB_TRACE_KEY);
 	}
 	
@@ -1413,33 +1626,41 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	
 	// Private sendPRCRequest method. All RPCRequests are funneled through this method after
 		// error checking. 
-	private void sendRPCRequestPrivate(RPCRequest request) throws SdlException {
-			try {
-			SdlTrace.logRPCEvent(InterfaceActivityDirection.Transmit, request, SDL_LIB_TRACE_KEY);
+	private ProtocolMessage getProtocolMessage(RPCRequest request)
+	{
 						
 			byte[] msgBytes = JsonRPCMarshaller.marshall(request, _wiproVersion);
 	
 			ProtocolMessage pm = new ProtocolMessage();
 			pm.setData(msgBytes);
-			if (sdlSession != null)
-				pm.setSessionID(sdlSession.getSessionId());
 			pm.setMessageType(MessageType.RPC);
 			pm.setSessionType(SessionType.RPC);
 			pm.setFunctionID(FunctionID.getFunctionID(request.getFunctionName()));
-			if (request.getCorrelationID() == null)
-			{
-				//Log error here
-				throw new SdlException("CorrelationID cannot be null. RPC: " + request.getFunctionName(), SdlExceptionCause.INVALID_ARGUMENT);
-			}
 			pm.setCorrID(request.getCorrelationID());
 			if (request.getBulkData() != null) 
 				pm.setBulkData(request.getBulkData());
-			
-			// Queue this outgoing message
-			synchronized(OUTGOING_MESSAGE_QUEUE_THREAD_LOCK) {
-				if (_outgoingProxyMessageDispatcher != null) {
-					_outgoingProxyMessageDispatcher.queueMessage(pm);
-				}
+
+			return pm;
+	}
+
+	// Private sendPRCRequest method. All RPCRequests are funneled through this method after
+		// error checking.
+	private void sendRPCRequestPrivate(RPCRequest request, Boolean bQueueMessage) throws SdlException {
+			try {
+ 			    SdlTrace.logRPCEvent(InterfaceActivityDirection.Transmit, request, SDL_LIB_TRACE_KEY);
+			    ProtocolMessage pm = getProtocolMessage(request);
+			if (bQueueMessage)
+			{			
+	           // Queue this outgoing message
+			   synchronized(OUTGOING_MESSAGE_QUEUE_THREAD_LOCK) {
+				  if (_outgoingProxyMessageDispatcher != null) {
+					  _outgoingProxyMessageDispatcher.queueMessage(pm);
+				  }
+			   }
+			}
+			else
+			{
+				dispatchOutgoingMessage(pm);
 			}
 		} catch (OutOfMemoryError e) {
 			SdlTrace.logProxyEvent("OutOfMemory exception while sending request " + request.getFunctionName(), SDL_LIB_TRACE_KEY);
@@ -1447,7 +1668,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		}
 	}
 	
-	private void handleRPCMessage(Hashtable<String, Object> hash) {
+	private void handleRPCMessage(Hashtable<String, Object> hash, byte bySID) {
 		RPCMessage rpcMsg = new RPCMessage(hash);
 		String functionName = rpcMsg.getFunctionName();
 		String messageType = rpcMsg.getMessageType();
@@ -2263,10 +2484,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 				final OnHMIStatus msg = new OnHMIStatus(hash);
 
 				//setup lockscreeninfo
-				if (sdlSession != null)
-				{
-					sdlSession.getLockScreenMan().setHMILevel(msg.getHmiLevel());
-				}
+				lockScreenMan.setHMILevel(msg.getHmiLevel());
 				
 				msg.setFirstRun(Boolean.valueOf(firstTimeFull));
 				if (msg.getHmiLevel() == HMILevel.HMI_FULL) firstTimeFull = false;
@@ -2278,12 +2496,12 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 							@Override
 							public void run() {
 								_proxyListener.onOnHMIStatus((OnHMIStatus)msg);
-								_proxyListener.onOnLockScreenNotification(sdlSession.getLockScreenMan().getLockObj());
+								_proxyListener.onOnLockScreenNotification(lockScreenMan.getLockObj());
 							}
 						});
 					} else {
 						_proxyListener.onOnHMIStatus((OnHMIStatus)msg);
-						_proxyListener.onOnLockScreenNotification(sdlSession.getLockScreenMan().getLockObj());
+						_proxyListener.onOnLockScreenNotification(lockScreenMan.getLockObj());
 					}
 				}				
 			} else if (functionName.equals(FunctionID.ON_COMMAND)) {
@@ -2307,16 +2525,13 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 				final OnDriverDistraction msg = new OnDriverDistraction(hash);
 				
 				//setup lockscreeninfo
-				if (sdlSession != null)
-				{
-					DriverDistractionState drDist = msg.getState();
-					boolean bVal = false;
-					if (drDist == DriverDistractionState.DD_ON)
-						bVal = true;
-					else
-						bVal = false;
-					sdlSession.getLockScreenMan().setDriverDistStatus(bVal);
-				}
+				DriverDistractionState drDist = msg.getState();
+				boolean bVal = false;
+				if (drDist == DriverDistractionState.DD_ON)
+					bVal = true;
+				else
+					bVal = false;
+					lockScreenMan.setDriverDistStatus(bVal);				
 				
 				if (_callbackToUIThread) {
 					// Run in UI thread
@@ -2324,12 +2539,12 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 						@Override
 						public void run() {
 							_proxyListener.onOnDriverDistraction(msg);
-							_proxyListener.onOnLockScreenNotification(sdlSession.getLockScreenMan().getLockObj());
+							_proxyListener.onOnLockScreenNotification(lockScreenMan.getLockObj());
 						}
 					});
 				} else {
 					_proxyListener.onOnDriverDistraction(msg);
-					_proxyListener.onOnLockScreenNotification(sdlSession.getLockScreenMan().getLockObj());
+					_proxyListener.onOnLockScreenNotification(lockScreenMan.getLockObj());
 				}
 			} else if (functionName.equals(FunctionID.ON_ENCODED_SYNC_P_DATA)) {
 				
@@ -2612,7 +2827,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @throws SdlException
 	 */
 	public void sendRPCRequest(RPCRequest request) throws SdlException {
-		if (_proxyDisposed) {
+/*		if (_proxyDisposed) {
 			throw new SdlException("This object has been disposed, it is no long capable of executing methods.", SdlExceptionCause.SDL_PROXY_DISPOSED);
 		}
 		
@@ -2655,9 +2870,9 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 				throw new SdlException("The RPCRequest, " + request.getFunctionName() + 
 						", is unallowed using the Advanced Lifecycle Management Model.", SdlExceptionCause.INCORRECT_LIFECYCLE_MODEL);
 			}
-		}
+		}*/
 		
-		sendRPCRequestPrivate(request);
+		sendRPCRequestPrivate(request, true);
 	} // end-method
 	
 	protected void notifyProxyClosed(final String info, final Exception e, final SdlDisconnectedReason reason) {		
@@ -3609,7 +3824,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		updateBroadcastIntent(sendIntent, "DATA",serializeJSON(msg));
 		sendBroadcastIntent(sendIntent);		
 		
-		sendRPCRequestPrivate(msg);
+		sendRPCRequestPrivate(msg, false);
 	}
 	
 	/*Begin V1 Enhanced helper function*/
@@ -3924,7 +4139,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		updateBroadcastIntent(sendIntent, "DATA",serializeJSON(msg));
 		sendBroadcastIntent(sendIntent);
 		
-		sendRPCRequestPrivate(msg);
+		sendRPCRequestPrivate(msg, false);
 	}
 	
 	/**

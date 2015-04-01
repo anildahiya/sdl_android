@@ -2,5 +2,9 @@
 	<uses-sdk android:minSdkVersion="12"/>
    	<!-- Required to use the USB Accessory mode -->
     <uses-feature android:name="android.hardware.usb.accessory"/>
-    <application android:debuggable="true"/>
+   <service android:name="com.smartdevicelink.service.sdlConnection.MessengerService">
+      <intent-filter>
+      <action android:name="com.smartdevicelink.service.sdlConnection.MessengerService"></action>
+      </intent-filter>
+    </service> 
 </manifest>

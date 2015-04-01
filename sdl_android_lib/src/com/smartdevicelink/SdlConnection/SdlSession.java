@@ -14,7 +14,7 @@ import com.smartdevicelink.transport.BaseTransportConfig;
 import com.smartdevicelink.transport.TransportType;
 
 public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorListener {
-	private static CopyOnWriteArrayList<SdlConnection> shareConnections = new CopyOnWriteArrayList<SdlConnection>();
+	public static CopyOnWriteArrayList<SdlConnection> shareConnections = new CopyOnWriteArrayList<SdlConnection>();
 	
 	SdlConnection _sdlConnection = null;
 	private byte sessionId;

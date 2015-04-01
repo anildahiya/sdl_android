@@ -1,10 +1,11 @@
 package com.smartdevicelink.transport;
-
+import java.io.Serializable;
 /**
  * Container of Bluetooth transport specific configuration.
  */
-public final class BTTransportConfig extends BaseTransportConfig {
+public final class BTTransportConfig extends BaseTransportConfig implements Serializable {
 
+	private static final long serialVersionUID = -8616926941308142391L;
 	private boolean bKeepSocketActive = true;
 	
 	/**

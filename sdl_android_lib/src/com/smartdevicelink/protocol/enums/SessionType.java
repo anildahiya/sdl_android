@@ -1,12 +1,13 @@
 package com.smartdevicelink.protocol.enums;
 
 import java.util.Vector;
-
+import java.io.Serializable;
 import com.smartdevicelink.util.ByteEnumer;
 
 
-public class SessionType extends ByteEnumer {
+public class SessionType extends ByteEnumer implements Serializable{
 
+	private static final long serialVersionUID = 6736400881383808288L;
 	private static Vector<SessionType> theList = new Vector<SessionType>();
 	public static Vector<SessionType> getList() { return theList; } 
 	

@@ -5,6 +5,10 @@ import java.util.Vector;
 import com.smartdevicelink.util.ByteEnumer;
 
 public class FrameDataControlFrameType extends ByteEnumer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6975438379187710275L;
 	private static Vector<FrameDataControlFrameType> theList = new Vector<FrameDataControlFrameType>();
 	public static Vector<FrameDataControlFrameType> getList() { return theList; } 
 

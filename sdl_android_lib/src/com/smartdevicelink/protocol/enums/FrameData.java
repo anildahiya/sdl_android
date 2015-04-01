@@ -6,6 +6,10 @@ import com.smartdevicelink.util.ByteEnumer;
 
 public class FrameData extends ByteEnumer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4932338992299644002L;
 	private static Vector<FrameData> theList = new Vector<FrameData>();
 	public static Vector<FrameData> getList() { return theList; } 
 	

@@ -2,8 +2,8 @@ package com.smartdevicelink.protocol;
 
 import com.smartdevicelink.protocol.WiProProtocol.MessageFrameAssembler;
 import com.smartdevicelink.protocol.enums.SessionType;
-import com.smartdevicelink.trace.SdlTrace;
-import com.smartdevicelink.trace.enums.InterfaceActivityDirection;
+import com.smartdevicelink.service.trace.SdlTrace;
+import com.smartdevicelink.service.trace.enums.InterfaceActivityDirection;
 
 public abstract class AbstractProtocol {
 	private static final String SDL_LIB_TRACE_KEY = "42baba60-eb57-11df-98cf-0800200c9a66";

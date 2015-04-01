@@ -1,6 +1,65 @@
-<manifest package="com.smartdevicelink" xmlns:android="http://schemas.android.com/apk/res/android">
-	<uses-sdk android:minSdkVersion="12"/>
-   	<!-- Required to use the USB Accessory mode -->
-    <uses-feature android:name="android.hardware.usb.accessory"/>
-    <application android:debuggable="true"/>
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.smartdevicelink.applinkservmgr"
+    android:versionCode="1"
+    android:versionName="1.0" >
+    
+	<!-- Required to use the USB Accessory mode -->
+	<uses-feature android:name="android.hardware.usb.accessory"/>
+    
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="13" />
+
+    <application
+        android:name="com.smartdevicelink.applinkservmgr.applink.AppLinkApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        >
+        <activity
+            android:name="com.smartdevicelink.applinkservmgr.activity.MainActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.smartdevicelink.applinkservmgr.activity.LockScreenActivity"
+            android:label="Locked"
+            android:screenOrientation="portrait" >
+        </activity>
+
+
+
+        <service android:name="com.smartdevicelink.service.sdlConnection.MessengerService">
+            <intent-filter>
+                <action android:name="com.smartdevicelink.service.sdlConnection.MessengerService"></action>
+            </intent-filter>
+        </service>        
+        
+        <receiver android:name="com.smartdevicelink.applinkservmgr.applink.AppLinkReceiver" >
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
+		<activity android:name="com.smartdevicelink.transport.USBAccessoryAttachmentActivity">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
+                    android:resource="@xml/accessory_filter"/>
+        </activity>	
+    </application>
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required to check if WiFi is enabled -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
 </manifest>

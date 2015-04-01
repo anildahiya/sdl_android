@@ -1,10 +1,12 @@
 package com.smartdevicelink.transport;
 
+import java.io.Serializable;
+
 /**
  * Container of TCP transport specific configuration. 
  */
-public final class TCPTransportConfig extends BaseTransportConfig {
-	
+public final class TCPTransportConfig extends BaseTransportConfig  implements Serializable {
+	private static final long serialVersionUID = -8787224196220109895L;
 	/**
 	 * Value of port to use in TCP connection.
 	 */

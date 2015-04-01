@@ -1,11 +1,12 @@
 package com.smartdevicelink.transport;
-
+import java.io.Serializable;
 /**
  * Defines base abstract class for transport configurations.
  */
-public abstract class BaseTransportConfig {
+public abstract class BaseTransportConfig implements Serializable {
 	
-	protected boolean shareConnection = true;
+	private static final long serialVersionUID = -6141108818367355540L;
+	public boolean shareConnection = true;
 	protected int iHeartBeatTimeout = Integer.MAX_VALUE;
 	/**
 	 * Gets transport type for this transport configuration.

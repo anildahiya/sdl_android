@@ -1,10 +1,11 @@
 package com.smartdevicelink.util;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Vector;
 
-public abstract class ByteEnumer {	
-	
+public abstract class ByteEnumer implements Serializable {	
+	private static final long serialVersionUID = 3496485400782899340L;
 	protected ByteEnumer(byte value, String name) {
 		this.value = value;
 		this.name = name;

@@ -1,9 +1,16 @@
 package com.smartdevicelink.protocol;
 
+import java.io.Serializable;
+
+
 import com.smartdevicelink.protocol.enums.MessageType;
 import com.smartdevicelink.protocol.enums.SessionType;
 
-public class ProtocolMessage {
+public class ProtocolMessage implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7354383682107613296L;
 	private byte version = 1;
 	private SessionType _sessionType = SessionType.RPC;
 	private MessageType _messageType = MessageType.UNDEFINED;

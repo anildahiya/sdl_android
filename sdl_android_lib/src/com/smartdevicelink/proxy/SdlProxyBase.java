@@ -453,9 +453,9 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 					}
 				}
 			}*/
-			//Intent intent = new Intent();
-			//intent.setClassName("com.ford.service.syncConnection", "com.ford.service.syncConnection.MessengerService");
-		Intent intent = new Intent("com.smartdevicelink.service.sdlConnection.MessengerService");
+
+		Intent intent = new Intent();
+		intent.setClassName("com.smartdevicelink.applinkservmgr", "com.smartdevicelink.service.sdlConnection.MessengerService");
 		boolean bBound;
 
 		if (myService != null)

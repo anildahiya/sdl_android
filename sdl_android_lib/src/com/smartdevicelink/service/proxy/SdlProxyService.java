@@ -45,11 +45,12 @@ public class SdlProxyService<proxyServiceListenerType extends IProxyServiceListe
 		{
 			return;
 		}		
-				
-		Intent intent = new Intent("com.smartdevicelink.service.sdlConnection.MessengerService");		 
+
+		Intent intent = new Intent();
+		intent.setClassName("com.smartdevicelink.applinkservmgr", "com.smartdevicelink.service.sdlConnection.MessengerService");
 		@SuppressWarnings("unused")
 		boolean bBound = myService.getApplicationContext().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);		
-		
+
 		//MessengerService._sdlProxyBase = this;		
 	}
 	

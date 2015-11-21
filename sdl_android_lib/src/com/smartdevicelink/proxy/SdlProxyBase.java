@@ -1593,13 +1593,13 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 
 					if (_bAppResumeEnabled)
 					{
-						if ( (msg.getResultCode() == Result.RESUME_FAILED) || (msg.getResultCode() != Result.SUCCESS) )
+						if ( (_sdlMsgVersion.getMajorVersion() > 2) && (_lastHashID != null) && (msg.getSuccess()) && (msg.getResultCode() != Result.RESUME_FAILED) )
+							_bResumeSuccess = true;
+						else
 						{
 							_bResumeSuccess = false;
 							_lastHashID = null;
 						}
-						else if ( (_sdlMsgVersion.getMajorVersion() > 2) && (_lastHashID != null) && (msg.getResultCode() == Result.SUCCESS) )
-							_bResumeSuccess = true;				
 					}
 					_diagModes = msg.getSupportedDiagModes();
 					
@@ -1739,18 +1739,18 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 				_vehicleType = msg.getVehicleType();
 				_audioPassThruCapabilities = msg.getAudioPassThruCapabilities();
 				_proxyVersionInfo = msg.getProxyVersionInfo();
-				
+
 				if (_bAppResumeEnabled)
 				{
-					if ( (msg.getResultCode() == Result.RESUME_FAILED) || (msg.getResultCode() != Result.SUCCESS) )
+					if ( (_sdlMsgVersion.getMajorVersion() > 2) && (_lastHashID != null) && (msg.getSuccess()) && (msg.getResultCode() != Result.RESUME_FAILED) )
+						_bResumeSuccess = true;
+					else
 					{
 						_bResumeSuccess = false;
 						_lastHashID = null;
 					}
-					else if ( (_sdlMsgVersion.getMajorVersion() > 2) && (_lastHashID != null) && (msg.getResultCode() == Result.SUCCESS) )
-						_bResumeSuccess = true;				
-				}						
-				
+				}
+
 				_diagModes = msg.getSupportedDiagModes();				
 				
 				if (!isDebugEnabled()) 

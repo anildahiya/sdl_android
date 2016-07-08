@@ -73,6 +73,7 @@ public class KeyboardProperties extends RPCStruct {
 	public static final String KEY_KEYBOARD_LAYOUT = "keyboardLayout";
 	public static final String KEY_LIMITED_CHARACTER_LIST = "limitedCharacterList";
 	public static final String KEY_AUTO_COMPLETE_TEXT = "autoCompleteText";
+    public static final String KEY_AUTO_COMPLETE_LIST = "autoCompleteList";
 	public static final String KEY_LANGUAGE = "language";
 	
     private static final KeypressMode KEYPRESS_MODE_DEFAULT = KeypressMode.RESEND_CURRENT_ENTRY;
@@ -180,4 +181,28 @@ public class KeyboardProperties extends RPCStruct {
             store.remove(KEY_AUTO_COMPLETE_TEXT);
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getAutoCompleteList() {
+        final Object listObj = store.get(KEY_AUTO_COMPLETE_LIST);
+        if (listObj instanceof List<?>) {
+            List<?> list = (List<?>) listObj;
+            if (list != null && list.size() > 0) {
+                Object obj = list.get(0);
+                if (obj instanceof String) {
+                    return (List<String>) list;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void setAutoCompleteList(List<String> autoCompleteList) {
+        if (autoCompleteList != null) {
+            store.put(KEY_AUTO_COMPLETE_LIST, autoCompleteList);
+        } else {
+            store.remove(KEY_AUTO_COMPLETE_LIST);
+        }
+    }
+
 }

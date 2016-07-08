@@ -161,6 +161,7 @@ public class GPSData extends RPCStruct {
 	public static final String KEY_ALTITUDE = "altitude";
 	public static final String KEY_HEADING = "heading";
 	public static final String KEY_SPEED = "speed";
+	public static final String KEY_SHIFTED = "shifted";
 
 	/**
 	 * Constructs a newly allocated GPSData object
@@ -428,13 +429,13 @@ public class GPSData extends RPCStruct {
     }
     
     /**
-     * get what coordinates based on 
+     * get what coordinates based on
      * @return True, if coordinates are based on satellites.False, if based on dead reckoning
      */
     public Boolean getActual() {
     	return (Boolean) store.get(KEY_ACTUAL);
     }
-    
+
     /**
      * set the number of satellites in view
      * @param satellites the number of satellites in view
@@ -532,4 +533,17 @@ public class GPSData extends RPCStruct {
     	Object object = store.get(KEY_SPEED);
     	return SdlDataTypeConverter.objectToDouble(object);
     }
+
+    public void setShifted(Boolean shifted) {
+        if (shifted != null) {
+            store.put(KEY_SHIFTED, shifted);
+        } else {
+            store.remove(KEY_SHIFTED);
+        }
+    }
+
+    public Boolean getShifted() {
+        return (Boolean) store.get(KEY_SHIFTED);
+    }
+
 }

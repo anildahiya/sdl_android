@@ -27,9 +27,9 @@ public class SettingDataResult extends RPCStruct{
         return null;
     }
 
-    public void setDataType( SettingDataType settingDataType ) {
-        if (settingDataType != null) {
-            store.put(KEY_DATA_TYPE, settingDataType );
+    public void setDataType( SettingDataType dataType ) {
+        if (dataType != null) {
+            store.put(KEY_DATA_TYPE, dataType );
         } else {
             store.remove(KEY_DATA_TYPE);
         }
@@ -45,9 +45,9 @@ public class SettingDataResult extends RPCStruct{
         return null;
     }
 
-    public void setResultCode( SettingDataResultCode settingDataResultCode ) {
-        if (settingDataResultCode != null) {
-            store.put(KEY_RESULT_CODE, settingDataResultCode );
+    public void setResultCode( SettingDataResultCode resultCode ) {
+        if (resultCode != null) {
+            store.put(KEY_RESULT_CODE, resultCode );
         } else {
             store.remove(KEY_RESULT_CODE);
         }

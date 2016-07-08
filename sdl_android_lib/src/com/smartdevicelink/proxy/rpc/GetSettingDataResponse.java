@@ -22,7 +22,6 @@ public class GetSettingDataResponse extends RPCResponse {
         super(hash);
     }
 
-    @SuppressWarnings("unchecked")
     public DisplayMode getDisplayMode() {
         Object obj = parameters.get(KEY_DISPLAY_MODE);
         if (obj instanceof DisplayMode) {
@@ -47,7 +46,6 @@ public class GetSettingDataResponse extends RPCResponse {
     	}
     }
 
-    @SuppressWarnings("unchecked")
     public DistanceUnit getDistanceUnit() {
         Object obj = parameters.get(KEY_DISTANCE_UNIT);
         if (obj instanceof DistanceUnit) {
@@ -72,7 +70,6 @@ public class GetSettingDataResponse extends RPCResponse {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public TemperatureUnit getTemperatureUnit() {
         Object obj = parameters.get(KEY_TEMPERATURE_UNIT);
         if (obj instanceof TemperatureUnit) {

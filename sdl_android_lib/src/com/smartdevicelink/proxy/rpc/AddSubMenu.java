@@ -1,9 +1,10 @@
 package com.smartdevicelink.proxy.rpc;
 
-import java.util.Hashtable;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCRequest;
+import com.smartdevicelink.util.DebugTool;
+
+import java.util.Hashtable;
 
 /**
  * <p>Add a SubMenu to the Command Menu</p>
@@ -64,6 +65,7 @@ public class AddSubMenu extends RPCRequest {
 	public static final String KEY_POSITION = "position";
 	public static final String KEY_MENU_NAME = "menuName";
 	public static final String KEY_MENU_ID = "menuID";
+    public static final String KEY_SUB_MENU_ICON = "subMenuIcon";
 
 	/**
 	 * Constructs a new AddSubMenu object
@@ -166,5 +168,28 @@ public class AddSubMenu extends RPCRequest {
         } else {
             parameters.remove(KEY_MENU_NAME);
         }
+    }
+
+    public void setSubMenuIcon(Image subMenuIcon) {
+        if (subMenuIcon != null) {
+            parameters.put(KEY_SUB_MENU_ICON, subMenuIcon);
+        } else {
+            parameters.remove(KEY_SUB_MENU_ICON);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public Image getSubMenuIcon() {
+        Object obj = parameters.get(KEY_SUB_MENU_ICON);
+        if (obj instanceof Image) {
+            return (Image) obj;
+        } else if (obj instanceof Hashtable) {
+            try {
+                return new Image((Hashtable<String, Object>) obj);
+            } catch (Exception e) {
+                DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_SUB_MENU_ICON, e);
+            }
+        }
+        return null;
     }
 }

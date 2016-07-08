@@ -1,10 +1,10 @@
 package com.smartdevicelink.proxy.rpc;
 
-import java.util.Hashtable;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCResponse;
 import com.smartdevicelink.util.DebugTool;
+
+import java.util.Hashtable;
 
 /**
  * Subscribe Vehicle Data Response is sent, when SubscribeVehicleData has been called
@@ -36,6 +36,11 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_EMERGENCY_EVENT = "emergencyEvent";
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
+	public static final String KEY_FUEL_RANGE = "fuelRange";
+	public static final String KEY_ABS_STATE = "abs_State";
+	public static final String KEY_TIRE_PRESSURE_VALUE = "tirePressureValue";
+	public static final String KEY_TPMS = "tpms";
+	public static final String KEY_TURN_SIGNAL = "turnSignal";
 
 	/**
 	 * Constructs a new SubscribeVehicleDataResponse object
@@ -717,5 +722,120 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
             }
         }
         return null;
-    }       
+    }
+
+	public void setFuelRange(VehicleDataResult fuelRange) {
+		if (fuelRange != null) {
+			parameters.put(KEY_FUEL_RANGE, fuelRange);
+		} else {
+			parameters.remove(KEY_FUEL_RANGE);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public VehicleDataResult getFuelRange() {
+		Object obj = parameters.get(KEY_FUEL_RANGE);
+		if (obj instanceof VehicleDataResult) {
+			return (VehicleDataResult) obj;
+		} else if (obj instanceof Hashtable) {
+			try {
+				return new VehicleDataResult((Hashtable<String, Object>) obj);
+			} catch (Exception e) {
+				DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_FUEL_RANGE, e);
+			}
+		}
+		return null;
+	}
+
+	public void setAbsState(VehicleDataResult absState) {
+		if (absState != null) {
+			parameters.put(KEY_ABS_STATE, absState);
+		} else {
+			parameters.remove(KEY_ABS_STATE);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public VehicleDataResult getAbsState() {
+		Object obj = parameters.get(KEY_ABS_STATE);
+		if (obj instanceof VehicleDataResult) {
+			return (VehicleDataResult) obj;
+		} else if (obj instanceof Hashtable) {
+			try {
+				return new VehicleDataResult((Hashtable<String, Object>) obj);
+			} catch (Exception e) {
+				DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_ABS_STATE, e);
+			}
+		}
+		return null;
+	}
+
+	public void setTirePressureValue(VehicleDataResult tirePressureValue) {
+		if (tirePressureValue != null) {
+			parameters.put(KEY_TIRE_PRESSURE_VALUE, tirePressureValue);
+		} else {
+			parameters.remove(KEY_TIRE_PRESSURE_VALUE);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public VehicleDataResult getTirePressureValue() {
+		Object obj = parameters.get(KEY_TIRE_PRESSURE_VALUE);
+		if (obj instanceof VehicleDataResult) {
+			return (VehicleDataResult) obj;
+		} else if (obj instanceof Hashtable) {
+			try {
+				return new VehicleDataResult((Hashtable<String, Object>) obj);
+			} catch (Exception e) {
+				DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_TIRE_PRESSURE_VALUE, e);
+			}
+		}
+		return null;
+	}
+
+	public void setTPMS(VehicleDataResult tpms) {
+		if (tpms != null) {
+			parameters.put(KEY_TPMS, tpms);
+		} else {
+			parameters.remove(KEY_TPMS);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public VehicleDataResult getTPMS() {
+		Object obj = parameters.get(KEY_TPMS);
+		if (obj instanceof VehicleDataResult) {
+			return (VehicleDataResult) obj;
+		} else if (obj instanceof Hashtable) {
+			try {
+				return new VehicleDataResult((Hashtable<String, Object>) obj);
+			} catch (Exception e) {
+				DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_TPMS, e);
+			}
+		}
+		return null;
+	}
+
+	public void setTurnSignal(VehicleDataResult turnSignal) {
+		if (turnSignal != null) {
+			parameters.put(KEY_TURN_SIGNAL, turnSignal);
+		} else {
+			parameters.remove(KEY_TURN_SIGNAL);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public VehicleDataResult getTurnSignal() {
+		Object obj = parameters.get(KEY_TURN_SIGNAL);
+		if (obj instanceof VehicleDataResult) {
+			return (VehicleDataResult) obj;
+		} else if (obj instanceof Hashtable) {
+			try {
+				return new VehicleDataResult((Hashtable<String, Object>) obj);
+			} catch (Exception e) {
+				DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_TURN_SIGNAL, e);
+			}
+		}
+		return null;
+	}
 }

@@ -1,9 +1,5 @@
 package com.smartdevicelink.proxy.rpc;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCResponse;
 import com.smartdevicelink.proxy.Version;
@@ -11,7 +7,12 @@ import com.smartdevicelink.proxy.rpc.enums.HmiZoneCapabilities;
 import com.smartdevicelink.proxy.rpc.enums.Language;
 import com.smartdevicelink.proxy.rpc.enums.PrerecordedSpeech;
 import com.smartdevicelink.proxy.rpc.enums.SpeechCapabilities;
+import com.smartdevicelink.proxy.rpc.enums.SteeringWheelLocation;
 import com.smartdevicelink.proxy.rpc.enums.VrCapabilities;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Register AppInterface Response is sent, when RegisterAppInterface has been called
@@ -36,6 +37,8 @@ public class RegisterAppInterfaceResponse extends RPCResponse {
     public static final String KEY_HMI_CAPABILITIES 			= "hmiCapabilities"; //As of v4.0
     public static final String KEY_SDL_VERSION 					= "sdlVersion"; //As of v4.0
     public static final String KEY_SYSTEM_SOFTWARE_VERSION		= "systemSoftwareVersion"; //As of v4.0
+    public static final String KEY_STEERING_WHEEL_LOCATION		= "steeringWheelLocation";
+    public static final String KEY_ICON_RESUMED					= "iconResumed";
 
     
 	/**
@@ -581,5 +584,35 @@ public class RegisterAppInterfaceResponse extends RPCResponse {
 
     public String getSystemSoftwareVersion() {    
     	 return (String) parameters.get(KEY_SYSTEM_SOFTWARE_VERSION);
-    } 
+    }
+
+	public SteeringWheelLocation getSteeringWheelLocation() {
+		Object obj = parameters.get(KEY_STEERING_WHEEL_LOCATION);
+		if (obj instanceof SteeringWheelLocation) {
+			return (SteeringWheelLocation) obj;
+		} else if (obj instanceof String) {
+			return SteeringWheelLocation.valueForString((String) obj);
+		}
+		return null;
+	}
+
+	public void setSteeringWheelLocation(SteeringWheelLocation steeringWheelLocation) {
+		if (steeringWheelLocation != null) {
+			parameters.put(KEY_STEERING_WHEEL_LOCATION, steeringWheelLocation);
+		} else {
+			parameters.remove(KEY_STEERING_WHEEL_LOCATION);
+		}
+	}
+
+	public Boolean getIconResumed() {
+		return (Boolean) parameters.get(KEY_ICON_RESUMED);
+	}
+
+	public void setIconResumed(Boolean iconResumed) {
+		if (iconResumed != null) {
+			parameters.put(KEY_ICON_RESUMED, iconResumed);
+		} else {
+			parameters.remove(KEY_ICON_RESUMED);
+		}
+	}
 }

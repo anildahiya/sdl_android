@@ -1,10 +1,10 @@
 package com.smartdevicelink.proxy.rpc;
 
-import java.util.Hashtable;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCRequest;
 import com.smartdevicelink.proxy.rpc.enums.UpdateMode;
+
+import java.util.Hashtable;
 /**
  * Sets the media clock/timer value and the update method (e.g.count-up,
  * count-down, etc.)
@@ -73,6 +73,7 @@ public class SetMediaClockTimer extends RPCRequest {
 	public static final String KEY_START_TIME = "startTime";
 	public static final String KEY_END_TIME = "endTime";
 	public static final String KEY_UPDATE_MODE = "updateMode";
+    public static final String KEY_ENABLE_SEEK = "enableSeek";
 	/**
 	 * Constructs a new SetMediaClockTimer object
 	 */
@@ -179,6 +180,18 @@ public class SetMediaClockTimer extends RPCRequest {
             parameters.put(KEY_UPDATE_MODE, updateMode );
         } else {
             parameters.remove(KEY_UPDATE_MODE);
+        }
+    }
+
+    public Boolean getEnableSeek() {
+        return (Boolean) parameters.get(KEY_ENABLE_SEEK);
+    }
+
+    public void setEnableSeek(Boolean enableSeek) {
+        if (enableSeek != null) {
+            parameters.put(KEY_ENABLE_SEEK, enableSeek);
+        } else {
+            parameters.remove(KEY_ENABLE_SEEK);
         }
     }
 }

@@ -1,22 +1,25 @@
 package com.smartdevicelink.proxy.rpc;
 
 
-import java.util.Hashtable;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCResponse;
+import com.smartdevicelink.proxy.rpc.enums.ABS_STATE;
 import com.smartdevicelink.proxy.rpc.enums.ComponentVolumeStatus;
 import com.smartdevicelink.proxy.rpc.enums.PRNDL;
+import com.smartdevicelink.proxy.rpc.enums.TPMS;
+import com.smartdevicelink.proxy.rpc.enums.TurnSignal;
 import com.smartdevicelink.proxy.rpc.enums.VehicleDataEventStatus;
 import com.smartdevicelink.proxy.rpc.enums.WiperStatus;
 import com.smartdevicelink.util.DebugTool;
 import com.smartdevicelink.util.SdlDataTypeConverter;
+import java.util.Hashtable;
 
 /**
  * Get Vehicle Data Response is sent, when GetVehicleData has been called.
  * 
  * @since SmartDeviceLink 2.0
  */
+
 public class GetVehicleDataResponse extends RPCResponse {
 	public static final String KEY_SPEED = "speed";
 	public static final String KEY_RPM = "rpm";
@@ -43,6 +46,11 @@ public class GetVehicleDataResponse extends RPCResponse {
 	public static final String KEY_EMERGENCY_EVENT = "emergencyEvent";
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
+	public static final String KEY_FUEL_RANGE = "fuelRange";
+	public static final String KEY_ABS_STATE = "abs_State";
+	public static final String KEY_TIRE_PRESSURE_VALUE = "tirePressureValue";
+	public static final String KEY_TPMS = "tpms";
+	public static final String KEY_TURN_SIGNAL = "turnSignal";
 
 	/** 
 	 * Constructs a new GetVehicleDataResponse object
@@ -477,5 +485,95 @@ public class GetVehicleDataResponse extends RPCResponse {
             }
         }
         return null;
-    }        
+    }
+
+	public Double getFuelRange() {
+		Object value = parameters.get(KEY_FUEL_RANGE);
+		return SdlDataTypeConverter.objectToDouble(value);
+	}
+
+	public void setFuelRange(Double fuelRange) {
+		if (fuelRange != null) {
+			parameters.put(KEY_FUEL_RANGE, fuelRange);
+		} else {
+			parameters.remove(KEY_FUEL_RANGE);
+		}
+	}
+
+	public ABS_STATE getAbsState() {
+		Object obj = parameters.get(KEY_ABS_STATE);
+		if (obj instanceof ABS_STATE) {
+			return (ABS_STATE) obj;
+		} else if (obj instanceof String) {
+			return ABS_STATE.valueForString((String) obj);
+		}
+		return null;
+	}
+
+	public void setAbsState(ABS_STATE absState) {
+		if (absState != null) {
+			parameters.put(KEY_ABS_STATE, absState);
+		} else {
+			parameters.remove(KEY_ABS_STATE);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public TirePressureValue getTirePressureValue() {
+		Object obj = parameters.get(KEY_TIRE_PRESSURE_VALUE);
+		if (obj instanceof TirePressureValue) {
+			return (TirePressureValue) obj;
+		} else if (obj instanceof Hashtable) {
+			try {
+				return new TirePressureValue((Hashtable<String, Object>) obj);
+			} catch (Exception e) {
+				DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_TIRE_PRESSURE_VALUE, e);
+			}
+		}
+		return null;
+	}
+
+	public void setTirePressureValue(TirePressureValue tirePressureValue) {
+		if (tirePressureValue != null) {
+			parameters.put(KEY_TIRE_PRESSURE_VALUE, tirePressureValue);
+		} else {
+			parameters.remove(KEY_TIRE_PRESSURE_VALUE);
+		}
+	}
+
+	public TPMS getTPMS() {
+		Object obj = parameters.get(KEY_TPMS);
+		if (obj instanceof TPMS) {
+			return (TPMS) obj;
+		} else if (obj instanceof String) {
+			return TPMS.valueForString((String) obj);
+		}
+		return null;
+	}
+
+	public void setTPMS(TPMS tpms) {
+		if (tpms != null) {
+			parameters.put(KEY_TPMS, tpms);
+		} else {
+			parameters.remove(KEY_TPMS);
+		}
+	}
+
+	public TurnSignal getTurnSignal() {
+		Object obj = parameters.get(KEY_TURN_SIGNAL);
+		if (obj instanceof TurnSignal) {
+			return (TurnSignal) obj;
+		} else if (obj instanceof String) {
+			return TurnSignal.valueForString((String) obj);
+		}
+		return null;
+	}
+
+	public void setTurnSignal(TurnSignal turnSignal) {
+		if (turnSignal != null) {
+			parameters.put(KEY_TURN_SIGNAL, turnSignal);
+		} else {
+			parameters.remove(KEY_TURN_SIGNAL);
+		}
+	}
 }

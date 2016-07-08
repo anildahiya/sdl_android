@@ -1,14 +1,15 @@
 package com.smartdevicelink.proxy.rpc;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCRequest;
 import com.smartdevicelink.proxy.rpc.enums.AudioType;
 import com.smartdevicelink.proxy.rpc.enums.BitsPerSample;
 import com.smartdevicelink.proxy.rpc.enums.SamplingRate;
+import com.smartdevicelink.util.DebugTool;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 /**
  * This will open an audio pass thru session. By doing so the app can receive
@@ -102,6 +103,7 @@ public class PerformAudioPassThru extends RPCRequest {
     public static final String KEY_AUDIO_TYPE = "audioType";
     public static final String KEY_INITIAL_PROMPT = "initialPrompt";
     public static final String KEY_BITS_PER_SAMPLE = "bitsPerSample";
+    public static final String KEY_AUDIO_PASS_THRU_ICON = "audioPassThruIcon";
 	
 	/**
 	 * Constructs a new PerformAudioPassThru object
@@ -373,5 +375,28 @@ public class PerformAudioPassThru extends RPCRequest {
     	} else {
     		parameters.remove(KEY_MUTE_AUDIO);
     	}
-    }    
+    }
+
+    @SuppressWarnings("unchecked")
+    public Image getAudioPassThruIcon() {
+        Object obj = parameters.get(KEY_AUDIO_PASS_THRU_ICON);
+        if (obj instanceof Image) {
+            return (Image) obj;
+        } else if (obj instanceof Hashtable) {
+            try {
+                return new Image((Hashtable<String, Object>) obj);
+            } catch (Exception e) {
+                DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_AUDIO_PASS_THRU_ICON, e);
+            }
+        }
+        return null;
+    }
+
+    public void setAudioPassThruIcon(Image audioPassThruIcon) {
+        if (audioPassThruIcon != null) {
+            parameters.put(KEY_AUDIO_PASS_THRU_ICON, audioPassThruIcon);
+        } else {
+            parameters.remove(KEY_AUDIO_PASS_THRU_ICON);
+        }
+    }
 }

@@ -1,9 +1,9 @@
 package com.smartdevicelink.proxy.rpc;
 
-import java.util.Hashtable;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCRequest;
+
+import java.util.Hashtable;
 
 /**
  * Subscribes for specific published vehicle data items. The data will be only
@@ -262,6 +262,11 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
 	public static final String KEY_SPEED = "speed";
+	public static final String KEY_FUEL_RANGE = "fuelRange";
+	public static final String KEY_ABS_STATE = "abs_State";
+	public static final String KEY_TIRE_PRESSURE_VALUE = "tirePressureValue";
+	public static final String KEY_TPMS = "tpms";
+	public static final String KEY_TURN_SIGNAL = "turnSignal";
 
 	/**
 	 * Constructs a new SubscribeVehicleData object
@@ -807,11 +812,70 @@ public class SubscribeVehicleData extends RPCRequest {
         if (myKey != null) {
             parameters.put(KEY_MY_KEY, myKey);
         } else {
-        	parameters.remove(KEY_MY_KEY);
+            parameters.remove(KEY_MY_KEY);
         }
     }
     public Boolean getMyKey() {
         return (Boolean) parameters.get(KEY_MY_KEY);
-    }      
-    
+    }
+
+	public Boolean getFuelRange() {
+		return (Boolean) parameters.get(KEY_FUEL_RANGE);
+	}
+
+	public void setFuelRange(Boolean fuelRange) {
+		if (fuelRange != null) {
+			parameters.put(KEY_FUEL_RANGE, fuelRange);
+		} else {
+			parameters.remove(KEY_FUEL_RANGE);
+		}
+	}
+
+	public Boolean getAbsState() {
+		return (Boolean) parameters.get(KEY_ABS_STATE);
+	}
+
+	public void setAbsState(Boolean absState) {
+		if (absState != null) {
+			parameters.put(KEY_ABS_STATE, absState);
+		} else {
+			parameters.remove(KEY_ABS_STATE);
+		}
+	}
+
+	public Boolean getTirePressureValue() {
+		return (Boolean) parameters.get(KEY_TIRE_PRESSURE_VALUE);
+	}
+
+	public void setTirePressureValue(Boolean tirePressureValue) {
+		if (tirePressureValue != null) {
+			parameters.put(KEY_TIRE_PRESSURE_VALUE, tirePressureValue);
+		} else {
+			parameters.remove(KEY_TIRE_PRESSURE_VALUE);
+		}
+	}
+
+	public Boolean getTPMS() {
+		return (Boolean) parameters.get(KEY_TPMS);
+	}
+
+	public void setTPMS(Boolean tpms) {
+		if (tpms != null) {
+			parameters.put(KEY_TPMS, tpms);
+		} else {
+			parameters.remove(KEY_TPMS);
+		}
+	}
+
+	public Boolean getTurnSignal() {
+		return (Boolean) parameters.get(KEY_TURN_SIGNAL);
+	}
+
+	public void setTurnSignal(Boolean turnSignal) {
+		if (turnSignal != null) {
+			parameters.put(KEY_TURN_SIGNAL, turnSignal);
+		} else {
+			parameters.remove(KEY_TURN_SIGNAL);
+		}
+	}
 }

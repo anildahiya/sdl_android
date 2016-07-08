@@ -12,7 +12,8 @@ public enum ImageType {
     /**
      * Binary image file to be used (identifier to be sent by PutFile)
      */
-    DYNAMIC;
+    DYNAMIC,
+    TEMPLATE;
 
     /**
      * Convert String to ImageType

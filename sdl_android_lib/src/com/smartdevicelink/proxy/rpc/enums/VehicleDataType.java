@@ -29,9 +29,13 @@ public enum VehicleDataType {
  * Notifies FUELCONSUMPTIONData may be subscribed
  */
     VEHICLEDATA_FUELCONSUMPTION,
+    VEHICLEDATA_FUELRANGE,
+    VEHICLEDATA_ABS_STATE,
+
     /**
      * Notifies EXTERNTEMPData may be subscribed
      */
+
     VEHICLEDATA_EXTERNTEMP,
     /**
      * Notifies VINData may be subscribed
@@ -45,6 +49,9 @@ public enum VehicleDataType {
      * Notifies TIREPRESSUREData may be subscribed
      */
     VEHICLEDATA_TIREPRESSURE,
+    VEHICLEDATA_TIREPRESSURE_VALUE,
+    VEHICLEDATA_TPMS,
+    VEHICLEDATA_TURNSIGNAL,
     /**
      * Notifies ODOMETERData may be subscribed
      */

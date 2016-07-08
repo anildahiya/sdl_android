@@ -53,6 +53,13 @@ public enum FunctionID{
     SYSTEM_REQUEST(38, "SystemRequest"),
     SEND_LOCATION(39, "SendLocation"),
     DIAL_NUMBER(40, "DialNumber"),
+    GET_WAY_POINTS(41, "GetWayPoints"),
+    SUBSCRIBE_WAY_POINTS(42, "SubscribeWayPoints"),
+    UNSUBSCRIBE_WAY_POINTS(43, "UnsubscribeWayPoints"),
+    GET_SETTING_DATA(44, "GetSettingData"),
+    SUBSCRIBE_SETTING_DATA(45, "SubscribeSettingData"),
+    UNSUBSCRIBE_SETTING_DATA(46, "UnsubscribeSettingData"),
+    SET_AUDIO_STREAMING_INDICATOR(47, "SetAudioStreamingIndicator"),
 
     // NOTIFICATIONS
     ON_HMI_STATUS(32768, "OnHMIStatus"),
@@ -70,6 +77,9 @@ public enum FunctionID{
     ON_TOUCH_EVENT(32780, "OnTouchEvent"),
     ON_SYSTEM_REQUEST(32781, "OnSystemRequest"),
     ON_HASH_CHANGE(32782, "OnHashChange"),
+    ON_SETTING_DATA(32783, "OnSettingData"),
+    ON_SEEK_MEDIA_CLOCK_TIMER(32784, "OnSeekMediaClockTimer"),
+    ON_WAY_POINT_CHANGE(32785, "OnWayPointChange"),
 
     // MOCKED FUNCTIONS (NOT SENT FROM HEAD-UNIT)
     ON_LOCK_SCREEN_STATUS(-1, "OnLockScreenStatus"),

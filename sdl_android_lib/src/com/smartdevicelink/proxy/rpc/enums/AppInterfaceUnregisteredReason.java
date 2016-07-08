@@ -82,6 +82,7 @@ public enum AppInterfaceUnregisteredReason {
 	 * @since SmartDeviceLink 4.0
 	 */
 	PROTOCOL_VIOLATION,
+	UNSUPPORTED_HMI_RESOURCE
 	;
 	/**
      * Convert String to AppInterfaceUnregisteredReason

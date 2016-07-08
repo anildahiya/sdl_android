@@ -45,6 +45,7 @@ public enum ImageFieldName {
 	 */
 
 	appIcon,
+	subMenuIcon,
 	/** The image filed for Show.
 	 * 
 	 */
@@ -66,7 +67,7 @@ public enum ImageFieldName {
      * @since SmartDeviceLink 4.0
      */
 	locationImage,
-	;
+	audioPassThruIcon;
     
 	/**
      * Convert String to ImageFieldName

@@ -29,6 +29,7 @@ public enum ButtonName{
 	 * @since SmartDeviceLink 1.0
 	 */
 	OK,
+	PLAY_PAUSE,
 	/**
 	 * Represents the seek-left button. A typical use of this button is for the
 	 * user to scroll to the left through menu choices one menu item per press.

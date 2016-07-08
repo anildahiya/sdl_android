@@ -125,11 +125,17 @@ public enum Language {
      */
 
     DA_DK("DA-DK"),
+
     /**
      * Norwegian - Norway
      */
 
-    NO_NO("NO-NO");
+    NO_NO("NO-NO"),
+    NL_BE("NL-BE"),
+    EL_GR("EL-GR"),
+    HU_HU("HU-HU"),
+    FI_FI("FI-FI"),
+    SK_SK("SK-SK");
 
     private final String INTERNAL_NAME;
     

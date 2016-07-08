@@ -61,7 +61,7 @@ public class LocationDetails extends RPCStruct{
         final Object listObj = store.get(KEY_ADDRESS_LINES);
         if (listObj instanceof List<?>) {
             List<?> list = (List<?>) listObj;
-            if (list != null && list.size() > 0) {
+            if (list.size() > 0) {
                 Object obj = list.get(0);
                 if (obj instanceof String) {
                     return (List<String>) list;

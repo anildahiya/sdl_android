@@ -4,7 +4,7 @@ import com.smartdevicelink.proxy.RPCStruct;
 
 import java.util.Hashtable;
 
-public class OASISAddress extends RPCStruct{
+public class OasisAddress extends RPCStruct{
     public static final String KEY_COUNTRY_NAME = "countryName";
     public static final String KEY_COUNTRY_CODE = "countryCode";
     public static final String KEY_POSTAL_CODE = "postalCode";
@@ -15,10 +15,10 @@ public class OASISAddress extends RPCStruct{
     public static final String KEY_THOROUGH_FARE = "thoroughfare";
     public static final String KEY_SUB_THOROUGH_FARE = "subThoroughfare";
 
-    public OASISAddress() {
+    public OasisAddress() {
     }
 
-    public OASISAddress(Hashtable<String, Object> hash) {
+    public OasisAddress(Hashtable<String, Object> hash) {
         super(hash);
     }
 

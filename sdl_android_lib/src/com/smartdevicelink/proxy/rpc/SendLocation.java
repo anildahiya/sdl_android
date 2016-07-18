@@ -268,13 +268,13 @@ public class SendLocation extends RPCRequest{
 	}
 
 	@SuppressWarnings("unchecked")
-	public OASISAddress getAddress() {
+	public OasisAddress getAddress() {
 		Object obj = parameters.get(KEY_ADDRESS);
-		if (obj instanceof OASISAddress) {
-			return (OASISAddress) obj;
+		if (obj instanceof OasisAddress) {
+			return (OasisAddress) obj;
 		} else if (obj instanceof Hashtable) {
 			try {
-				return new OASISAddress((Hashtable<String, Object>) obj);
+				return new OasisAddress((Hashtable<String, Object>) obj);
 			} catch (Exception e) {
 				DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_ADDRESS, e);
 			}
@@ -282,7 +282,7 @@ public class SendLocation extends RPCRequest{
 		return null;
 	}
 
-	public void setAddress(OASISAddress address) {
+	public void setAddress(OasisAddress address) {
 		if (address != null) {
 			parameters.put(KEY_ADDRESS, address);
 		} else {

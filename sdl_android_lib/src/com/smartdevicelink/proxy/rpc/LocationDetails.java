@@ -127,20 +127,20 @@ public class LocationDetails extends RPCStruct{
     }
 
     @SuppressWarnings("unchecked")
-    public OASISAddress getSearchAddress() {
+    public OasisAddress getSearchAddress() {
         Object obj = store.get(KEY_SEARCH_ADDRESS);
-        if (obj instanceof OASISAddress) {
-            return (OASISAddress) obj;
+        if (obj instanceof OasisAddress) {
+            return (OasisAddress) obj;
         } else if (obj instanceof Hashtable) {
             try {
-                return new OASISAddress((Hashtable<String, Object>) obj);
+                return new OasisAddress((Hashtable<String, Object>) obj);
             } catch (Exception e) {
                 DebugTool.logError("Failed to parse " + getClass().getSimpleName() + "." + KEY_SEARCH_ADDRESS, e);
             }
         }
         return null;
     }
-    public void setSearchAddress(OASISAddress searchAddress) {
+    public void setSearchAddress(OasisAddress searchAddress) {
         if (searchAddress != null) {
             store.put(KEY_SEARCH_ADDRESS, searchAddress);
         } else {

@@ -90,6 +90,10 @@ public enum Result {
     /**
      * The requested vehicle data is not available on this vehicle or is not published.
      */
+    VEHICLE_DATA_NOT_ALLOWED,
+    /**
+     * The requested vehicle data is not available on this vehicle or is not published.
+     */
 	VEHICLE_DATA_NOT_AVAILABLE,
 	/**
 	 * The requested operation was rejected. No attempt was made to perform the
@@ -153,6 +157,14 @@ public enum Result {
      * The RPC (e.g. Slider) executed successfully and the user elected to save the current position / value.
      */
     SAVED,
+    /**
+     * The certificate provided during authentication is invalid.
+     */
+    INVALID_CERT,
+    /**
+     * The certificate provided during authentication is expired.
+     */
+    EXPIRED_CERT,
     /**
      * The provided hash ID does not match the hash of the current set of registered data or the core could not resume the previous data.
      */

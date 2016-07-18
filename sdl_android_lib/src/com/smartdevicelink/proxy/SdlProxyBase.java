@@ -2502,6 +2502,22 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
                     _proxyListener.onEndAudioPassThruResponse((EndAudioPassThruResponse)msg);
                     onRPCResponseReceived(msg);
                 }
+            }  else if (functionName.equals(FunctionID.SET_AUDIO_STREAMING_INDICATOR.toString())) {
+				// AudioStreamingIndicator
+                final SetAudioStreamingIndicatorResponse msg = new SetAudioStreamingIndicatorResponse(hash);
+                if (_callbackToUIThread) {
+                    // Run in UI thread
+                    _mainUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            _proxyListener.onSetAudioStreamingIndicatorResponse((SetAudioStreamingIndicatorResponse)msg);
+							onRPCResponseReceived(msg);
+                        }
+                    });
+                } else {
+                    _proxyListener.onSetAudioStreamingIndicatorResponse((SetAudioStreamingIndicatorResponse)msg);
+					onRPCResponseReceived(msg);
+                }
             } else if (functionName.equals(FunctionID.SUBSCRIBE_VEHICLE_DATA.toString())) {
             	// SubscribeVehicleData
                 final SubscribeVehicleDataResponse msg = new SubscribeVehicleDataResponse(hash);
@@ -2549,7 +2565,103 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
                     } else {
                         _proxyListener.onGetVehicleDataResponse((GetVehicleDataResponse)msg);
                         onRPCResponseReceived(msg);   
-                    }            	               
+                    } 
+            } else if (functionName.equals(FunctionID.SUBSCRIBE_WAY_POINTS.toString())) {
+            	// SubscribeWayPoints
+                final SubscribeWayPointsResponse msg = new SubscribeWayPointsResponse(hash);
+                if (_callbackToUIThread) {
+                    // Run in UI thread
+                    _mainUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            _proxyListener.onSubscribeWayPointsResponse((SubscribeWayPointsResponse)msg);
+							onRPCResponseReceived(msg);
+                        }
+                    });
+                } else {
+                    _proxyListener.onSubscribeWayPointsResponse((SubscribeWayPointsResponse)msg);
+					onRPCResponseReceived(msg);
+                }
+            } else if (functionName.equals(FunctionID.UNSUBSCRIBE_WAY_POINTS.toString())) {
+            	// UnsubscribeWayPoints
+                final UnsubscribeWayPointsResponse msg = new UnsubscribeWayPointsResponse(hash);
+                if (_callbackToUIThread) {
+                    // Run in UI thread
+                    _mainUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            _proxyListener.onUnsubscribeWayPointsResponse((UnsubscribeWayPointsResponse)msg);
+							onRPCResponseReceived(msg);
+                        }
+                    });
+                } else {
+                    _proxyListener.onUnsubscribeWayPointsResponse((UnsubscribeWayPointsResponse)msg);
+					onRPCResponseReceived(msg);
+                }
+            } else if (functionName.equals(FunctionID.GET_WAY_POINTS.toString())) {
+           		// GetWayPoints
+                final GetWayPointsResponse msg = new GetWayPointsResponse(hash);
+                if (_callbackToUIThread) {
+                    // Run in UI thread
+                    _mainUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                           _proxyListener.onGetWayPointsResponse((GetWayPointsResponse)msg);
+							onRPCResponseReceived(msg);
+                        }
+                     });
+                    } else {
+                        _proxyListener.onGetWayPointsResponse((GetWayPointsResponse)msg);
+						onRPCResponseReceived(msg);
+                    }
+            } else if (functionName.equals(FunctionID.SUBSCRIBE_SETTING_DATA.toString())) {
+            	// SubscribeSettingData
+                final SubscribeSettingDataResponse msg = new SubscribeSettingDataResponse(hash);
+                if (_callbackToUIThread) {
+                    // Run in UI thread
+                    _mainUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            _proxyListener.onSubscribeSettingDataResponse((SubscribeSettingDataResponse)msg);
+							onRPCResponseReceived(msg);
+                        }
+                    });
+                } else {
+                    _proxyListener.onSubscribeSettingDataResponse((SubscribeSettingDataResponse)msg);
+					onRPCResponseReceived(msg);
+                }
+            } else if (functionName.equals(FunctionID.UNSUBSCRIBE_SETTING_DATA.toString())) {
+            	// UnSubscribeSettingData
+                final UnSubscribeSettingDataResponse msg = new UnSubscribeSettingDataResponse(hash);
+                if (_callbackToUIThread) {
+                    // Run in UI thread
+                    _mainUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            _proxyListener.onUnsubscribeSettingDataResponse((UnSubscribeSettingDataResponse)msg);
+							onRPCResponseReceived(msg);
+                        }
+                    });
+                } else {
+                    _proxyListener.onUnsubscribeSettingDataResponse((UnSubscribeSettingDataResponse)msg);
+					onRPCResponseReceived(msg);
+                }
+            } else if (functionName.equals(FunctionID.GET_SETTING_DATA.toString())) {
+           		// GetSettingData
+                final GetSettingDataResponse msg = new GetSettingDataResponse(hash);
+                if (_callbackToUIThread) {
+                    // Run in UI thread
+                    _mainUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                           _proxyListener.onGetSettingDataResponse((GetSettingDataResponse)msg);
+							onRPCResponseReceived(msg);
+                        }
+                     });
+                    } else {
+                        _proxyListener.onGetSettingDataResponse((GetSettingDataResponse)msg);
+						onRPCResponseReceived(msg);
+                    }
             } else if (functionName.equals(FunctionID.READ_DID.toString())) {
                 final ReadDIDResponse msg = new ReadDIDResponse(hash);
                 if (_callbackToUIThread) {
@@ -3070,6 +3182,54 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 					});
 				} else {
 					_proxyListener.onOnTouchEvent((OnTouchEvent)msg);
+					onRPCNotificationReceived(msg);
+				}
+			}
+			else if (functionName.equals(FunctionID.ON_SETTING_DATA.toString())) {
+				final OnSettingData msg = new OnSettingData(hash);
+				if (_callbackToUIThread) {
+					// Run in UI thread
+					_mainUIHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							_proxyListener.onOnSettingData((OnSettingData)msg);
+							onRPCNotificationReceived(msg);
+						}
+					});
+				} else {
+					_proxyListener.onOnSettingData((OnSettingData)msg);
+					onRPCNotificationReceived(msg);
+				}
+			}
+			else if (functionName.equals(FunctionID.ON_SEEK_MEDIA_CLOCK_TIMER.toString())) {
+				final OnSeekMediaClockTimer msg = new OnSeekMediaClockTimer(hash);
+				if (_callbackToUIThread) {
+					// Run in UI thread
+					_mainUIHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							_proxyListener.onOnSeekMediaClockTimer((OnSeekMediaClockTimer)msg);
+							onRPCNotificationReceived(msg);
+						}
+					});
+				} else {
+					_proxyListener.onOnSeekMediaClockTimer((OnSeekMediaClockTimer)msg);
+					onRPCNotificationReceived(msg);
+				}
+			}
+			else if (functionName.equals(FunctionID.ON_WAY_POINT_CHANGE.toString())) {
+				final OnWayPointChange msg = new OnWayPointChange(hash);
+				if (_callbackToUIThread) {
+					// Run in UI thread
+					_mainUIHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							_proxyListener.onOnWayPointChange((OnWayPointChange)msg);
+							onRPCNotificationReceived(msg);
+						}
+					});
+				} else {
+					_proxyListener.onOnWayPointChange((OnWayPointChange)msg);
 					onRPCNotificationReceived(msg);
 				}
 			}

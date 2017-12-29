@@ -311,7 +311,7 @@ public class ClimateControlCapabilities extends RPCStruct{
      * True: Available, False: Not Available, Not present: Not Available.
      */
     public void setHeatedWindshieldAvailable(Boolean heatedWindshieldAvailable) {
-        setValue(KEY_HEATED_STEERING_WHEEL_AVAILABLE, heatedWindshieldAvailable);
+        setValue(KEY_HEATED_WIND_SHIELD_AVAILABLE, heatedWindshieldAvailable);
     }
 
     /**
@@ -321,7 +321,7 @@ public class ClimateControlCapabilities extends RPCStruct{
      * True: Available, False: Not Available, Not present: Not Available.
      */
     public Boolean getHeatedWindshieldAvailable() {
-        return getBoolean(KEY_HEATED_STEERING_WHEEL_AVAILABLE);
+        return getBoolean(KEY_HEATED_WIND_SHIELD_AVAILABLE);
     }
 
     /**

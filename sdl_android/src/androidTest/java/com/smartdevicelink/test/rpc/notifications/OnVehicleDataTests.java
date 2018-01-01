@@ -23,6 +23,7 @@ import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.TireStatus;
 import com.smartdevicelink.proxy.rpc.enums.ComponentVolumeStatus;
 import com.smartdevicelink.proxy.rpc.enums.PRNDL;
+import com.smartdevicelink.proxy.rpc.enums.TurnSignal;
 import com.smartdevicelink.proxy.rpc.enums.VehicleDataEventStatus;
 import com.smartdevicelink.proxy.rpc.enums.WiperStatus;
 import com.smartdevicelink.test.BaseRpcTests;
@@ -82,6 +83,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
             result.put(OnVehicleData.KEY_EMERGENCY_EVENT, VehicleDataHelper.EMERGENCY_EVENT.serializeJSON());
             result.put(OnVehicleData.KEY_CLUSTER_MODE_STATUS, VehicleDataHelper.CLUSTER_MODE_STATUS.serializeJSON());
             result.put(OnVehicleData.KEY_MY_KEY, VehicleDataHelper.MY_KEY.serializeJSON());
+			result.put(OnVehicleData.KEY_TURN_SIGNAL, VehicleDataHelper.TURN_SIGNAL);
         } catch(JSONException e) {
         	fail(Test.JSON_FAIL);
         }
@@ -110,6 +112,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
     	BodyInformation body = ( (OnVehicleData) msg).getBodyInformation();
     	DeviceStatus device = ( (OnVehicleData) msg).getDeviceStatus();
     	VehicleDataEventStatus brake = ( (OnVehicleData) msg).getDriverBraking();
+		TurnSignal turnSignal = ( (OnVehicleData) msg).getTurnSignal();
     	WiperStatus wiper = ( (OnVehicleData) msg).getWiperStatus();
     	HeadLampStatus lamp = ( (OnVehicleData) msg).getHeadLampStatus();
     	Double pedal = ( (OnVehicleData) msg).getAccPedalPosition();
@@ -146,7 +149,8 @@ public class OnVehicleDataTests extends BaseRpcTests{
 	    assertTrue(Test.TRUE, Validator.validateEmergencyEvent(VehicleDataHelper.EMERGENCY_EVENT, event));
 	    assertTrue(Test.TRUE, Validator.validateClusterModeStatus(VehicleDataHelper.CLUSTER_MODE_STATUS, cluster));
 	    assertTrue(Test.TRUE, Validator.validateMyKey(VehicleDataHelper.MY_KEY, key));
-    
+		assertEquals(Test.MATCH, VehicleDataHelper.TURN_SIGNAL, turnSignal);
+
 	    // Invalid/Null Tests
         OnVehicleData msg = new OnVehicleData();
         assertNotNull(Test.NOT_NULL, msg);
@@ -176,9 +180,11 @@ public class OnVehicleDataTests extends BaseRpcTests{
         assertNull(Test.NULL, msg.getAirbagStatus());
         assertNull(Test.NULL, msg.getEmergencyEvent());
         assertNull(Test.NULL, msg.getClusterModeStatus());
-        assertNull(Test.NULL, msg.getMyKey());    	
-    }  
-    
+
+        assertNull(Test.NULL, msg.getMyKey());
+		assertNull(Test.NULL, msg.getTurnSignal());
+	}
+
     public void testJson() {
 		JSONObject reference = new JSONObject();
 		
@@ -330,6 +336,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 			reference.put(OnVehicleData.KEY_BODY_INFORMATION, bodyInformationObj);
 			reference.put(OnVehicleData.KEY_DEVICE_STATUS, deviceStatusObj);
 			reference.put(OnVehicleData.KEY_DRIVER_BRAKING, VehicleDataHelper.DRIVER_BRAKING);
+			reference.put(OnVehicleData.KEY_TURN_SIGNAL, VehicleDataHelper.TURN_SIGNAL);
 			reference.put(OnVehicleData.KEY_WIPER_STATUS, VehicleDataHelper.WIPER_STATUS);
 			reference.put(OnVehicleData.KEY_HEAD_LAMP_STATUS, headLampStatusObj);
 			reference.put(OnVehicleData.KEY_ACC_PEDAL_POSITION, VehicleDataHelper.ACC_PEDAL_POSITION);

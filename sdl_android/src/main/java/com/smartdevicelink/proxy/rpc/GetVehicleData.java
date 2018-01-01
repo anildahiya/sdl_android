@@ -235,6 +235,7 @@ public class GetVehicleData extends RPCRequest {
 	public static final String KEY_EMERGENCY_EVENT = "emergencyEvent";
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
+    public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 	/**
 	 * Constructs a new GetVehicleData object
 	 */
@@ -417,5 +418,24 @@ public class GetVehicleData extends RPCRequest {
     }
     public Boolean getMyKey() {
         return getBoolean(KEY_MY_KEY);
-    }        
+    } 
+
+    /**
+     * Sets a boolean value. If true, gets electronicParkBrakeStatus data
+     * @param electronicParkBrakeStatus
+     *            a boolean value
+     */
+    public void setElectronicParkBrakeStatus(Boolean electronicParkBrakeStatus) {
+        setParameters(KEY_ELECTRONIC_PARK_BRAKE_STATUS, electronicParkBrakeStatus);
+    }
+
+    /**
+     * Gets a boolean value.
+     *
+     * @return Boolean -a Boolean value.
+     *
+     */
+    public Boolean getElectronicParkBrakeStatus() {
+        return getBoolean(KEY_ELECTRONIC_PARK_BRAKE_STATUS);
+    }       
 }

@@ -1,14 +1,12 @@
 package com.smartdevicelink.proxy.rpc.enums;
 
-public enum ModuleType {
-    CLIMATE,
-    RADIO,
-    AUDIO,
-    LIGHT,
-    HMI_SETTINGS,
+public enum DisplayMode {
+    DAY,
+    NIGHT,
+    AUTO,
     ;
 
-    public static ModuleType valueForString(String value) {
+    public static DisplayMode valueForString(String value) {
         try{
             return valueOf(value);
         }catch(Exception e){

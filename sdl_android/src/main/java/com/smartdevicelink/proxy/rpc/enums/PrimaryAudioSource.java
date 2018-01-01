@@ -32,7 +32,12 @@ public enum PrimaryAudioSource {
     /**
      * Mobile app is current source
      */
-    MOBILE_APP;
+    MOBILE_APP,
+    /**
+     * Radio may be on AM, FM or XM
+     */
+    RADIO_TUNER,
+    ;
 
     /**
      * Convert String to PrimaryAudioSource

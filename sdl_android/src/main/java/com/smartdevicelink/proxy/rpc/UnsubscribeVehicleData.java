@@ -255,6 +255,7 @@ public class UnsubscribeVehicleData extends RPCRequest {
 	public static final String KEY_EMERGENCY_EVENT = "emergencyEvent";
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
+	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	
 
 	/**
@@ -711,5 +712,17 @@ public class UnsubscribeVehicleData extends RPCRequest {
     }
     public Boolean getMyKey() {
         return getBoolean(KEY_MY_KEY);
-    }    
+    }
+
+	public Boolean getTurnSignal() {
+		return (Boolean) parameters.get(KEY_TURN_SIGNAL);
+	}
+
+	public void setTurnSignal(Boolean turnSignal) {
+		if (turnSignal != null) {
+			parameters.put(KEY_TURN_SIGNAL, turnSignal);
+		} else {
+			parameters.remove(KEY_TURN_SIGNAL);
+		}
+	}    
 }

@@ -10,6 +10,10 @@ public enum PrimaryAudioSource {
 	 */
     NO_SOURCE_SELECTED,
     /**
+     * CD is current source
+     */
+    CD,
+    /**
      * USB is current source
      */
     USB,

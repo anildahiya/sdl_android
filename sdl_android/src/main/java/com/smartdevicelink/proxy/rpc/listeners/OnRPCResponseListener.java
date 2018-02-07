@@ -4,37 +4,25 @@ import com.smartdevicelink.proxy.RPCResponse;
 import com.smartdevicelink.proxy.rpc.enums.Result;
 
 public abstract class OnRPCResponseListener {
-	/**
-	 * Generic listener type that will work for most RPCs
-	 */
-	public final static int UPDATE_LISTENER_TYPE_BASE_RPC 		= 0;
-	/**
-	 * Listener type specific to putfile
-	 */
-	public final static int UPDATE_LISTENER_TYPE_PUT_FILE 		= 1;
 
 	/**
 	 * Stores what type of listener this instance is. This prevents of from having to use reflection
 	 */
-	int listenerType;
+	String functionName;
 	
 	/**
 	 * This is the base listener for all RPCs.
 	 */
-	public OnRPCResponseListener(){
-		setListenerType(UPDATE_LISTENER_TYPE_BASE_RPC);
+	public OnRPCResponseListener(String functionName){
+		setFunctionName(functionName);
 	}
-	
-	protected final void setListenerType(int type){
-		this.listenerType = type;
+
+	public void setFunctionName(String functionName){
+		this.functionName = functionName;
 	}
-	/**
-	 * This is used to see what type of listener this instance is. It is needed
-	 * because some RPCs require additional callbacks. Types are  constants located in this class
-	 * @return the type of listener this is 
-	 */
-	public int getListenerType(){
-		return this.listenerType;
+
+	public String getFunctionName(){
+		return this.functionName;
 	}
 	
 	/* *****************************************************************

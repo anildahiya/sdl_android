@@ -7,7 +7,7 @@ public abstract class OnPutFileUpdateListener extends OnRPCResponseListener{
 	long totalSize = 0;
 
 	public OnPutFileUpdateListener(){
-		setListenerType(UPDATE_LISTENER_TYPE_PUT_FILE);
+		super(FunctionID.PUT_FILE.toString());
 	}
 	
 	@Override

@@ -1808,10 +1808,12 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 			if(rpcResponseListeners !=null 
 					&& rpcResponseListeners.indexOfKey(correlationId)>=0){
 				OnRPCResponseListener listener = rpcResponseListeners.get(correlationId);
-				if(msg.getSuccess()){
-					listener.onResponse(correlationId, msg);
-				}else{
-					listener.onError(correlationId, msg.getResultCode(), msg.getInfo());
+				if (listener.getFunctionName().equals(msg.getFunctionName())) {
+					if (msg.getSuccess()) {
+						listener.onResponse(correlationId, msg);
+					} else {
+						listener.onError(correlationId, msg.getResultCode(), msg.getInfo());
+					}
 				}
 				rpcResponseListeners.remove(correlationId);
 				return true;
@@ -1830,7 +1832,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		synchronized(ON_UPDATE_LISTENER_LOCK){
 			if(rpcResponseListeners!=null 
 					&& listener !=null){
-				if(listener.getListenerType() == OnRPCResponseListener.UPDATE_LISTENER_TYPE_PUT_FILE){
+				if (listener.getFunctionName().equals(FunctionID.PUT_FILE.toString())) {
 					((OnPutFileUpdateListener)listener).setTotalSize(totalSize);
 				}
 				listener.onStart(correlationId);

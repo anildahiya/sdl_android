@@ -1831,10 +1831,12 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	public void addOnRPCResponseListener(OnRPCResponseListener listener,int correlationId, int totalSize){
 		synchronized(ON_UPDATE_LISTENER_LOCK){
 			if(rpcResponseListeners!=null 
-					&& listener !=null){
+					&& listener !=null && listener.getFunctionName() != null){
+
 				if (listener.getFunctionName().equals(FunctionID.PUT_FILE.toString())) {
 					((OnPutFileUpdateListener)listener).setTotalSize(totalSize);
 				}
+
 				listener.onStart(correlationId);
 				rpcResponseListeners.put(correlationId, listener);
 			}

@@ -17,7 +17,7 @@ public abstract class OnRPCResponseListener {
 		setFunctionName(functionName);
 	}
 
-	public void setFunctionName(String functionName){
+	private void setFunctionName(String functionName){
 		this.functionName = functionName;
 	}
 

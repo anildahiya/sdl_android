@@ -1,14 +1,11 @@
 package com.smartdevicelink.proxy.rpc.enums;
 
-public enum ModuleType {
-    CLIMATE,
-    RADIO,
-    AUDIO,
-    LIGHT,
-    HMI_SETTINGS,
+public enum DistanceUnit {
+    MILES,
+    KILOMETERS,
     ;
 
-    public static ModuleType valueForString(String value) {
+    public static DistanceUnit valueForString(String value) {
         try{
             return valueOf(value);
         }catch(Exception e){

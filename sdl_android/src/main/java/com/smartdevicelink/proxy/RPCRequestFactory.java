@@ -560,8 +560,8 @@ public class RPCRequestFactory {
 		putFile.setOffset(iOffset);
 		putFile.setLength(iLength);
 		return putFile;
-	}	
-	
+	}
+
 	public static PutFile buildPutFile(String sdlFileName, Long iOffset, Long iLength, FileType fileType, Boolean bPersistentFile, Boolean bSystemFile, Boolean isPayloadProtected, Integer iCorrelationID) {
 		PutFile putFile = new PutFile();
 		putFile.setCorrelationID(iCorrelationID);
@@ -572,6 +572,20 @@ public class RPCRequestFactory {
 		putFile.setOffset(iOffset);
 		putFile.setLength(iLength);
 		putFile.setPayloadProtected(isPayloadProtected);
+		return putFile;
+	}
+
+	public static PutFile buildPutFile(String sdlFileName, Long iOffset, Long iLength, FileType fileType, Boolean bPersistentFile, Boolean bSystemFile, Boolean isPayloadProtected, Integer iCorrelationID, Long lCrc) {
+		PutFile putFile = new PutFile();
+		putFile.setCorrelationID(iCorrelationID);
+		putFile.setSdlFileName(sdlFileName);
+		putFile.setFileType(fileType);
+		putFile.setPersistentFile(bPersistentFile);
+		putFile.setSystemFile(bSystemFile);
+		putFile.setOffset(iOffset);
+		putFile.setLength(iLength);
+		putFile.setPayloadProtected(isPayloadProtected);
+		putFile.setCrc(lCrc);
 		return putFile;
 	}
 		

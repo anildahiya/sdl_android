@@ -177,6 +177,7 @@ public enum Result {
 	 * The requested data is read only thus cannot be change via remote control
 	 */
 	READ_ONLY,
+	CORRUPTED_DATA,
 	;
 	 /**
      * Convert String to Result

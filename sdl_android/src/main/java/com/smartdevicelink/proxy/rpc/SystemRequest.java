@@ -47,6 +47,8 @@ public class SystemRequest extends RPCRequest {
 	public static final String KEY_FILE_NAME = "fileName";
 	public static final String KEY_REQUEST_TYPE = "requestType";
 	public static final String KEY_DATA = "data";
+    public static final String KEY_REQUEST_SUB_TYPE = "requestSubType";
+
 	/**
 	 * Constructs a new SystemRequest object
 	 */ 
@@ -86,5 +88,13 @@ public class SystemRequest extends RPCRequest {
 
     public void setRequestType(RequestType requestType) {
         setParameters(KEY_REQUEST_TYPE, requestType);
+    }
+
+    public String getRequestSubType() {
+        return getString(KEY_REQUEST_SUB_TYPE);
+    }
+
+    public void setRequestSubType(String requestSubType) {
+        setParameters(KEY_REQUEST_SUB_TYPE, requestSubType);
     }
 }

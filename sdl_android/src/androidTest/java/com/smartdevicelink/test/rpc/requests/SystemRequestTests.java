@@ -30,6 +30,7 @@ public class SystemRequestTests extends BaseRpcTests {
 		msg.setLegacyData(Test.GENERAL_STRING_LIST);
 		msg.setFileName(Test.GENERAL_STRING);
 		msg.setRequestType(Test.GENERAL_REQUESTTYPE);
+		msg.setRequestSubType(Test.GENERAL_STRING);
 
 		return msg;
 	}
@@ -51,7 +52,8 @@ public class SystemRequestTests extends BaseRpcTests {
 		try {
 			result.put(SystemRequest.KEY_DATA, JsonUtils.createJsonArray(Test.GENERAL_STRING_LIST));
 			result.put(SystemRequest.KEY_FILE_NAME, Test.GENERAL_STRING);
-			result.put(SystemRequest.KEY_REQUEST_TYPE, Test.GENERAL_REQUESTTYPE);			
+			result.put(SystemRequest.KEY_REQUEST_TYPE, Test.GENERAL_REQUESTTYPE);
+			result.put(SystemRequest.KEY_REQUEST_SUB_TYPE, Test.GENERAL_STRING);
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -67,11 +69,13 @@ public class SystemRequestTests extends BaseRpcTests {
     	RequestType  testRequestType = ( (SystemRequest) msg ).getRequestType();
     	String       testFileName    = ( (SystemRequest) msg ).getFileName();
     	List<String> testLegacyData  = ( (SystemRequest) msg ).getLegacyData();
+		String       testRequestSubType    = ( (SystemRequest) msg ).getRequestSubType();
     	
     	// Valid Tests
 	    assertEquals(Test.MATCH, Test.GENERAL_REQUESTTYPE, testRequestType);
 	    assertEquals(Test.MATCH, Test.GENERAL_STRING, testFileName);
 	    assertTrue(Test.TRUE, Validator.validateStringList(Test.GENERAL_STRING_LIST, testLegacyData));
+		assertEquals(Test.MATCH, Test.GENERAL_STRING, testRequestSubType);
     	
     	// Invalid/Null Tests
 		SystemRequest msg = new SystemRequest();
@@ -82,6 +86,7 @@ public class SystemRequestTests extends BaseRpcTests {
 		assertNull(Test.NULL, msg.getFileName());
 		assertNull(Test.NULL, msg.getRequestType());
 		assertNull(Test.NULL, msg.getBulkData());
+		assertNull(Test.NULL, msg.getRequestSubType());
 	}
 	
 	/**
@@ -105,6 +110,7 @@ public class SystemRequestTests extends BaseRpcTests {
 			JSONObject parameters = JsonUtils.readJsonObjectFromJsonObject(body, RPCMessage.KEY_PARAMETERS);
 			assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, SystemRequest.KEY_FILE_NAME), cmd.getFileName());
 			assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, SystemRequest.KEY_REQUEST_TYPE), cmd.getRequestType().toString());
+			assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, SystemRequest.KEY_REQUEST_SUB_TYPE), cmd.getRequestSubType());
 
 			List<String> dataList = JsonUtils.readStringListFromJsonObject(parameters, SystemRequest.KEY_DATA);
 			List<String> testDataList = cmd.getLegacyData();

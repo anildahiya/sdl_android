@@ -9,6 +9,7 @@ public class LightCapabilities extends RPCStruct {
     public static final String KEY_NAME = "name";
     public static final String KEY_DENSITY_AVAILABLE = "densityAvailable";
     public static final String KEY_SRGB_COLOR_SPACE_AVAILABLE = "sRGBColorSpaceAvailable";
+    public static final String KEY_STATUS_AVAILABLE = "statusAvailable";
 
     public LightCapabilities() {}
 
@@ -66,5 +67,22 @@ public class LightCapabilities extends RPCStruct {
      */
     public Boolean getSRGBColorSpaceAvailable() {
         return getBoolean(KEY_SRGB_COLOR_SPACE_AVAILABLE);
+    }
+
+    /**
+     * Sets the statusAvailable portion of the LightCapabilities class
+     * @param statusAvailable
+     * Indicates if the status (ON/OFF) can be set remotely. App shall not use read-only values (RAMP_UP/RAMP_DOWN/UNKNOWN/INVALID) in a setInteriorVehicleData request.
+     */
+    public void setStatusAvailable(Boolean statusAvailable) {
+        setValue(KEY_STATUS_AVAILABLE, statusAvailable);
+    }
+
+    /**
+     * Gets the statusAvailable portion of the LightCapabilities class
+     * @return Boolean - Indicates if the status (ON/OFF) can be set remotely. App shall not use read-only values (RAMP_UP/RAMP_DOWN/UNKNOWN/INVALID) in a setInteriorVehicleData request.
+     */
+    public Boolean getStatusAvailable() {
+        return getBoolean(KEY_STATUS_AVAILABLE);
     }
 }

@@ -33,6 +33,7 @@ public class KeyboardPropertiesTests extends TestCase{
         msg.setKeypressMode(Test.GENERAL_KEYPRESSMODE);
         msg.setLanguage(Test.GENERAL_LANGUAGE);
         msg.setLimitedCharacterList(Test.GENERAL_STRING_LIST);
+        msg.setAutoCompleteList(Test.GENERAL_STRING_LIST);
     }
 
     /**
@@ -45,6 +46,7 @@ public class KeyboardPropertiesTests extends TestCase{
         KeypressMode keypressMode = msg.getKeypressMode();
         Language language = msg.getLanguage();
         List<String> limitedChars = msg.getLimitedCharacterList();
+        List<String> autoCompleteList = msg.getAutoCompleteList();
         
         // Valid Tests
         assertEquals(Test.MATCH, Test.GENERAL_STRING, autoComplete);
@@ -53,6 +55,8 @@ public class KeyboardPropertiesTests extends TestCase{
         assertEquals(Test.MATCH, Test.GENERAL_LANGUAGE, language);
         assertEquals(Test.MATCH, Test.GENERAL_STRING_LIST.size(), limitedChars.size());
         assertTrue(Test.TRUE, Validator.validateStringList(Test.GENERAL_STRING_LIST, limitedChars));
+        assertEquals(Test.MATCH, Test.GENERAL_STRING_LIST.size(), autoCompleteList.size());
+        assertTrue(Test.TRUE, Validator.validateStringList(Test.GENERAL_STRING_LIST, autoCompleteList));
         
         // Invalid/Null Tests
         KeyboardProperties msg = new KeyboardProperties();
@@ -65,6 +69,7 @@ public class KeyboardPropertiesTests extends TestCase{
         assertNull(Test.NULL, msg.getLanguage());
         assertNull(Test.NULL, msg.getKeyboardLayout());        
         assertNull(Test.NULL, msg.getLimitedCharacterList());
+        assertNull(Test.NULL, msg.getAutoCompleteList());
     }
 
     public void testJson(){
@@ -76,6 +81,7 @@ public class KeyboardPropertiesTests extends TestCase{
             reference.put(KeyboardProperties.KEY_KEYPRESS_MODE, Test.GENERAL_KEYPRESSMODE);
             reference.put(KeyboardProperties.KEY_LANGUAGE, Test.GENERAL_LANGUAGE);
             reference.put(KeyboardProperties.KEY_LIMITED_CHARACTER_LIST, JsonUtils.createJsonArray(Test.GENERAL_STRING_LIST));
+            reference.put(KeyboardProperties.KEY_AUTO_COMPLETE_LIST, JsonUtils.createJsonArray(Test.GENERAL_STRING_LIST));
 
             JSONObject underTest = msg.serializeJSON();
             assertEquals(Test.MATCH, reference.length(), underTest.length());
@@ -83,7 +89,7 @@ public class KeyboardPropertiesTests extends TestCase{
             Iterator<?> iterator = reference.keys();
             while(iterator.hasNext()){
                 String key = (String) iterator.next();
-                if(key.equals(KeyboardProperties.KEY_LIMITED_CHARACTER_LIST)){
+                if(key.equals(KeyboardProperties.KEY_LIMITED_CHARACTER_LIST) || key.equals(KeyboardProperties.KEY_AUTO_COMPLETE_LIST)) {
                     assertTrue(Test.TRUE, Validator.validateStringList(JsonUtils.readStringListFromJsonObject(reference, key), JsonUtils.readStringListFromJsonObject(underTest, key)));
                 } else{
                     assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(reference, key), JsonUtils.readObjectFromJsonObject(underTest, key));

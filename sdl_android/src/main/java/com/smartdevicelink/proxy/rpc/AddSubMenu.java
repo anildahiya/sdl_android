@@ -64,6 +64,7 @@ public class AddSubMenu extends RPCRequest {
 	public static final String KEY_POSITION = "position";
 	public static final String KEY_MENU_NAME = "menuName";
 	public static final String KEY_MENU_ID = "menuID";
+	public static final String KEY_MENU_ICON = "menuIcon";
 
 	/**
 	 * Constructs a new AddSubMenu object
@@ -155,4 +156,13 @@ public class AddSubMenu extends RPCRequest {
     public void setMenuName( String menuName ) {
 		setParameters(KEY_MENU_NAME, menuName);
     }
+
+	@SuppressWarnings("unchecked")
+	public Image getMenuIcon() {
+		return (Image) getObject(Image.class, KEY_MENU_ICON);
+	}
+
+	public void setMenuIcon(Image menuIcon) {
+		setParameters(KEY_MENU_ICON, menuIcon);
+	}
 }

@@ -5,6 +5,10 @@
     "parameters":{
     	"menuID":765,
     	"position":2,
+		"menuIcon":{
+			"value":"imageMenu.png",
+			"imageType":"STATIC"
+		},
     	"menuName":"Menu Name"
     }
 	},

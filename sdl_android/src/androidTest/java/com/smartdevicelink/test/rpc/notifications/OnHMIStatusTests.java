@@ -9,6 +9,7 @@ import com.smartdevicelink.proxy.rpc.OnHMIStatus;
 import com.smartdevicelink.proxy.rpc.enums.AudioStreamingState;
 import com.smartdevicelink.proxy.rpc.enums.HMILevel;
 import com.smartdevicelink.proxy.rpc.enums.SystemContext;
+import com.smartdevicelink.proxy.rpc.enums.VideoStreamingState;
 import com.smartdevicelink.test.BaseRpcTests;
 import com.smartdevicelink.test.Test;
 
@@ -26,6 +27,7 @@ public class OnHMIStatusTests extends BaseRpcTests{
         msg.setFirstRun(Test.GENERAL_BOOLEAN);
         msg.setHmiLevel(Test.GENERAL_HMILEVEL);
         msg.setSystemContext(Test.GENERAL_SYSTEMCONTEXT);
+        msg.setVideoStreamingState(Test.GENERAL_VIDEOSTREAMINGSTATE);
 
         return msg;
     }
@@ -48,6 +50,7 @@ public class OnHMIStatusTests extends BaseRpcTests{
             result.put(OnHMIStatus.KEY_AUDIO_STREAMING_STATE, Test.GENERAL_AUDIOSTREAMINGSTATE);
             result.put(OnHMIStatus.KEY_HMI_LEVEL, Test.GENERAL_HMILEVEL);
             result.put(OnHMIStatus.KEY_SYSTEM_CONTEXT, Test.GENERAL_SYSTEMCONTEXT);
+            result.put(OnHMIStatus.KEY_VIDEO_STREAMING_STATE, Test.GENERAL_VIDEOSTREAMINGSTATE);
         }catch(JSONException e){
         	fail(Test.JSON_FAIL);
         }
@@ -63,11 +66,13 @@ public class OnHMIStatusTests extends BaseRpcTests{
         AudioStreamingState state = ( (OnHMIStatus) msg ).getAudioStreamingState();
         HMILevel hmiLevel = ( (OnHMIStatus) msg ).getHmiLevel();
         SystemContext context = ( (OnHMIStatus) msg ).getSystemContext();
+        VideoStreamingState videoState = ( (OnHMIStatus) msg ).getVideoStreamingState();
         
         // Valid Tests
         assertEquals(Test.MATCH, Test.GENERAL_AUDIOSTREAMINGSTATE, state);
         assertEquals(Test.MATCH, Test.GENERAL_HMILEVEL, hmiLevel);
         assertEquals(Test.MATCH, Test.GENERAL_SYSTEMCONTEXT, context);
+        assertEquals(Test.MATCH, Test.GENERAL_VIDEOSTREAMINGSTATE, videoState);
    
         // Invalid/Null Tests
         OnHMIStatus msg = new OnHMIStatus();
@@ -77,5 +82,6 @@ public class OnHMIStatusTests extends BaseRpcTests{
         assertNull(Test.NULL, msg.getAudioStreamingState());
         assertNull(Test.NULL, msg.getHmiLevel());
         assertNull(Test.NULL, msg.getSystemContext());
+        assertNull(Test.NULL, msg.getVideoStreamingState());
     }
 }

@@ -28,12 +28,15 @@ public class SpeechCapabilitiesTests extends TestCase {
 		SpeechCapabilities enumPreRecorded = SpeechCapabilities.valueForString(example);
 		example = "SILENCE";
 		SpeechCapabilities enumSilence = SpeechCapabilities.valueForString(example);
+		example = "FILE";
+		SpeechCapabilities enumFile = SpeechCapabilities.valueForString(example);
 		
 		assertNotNull("TEXT returned null", enumText);
 		assertNotNull("SAPI_PHONEMES returned null", enumSapiPhonemes);
 		assertNotNull("LHPLUS_PHONEMES returned null", enumLhplusPhonemes);
 		assertNotNull("PRE_RECORDED returned null", enumPreRecorded);
 		assertNotNull("SILENCE returned null", enumSilence);
+		assertNotNull("FILE returned null", enumFile);
 	}
 
 	/**
@@ -76,6 +79,7 @@ public class SpeechCapabilitiesTests extends TestCase {
 		enumTestList.add(SpeechCapabilities.LHPLUS_PHONEMES);
 		enumTestList.add(SpeechCapabilities.PRE_RECORDED);
 		enumTestList.add(SpeechCapabilities.SILENCE);
+		enumTestList.add(SpeechCapabilities.FILE);
 
 		assertTrue("Enum value list does not match enum class list", 
 				enumValueList.containsAll(enumTestList) && enumTestList.containsAll(enumValueList));

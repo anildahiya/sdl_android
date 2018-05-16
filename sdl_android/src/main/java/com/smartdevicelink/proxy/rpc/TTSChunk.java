@@ -9,7 +9,8 @@ import java.util.Hashtable;
 
 /**
  * <p>Specifies what is to be spoken. This can be simply a text phrase, which SDL will speak according to its own rules.
- *  It can also be phonemes from either the Microsoft SAPI phoneme set, or from the LHPLUS phoneme set. 
+ *  It can also be phonemes from either the Microsoft SAPI phoneme set, or from the LHPLUS phoneme set.
+ *  It can also be file name to speak.
  *  It can also be a pre-recorded sound in WAV format (either developer-defined, or provided by the SDL platform).</p>
  *  
  *  <p>In SDL, words, and therefore sentences, can be built up from phonemes and are used to explicitly provide the proper pronounciation to the TTS engine.
@@ -65,28 +66,28 @@ public class TTSChunk extends RPCStruct {
     	setType(type);
 	}
     /**
-     * Get text to be spoken, or a phoneme specification, or the name of a pre-recorded sound. The contents of this field are indicated by the "type" field.
-     * @return text to be spoken, or a phoneme specification, or the name of a pre-recorded sound
-     */
+     * Get text to be spoken, or a phoneme specification, or the name of a audio file to play. The contents of this field are indicated by the "type" field.
+     * @return text to be spoken, or a phoneme specification, or the name of a audio file to play.
+     */    
     public String getText() {
         return getString( KEY_TEXT );
     }
     /**
-     * Set the text to be spoken, or a phoneme specification, or the name of a pre-recorded sound. The contents of this field are indicated by the "type" field.
-     * @param text to be spoken, or a phoneme specification, or the name of a pre-recorded sound.
+     * Set the text to be spoken, or a phoneme specification, or the name of a audio file to play. The contents of this field are indicated by the "type" field.
+     * @param text to be spoken, or a phoneme specification, or the name of a audio file to play.
      */    
     public void setText(@NonNull String text ) {
         setValue(KEY_TEXT, text);
     }
     /**
-     * Get the type of information in the "text" field (e.g. phrase to be spoken, phoneme specification, name of pre-recorded sound).	
+     * Get the type of information in the "text" field (e.g. phrase to be spoken, phoneme specification, or a file).
      * @return the type of information in the "text" field
      */    
     public SpeechCapabilities getType() {
         return (SpeechCapabilities) getObject(SpeechCapabilities.class, KEY_TYPE);
     }
     /**
-     * Set the type of information in the "text" field (e.g. phrase to be spoken, phoneme specification, name of pre-recorded sound).	
+     * Set the type of information in the "text" field (e.g. phrase to be spoken, phoneme specification, or a file).
      * @param type the type of information in the "text" field
      */    
     public void setType(@NonNull SpeechCapabilities type ) {

@@ -2,6 +2,8 @@ package com.smartdevicelink.proxy.rpc;
 
 import com.smartdevicelink.proxy.RPCStruct;
 import com.smartdevicelink.proxy.rpc.enums.ComponentVolumeStatus;
+import com.smartdevicelink.proxy.rpc.enums.TPMS;
+import com.smartdevicelink.util.SdlDataTypeConverter;
 
 import java.util.Hashtable;
 
@@ -28,6 +30,8 @@ import java.util.Hashtable;
  */
 public class SingleTireStatus extends RPCStruct {
 	public static final String KEY_STATUS = "status";
+    public static final String KEY_TPMS = "tpms";
+    public static final String KEY_PRESSURE = "pressure";
 
 	/**
 	 * Constructs a newly allocated SingleTireStatus object
@@ -56,5 +60,38 @@ public class SingleTireStatus extends RPCStruct {
      */
     public ComponentVolumeStatus getStatus() {
         return (ComponentVolumeStatus) getObject(ComponentVolumeStatus.class, KEY_STATUS);
+    }
+
+    /**
+     *  set the status of TPMS according to the particular tire.
+     * @param tpms  the status of TPMS according to the particular tire.
+     */
+    public void setTpms(TPMS tpms) {
+        setValue(KEY_TPMS, tpms);
+    }
+
+    /**
+     * get the status of TPMS according to the particular tire.
+     * @return the status of TPMS according to the particular tire.
+     */
+    public TPMS getTpms() {
+        return (TPMS) getObject(TPMS.class, KEY_TPMS);
+    }
+
+    /**
+     * get the pressure value of the particular tire in kilo pascal.
+     * @return the pressure value of the particular tire in kilo pascal.
+     */
+    public Float getPressure() {
+        Object value = getValue(KEY_PRESSURE);
+        return SdlDataTypeConverter.objectToFloat(value);
+    }
+
+    /**
+     *  set the pressure value of the particular tire in kilo pascal.
+     * @param pressure the pressure value of the particular tire in kilo pascal.
+     */
+    public void setPressure(Float pressure) {
+        setValue(KEY_PRESSURE, pressure);
     }
 }

@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.enums.ComponentVolumeStatus;
+import com.smartdevicelink.proxy.rpc.enums.TPMS;
 import com.smartdevicelink.test.JsonUtils;
 import com.smartdevicelink.test.Test;
 
@@ -25,6 +26,8 @@ public class SingleTireStatusTest extends TestCase {
 		msg = new SingleTireStatus();
 		
 		msg.setStatus(Test.GENERAL_COMPONENTVOLUMESTATUS);
+		msg.setTpms(Test.GENERAL_TPMS);
+		msg.setPressure(Test.GENERAL_FLOAT);
 	}
 
     /**
@@ -33,9 +36,13 @@ public class SingleTireStatusTest extends TestCase {
     public void testRpcValues () {
     	// Test Values
 		ComponentVolumeStatus status = msg.getStatus();
+		TPMS tpms = msg.getTpms();
+		float pressure = msg.getPressure();
 		
 		// Valid Tests
 		assertEquals(Test.MATCH, Test.GENERAL_COMPONENTVOLUMESTATUS, status);
+		assertEquals(Test.MATCH, Test.GENERAL_TPMS, tpms);
+		assertEquals(Test.MATCH, Test.GENERAL_FLOAT, pressure);
 		
 		// Invalid/Null Tests
 		SingleTireStatus msg = new SingleTireStatus();
@@ -49,6 +56,8 @@ public class SingleTireStatusTest extends TestCase {
 
 		try {
 			reference.put(SingleTireStatus.KEY_STATUS, Test.GENERAL_COMPONENTVOLUMESTATUS);
+			reference.put(SingleTireStatus.KEY_TPMS, Test.GENERAL_TPMS);
+			reference.put(SingleTireStatus.KEY_PRESSURE, (Float) Test.GENERAL_FLOAT);
 
 			JSONObject underTest = msg.serializeJSON();
 			assertEquals(Test.MATCH, reference.length(), underTest.length());

@@ -40,6 +40,7 @@ import java.util.Hashtable;
 public class Image extends RPCStruct {
 	public static final String KEY_VALUE = "value";
 	public static final String KEY_IMAGE_TYPE = "imageType";
+    public static final String KEY_IS_TEMPLATE = "isTemplate";
 
 	/**
 	 * Constructs a newly allocated Image object
@@ -95,5 +96,21 @@ public class Image extends RPCStruct {
      */
     public ImageType getImageType() {
         return (ImageType) getObject(ImageType.class, KEY_IMAGE_TYPE);
+    }
+
+    /**
+     * Sets a boolean value. If true, means its a template.
+     * @param isTemplate
+     */
+    public void setIsTemplate(Boolean isTemplate) {
+        setValue(KEY_IS_TEMPLATE, isTemplate);
+    }
+
+    /**
+     * Gets a boolean value.
+     * @return Boolean -a Boolean value. If true, means its a template.
+     */
+    public Boolean getIsTemplate() {
+        return getBoolean(KEY_IS_TEMPLATE);
     }
 }

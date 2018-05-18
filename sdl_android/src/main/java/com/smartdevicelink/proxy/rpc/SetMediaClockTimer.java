@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCRequest;
+import com.smartdevicelink.proxy.rpc.enums.AudioStreamingIndicator;
 import com.smartdevicelink.proxy.rpc.enums.UpdateMode;
 
 import java.util.Hashtable;
@@ -76,6 +77,8 @@ public class SetMediaClockTimer extends RPCRequest {
 	public static final String KEY_START_TIME = "startTime";
 	public static final String KEY_END_TIME = "endTime";
 	public static final String KEY_UPDATE_MODE = "updateMode";
+	public static final String KEY_AUDIO_STREAMING_INDICATOR = "audioStreamingIndicator";
+
 	/**
 	 * Constructs a new SetMediaClockTimer object
 	 */
@@ -168,4 +171,22 @@ public class SetMediaClockTimer extends RPCRequest {
     public void setUpdateMode( @NonNull UpdateMode updateMode ) {
 		setParameters(KEY_UPDATE_MODE, updateMode);
     }
+
+	/**
+	 * Gets the media clock/timer audioStreamingIndicator
+	 *
+	 * @return AudioStreamingIndicator -a Enumeration value
+	 */
+	public AudioStreamingIndicator getAudioStreamingIndicator() {
+		return (AudioStreamingIndicator) getObject(AudioStreamingIndicator.class, KEY_AUDIO_STREAMING_INDICATOR);
+	}
+
+	/**
+	 * Sets the media clock/timer audioStreamingIndicator
+	 *
+	 * @param audioStreamingIndicator
+	 */
+	public void setAudioStreamingIndicator( AudioStreamingIndicator audioStreamingIndicator ) {
+		setParameters(KEY_AUDIO_STREAMING_INDICATOR, audioStreamingIndicator);
+	}
 }

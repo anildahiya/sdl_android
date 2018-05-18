@@ -55,6 +55,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 		msg.setEmergencyEvent(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_EMERGENCYEVENT.ordinal()));
 		msg.setClusterModeStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_CLUSTERMODESTATUS.ordinal()));
 		msg.setMyKey(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_MYKEY.ordinal()));
+		msg.setEngineOilLife(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_ENGINEOILLIFE.ordinal()));
 
 		return msg;
 	}
@@ -103,6 +104,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 	        result.put(SubscribeVehicleDataResponse.KEY_EMERGENCY_EVENT, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_EMERGENCYEVENT.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_CLUSTER_MODE_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_CLUSTERMODESTATUS.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_MY_KEY, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_MYKEY.ordinal()).serializeJSON());
+			result.put(SubscribeVehicleDataResponse.KEY_ENGINE_OIL_LIFE, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_ENGINEOILLIFE.ordinal()).serializeJSON());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -139,6 +141,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 		VehicleDataResult testPrndl          = ( (UnsubscribeVehicleDataResponse) msg ).getPrndl();
 		VehicleDataResult testBraking        = ( (UnsubscribeVehicleDataResponse) msg ).getDriverBraking();
 		VehicleDataResult testWiperStatus    = ( (UnsubscribeVehicleDataResponse) msg ).getWiperStatus();
+		VehicleDataResult testEngineOilLife   = ( (UnsubscribeVehicleDataResponse) msg ).getEngineOilLife();
 		
 		// Valid Tests
 		assertTrue(Test.TRUE, testGps.getDataType().equals(VehicleDataType.VEHICLEDATA_GPS));
@@ -165,6 +168,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 	    assertTrue(Test.TRUE, testPrndl.getDataType().equals(VehicleDataType.VEHICLEDATA_PRNDL));
 	    assertTrue(Test.TRUE, testBraking.getDataType().equals(VehicleDataType.VEHICLEDATA_BRAKING));
 	    assertTrue(Test.TRUE, testWiperStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_WIPERSTATUS));
+		assertTrue(Test.TRUE, testEngineOilLife.getDataType().equals(VehicleDataType.VEHICLEDATA_ENGINEOILLIFE));
    
         // Invalid/Null Tests
 		UnsubscribeVehicleDataResponse msg = new UnsubscribeVehicleDataResponse();
@@ -195,6 +199,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
         assertNull(Test.NULL, msg.getEmergencyEvent());
         assertNull(Test.NULL, msg.getClusterModeStatus());
         assertNull(Test.NULL, msg.getMyKey());
+		assertNull(Test.NULL, msg.getEngineOilLife());
     }
 
     /**
@@ -312,6 +317,10 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 			JSONObject myKey = JsonUtils.readJsonObjectFromJsonObject(parameters, UnsubscribeVehicleDataResponse.KEY_MY_KEY);
 			VehicleDataResult referenceMyKey = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(myKey));
 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceMyKey, cmd.getMyKey()));
+
+			JSONObject engineOilLife = JsonUtils.readJsonObjectFromJsonObject(parameters, UnsubscribeVehicleDataResponse.KEY_ENGINE_OIL_LIFE);
+			VehicleDataResult referenceEngineOilLife = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(engineOilLife));
+			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceEngineOilLife, cmd.getEngineOilLife()));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}    	

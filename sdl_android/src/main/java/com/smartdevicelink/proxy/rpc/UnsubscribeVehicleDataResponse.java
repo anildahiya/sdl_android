@@ -41,6 +41,7 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_EMERGENCY_EVENT = "emergencyEvent";
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
+    public static final String KEY_ENGINE_OIL_LIFE = "engineOilLife";
 
 	/**
 	 * Constructs a new UnsubscribeVehicleDataResponse object
@@ -401,5 +402,22 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
     @SuppressWarnings("unchecked")
     public VehicleDataResult getMyKey() {
         return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_MY_KEY);
-    }     
+    }
+
+    /**
+     * Sets Engine Oil Life
+     * @param engineOilLife
+     */
+    public void setEngineOilLife(VehicleDataResult engineOilLife) {
+        setParameters(KEY_ENGINE_OIL_LIFE, engineOilLife);
+    }
+
+    /**
+     * Gets Engine Oil Life
+     * @return VehicleDataResult
+     */
+    @SuppressWarnings("unchecked")
+    public VehicleDataResult getEngineOilLife() {
+        return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_ENGINE_OIL_LIFE);
+    }
 }

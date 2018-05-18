@@ -235,6 +235,8 @@ public class GetVehicleData extends RPCRequest {
 	public static final String KEY_EMERGENCY_EVENT = "emergencyEvent";
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
+    public static final String KEY_ENGINE_OIL_LIFE = "engineOilLife";
+
 	/**
 	 * Constructs a new GetVehicleData object
 	 */
@@ -417,5 +419,13 @@ public class GetVehicleData extends RPCRequest {
     }
     public Boolean getMyKey() {
         return getBoolean(KEY_MY_KEY);
-    }        
+    }
+
+    public void setEngineOilLife(Boolean engineOilLife) {
+        setParameters(KEY_ENGINE_OIL_LIFE, engineOilLife);
+    }
+
+    public Boolean getEngineOilLife() {
+        return getBoolean(KEY_ENGINE_OIL_LIFE);
+    }
 }

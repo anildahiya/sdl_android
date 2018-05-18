@@ -262,6 +262,7 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
 	public static final String KEY_SPEED = "speed";
+	public static final String KEY_ENGINE_OIL_LIFE = "engineOilLife";
 
 	/**
 	 * Constructs a new SubscribeVehicleData object
@@ -717,5 +718,26 @@ public class SubscribeVehicleData extends RPCRequest {
     public Boolean getMyKey() {
         return getBoolean(KEY_MY_KEY);
     }      
-    
+
+	/**
+	 * Sets a boolean value. If true, subscribes engineOilLife data
+	 *
+	 * @param engineOilLife
+	 *            a boolean value
+	 */
+	public void setEngineOilLife(Boolean engineOilLife) {
+		setParameters(KEY_ENGINE_OIL_LIFE, engineOilLife);
+	}
+
+	/**
+	 * Gets a boolean value. If true, means the Engine Oil Life data has been
+	 * subscribed.
+	 *
+	 * @return Boolean -a Boolean value. If true, means the Engine Oil Life data
+	 *         has been subscribed.
+	 *
+	 */
+	public Boolean getEngineOilLife() {
+		return getBoolean(KEY_ENGINE_OIL_LIFE);
+	}
 }

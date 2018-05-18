@@ -272,6 +272,7 @@ public class OnVehicleData extends RPCNotification {
 	public static final String KEY_EMERGENCY_EVENT = "emergencyEvent";
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
+    public static final String KEY_ENGINE_OIL_LIFE = "engineOilLife";
 
     public OnVehicleData() {
         super(FunctionID.ON_VEHICLE_DATA.toString());
@@ -454,5 +455,14 @@ public class OnVehicleData extends RPCNotification {
     @SuppressWarnings("unchecked")
     public MyKey getMyKey() {
         return (MyKey) getObject(MyKey.class, KEY_MY_KEY);
-    }    
+    }
+
+    public void setEngineOilLife(Double engineOilLife) {
+        setParameters(KEY_ENGINE_OIL_LIFE, engineOilLife);
+    }
+
+    public Double getEngineOilLife() {
+        Object object = getParameters(KEY_ENGINE_OIL_LIFE);
+        return SdlDataTypeConverter.objectToDouble(object);
+    }
 }

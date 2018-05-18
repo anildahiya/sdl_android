@@ -82,6 +82,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
             result.put(OnVehicleData.KEY_EMERGENCY_EVENT, VehicleDataHelper.EMERGENCY_EVENT.serializeJSON());
             result.put(OnVehicleData.KEY_CLUSTER_MODE_STATUS, VehicleDataHelper.CLUSTER_MODE_STATUS.serializeJSON());
             result.put(OnVehicleData.KEY_MY_KEY, VehicleDataHelper.MY_KEY.serializeJSON());
+			result.put(OnVehicleData.KEY_ENGINE_OIL_LIFE, VehicleDataHelper.ENGINE_OIL_LIFE);
         } catch(JSONException e) {
         	fail(Test.JSON_FAIL);
         }
@@ -119,6 +120,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
     	EmergencyEvent event = ( (OnVehicleData) msg).getEmergencyEvent();
     	ClusterModeStatus cluster = ( (OnVehicleData) msg).getClusterModeStatus();
     	MyKey key = ( (OnVehicleData) msg).getMyKey();
+		Double engineOilLife = ( (OnVehicleData) msg).getEngineOilLife();
     	
     	// Valid Tests
     	assertEquals(Test.MATCH, VehicleDataHelper.SPEED, speed);
@@ -146,6 +148,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 	    assertTrue(Test.TRUE, Validator.validateEmergencyEvent(VehicleDataHelper.EMERGENCY_EVENT, event));
 	    assertTrue(Test.TRUE, Validator.validateClusterModeStatus(VehicleDataHelper.CLUSTER_MODE_STATUS, cluster));
 	    assertTrue(Test.TRUE, Validator.validateMyKey(VehicleDataHelper.MY_KEY, key));
+		assertEquals(Test.MATCH, VehicleDataHelper.ENGINE_OIL_LIFE, engineOilLife);
     
 	    // Invalid/Null Tests
         OnVehicleData msg = new OnVehicleData();
@@ -176,7 +179,8 @@ public class OnVehicleDataTests extends BaseRpcTests{
         assertNull(Test.NULL, msg.getAirbagStatus());
         assertNull(Test.NULL, msg.getEmergencyEvent());
         assertNull(Test.NULL, msg.getClusterModeStatus());
-        assertNull(Test.NULL, msg.getMyKey());    	
+        assertNull(Test.NULL, msg.getMyKey());
+		assertNull(Test.NULL, msg.getEngineOilLife());
     }  
     
     public void testJson() {
@@ -339,6 +343,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 			reference.put(OnVehicleData.KEY_EMERGENCY_EVENT, emergencyEventObj);
 			reference.put(OnVehicleData.KEY_CLUSTER_MODE_STATUS, clusterModeStatusObj);
 			reference.put(OnVehicleData.KEY_MY_KEY, myKeyObj);
+			reference.put(OnVehicleData.KEY_ENGINE_OIL_LIFE, VehicleDataHelper.ENGINE_OIL_LIFE);
 			
 			JSONObject underTest = msg.serializeJSON();
 			//go inside underTest and only return the JSONObject inside the parameters key inside the notification key

@@ -5,6 +5,7 @@ import com.smartdevicelink.proxy.RPCNotification;
 import com.smartdevicelink.proxy.rpc.enums.AudioStreamingState;
 import com.smartdevicelink.proxy.rpc.enums.HMILevel;
 import com.smartdevicelink.proxy.rpc.enums.SystemContext;
+import com.smartdevicelink.proxy.rpc.enums.VideoStreamingState;
 
 import java.util.Hashtable;
 
@@ -66,6 +67,7 @@ public class OnHMIStatus extends RPCNotification {
 	public static final String KEY_AUDIO_STREAMING_STATE = "audioStreamingState";
 	public static final String KEY_SYSTEM_CONTEXT = "systemContext";
 	public static final String KEY_HMI_LEVEL = "hmiLevel";
+    public static final String KEY_VIDEO_STREAMING_STATE = "videoStreamingState";
 
     private Boolean firstRun;
 	
@@ -138,5 +140,21 @@ public class OnHMIStatus extends RPCNotification {
      */    
     public void setFirstRun(Boolean firstRun) {
     	this.firstRun = firstRun;
+    }
+
+    /**
+     * <p>Get current state of video streaming for the application</p>
+     * @return {@linkplain VideoStreamingState} Returns current state of video streaming for the application
+     * If it is NOT_STREAMABLE, the app must stop streaming video to SDL Core(stop service).
+     */
+    public VideoStreamingState getVideoStreamingState() {
+        return (VideoStreamingState) getObject(VideoStreamingState.class, KEY_VIDEO_STREAMING_STATE);
+    }
+    /**
+     * <p>Set the video streaming state</p>
+     * @param videoStreamingState the state of video streaming of the application.
+     */
+    public void setVideoStreamingState( VideoStreamingState videoStreamingState ) {
+        setParameters(KEY_VIDEO_STREAMING_STATE, videoStreamingState);
     }
 }

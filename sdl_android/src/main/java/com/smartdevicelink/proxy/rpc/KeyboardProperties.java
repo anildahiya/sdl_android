@@ -78,6 +78,7 @@ public class KeyboardProperties extends RPCStruct {
 	public static final String KEY_KEYBOARD_LAYOUT = "keyboardLayout";
 	public static final String KEY_LIMITED_CHARACTER_LIST = "limitedCharacterList";
 	public static final String KEY_AUTO_COMPLETE_TEXT = "autoCompleteText";
+    public static final String KEY_AUTO_COMPLETE_LIST = "autoCompleteList";
 	public static final String KEY_LANGUAGE = "language";
 	
     private static final KeypressMode KEYPRESS_MODE_DEFAULT = KeypressMode.RESEND_CURRENT_ENTRY;
@@ -141,4 +142,14 @@ public class KeyboardProperties extends RPCStruct {
     public void setAutoCompleteText(String autoCompleteText) {
         setValue(KEY_AUTO_COMPLETE_TEXT, autoCompleteText);
     }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getAutoCompleteList() {
+        return (List<String>) getObject(String.class, KEY_AUTO_COMPLETE_LIST);
+    }
+
+    public void setAutoCompleteList(List<String> autoCompleteList) {
+        setValue(KEY_AUTO_COMPLETE_LIST, autoCompleteList);
+    }
+
 }

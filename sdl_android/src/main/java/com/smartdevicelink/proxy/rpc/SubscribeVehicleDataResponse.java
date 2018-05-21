@@ -37,6 +37,7 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_MY_KEY = "myKey";
     public static final String KEY_TURN_SIGNAL = "turnSignal";
     public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
+    public static final String KEY_FUEL_RANGE = "fuelRange";
 
 	/**
 	 * Constructs a new SubscribeVehicleDataResponse object
@@ -421,4 +422,21 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
     public VehicleDataResult getElectronicParkBrakeStatus() {
         return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_ELECTRONIC_PARK_BRAKE_STATUS);
     }   
+
+    /**
+     * Sets Fuel Range
+     * @param fuelRange
+     */
+    public void setFuelRange(VehicleDataResult fuelRange) {
+        setParameters(KEY_FUEL_RANGE, fuelRange);
+    }
+
+    /**
+     * Gets Fuel Range
+     * @return VehicleDataResult
+     */
+    @SuppressWarnings("unchecked")
+    public VehicleDataResult getFuelRange() {
+        return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_FUEL_RANGE);
+    }
 }

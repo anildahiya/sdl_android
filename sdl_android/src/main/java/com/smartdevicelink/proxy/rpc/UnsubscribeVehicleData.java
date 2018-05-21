@@ -255,9 +255,11 @@ public class UnsubscribeVehicleData extends RPCRequest {
 	public static final String KEY_EMERGENCY_EVENT = "emergencyEvent";
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
+
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 
+	public static final String KEY_FUEL_RANGE = "fuelRange";
 
 	/**
 	 * Constructs a new UnsubscribeVehicleData object
@@ -747,5 +749,26 @@ public class UnsubscribeVehicleData extends RPCRequest {
 	 */
 	public Boolean getElectronicParkBrakeStatus() {
 		return getBoolean(KEY_ELECTRONIC_PARK_BRAKE_STATUS);
+	}
+
+	/**
+	 * Sets a boolean value. If true, unsubscribes fuelRange data
+	 *
+	 * @param fuelRange
+	 *            a boolean value
+	 */
+	public void setFuelRange(Boolean fuelRange) {
+		setParameters(KEY_FUEL_RANGE, fuelRange);
+	}
+
+	/**
+	 * Gets a boolean value. If true, means the fuelRange data has been
+	 * unsubscribed.
+	 *
+	 * @return Boolean -a Boolean value. If true, means the fuelRange data
+	 *         has been unsubscribed.
+	 */
+	public Boolean getFuelRange() {
+		return getBoolean(KEY_FUEL_RANGE);
 	}
 }

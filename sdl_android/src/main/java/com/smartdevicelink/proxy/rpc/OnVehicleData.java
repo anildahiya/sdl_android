@@ -1,6 +1,7 @@
 package com.smartdevicelink.proxy.rpc;
 
 import java.util.Hashtable;
+import java.util.List;
 
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCNotification;
@@ -276,6 +277,7 @@ public class OnVehicleData extends RPCNotification {
 	public static final String KEY_MY_KEY = "myKey";
     public static final String KEY_TURN_SIGNAL = "turnSignal";
     public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
+    public static final String KEY_FUEL_RANGE = "fuelRange";
 
     public OnVehicleData() {
         super(FunctionID.ON_VEHICLE_DATA.toString());
@@ -473,4 +475,22 @@ public class OnVehicleData extends RPCNotification {
     public ElectronicParkBrakeStatus getElectronicParkBrakeStatus() {
         return (ElectronicParkBrakeStatus) getObject(ElectronicParkBrakeStatus.class, KEY_ELECTRONIC_PARK_BRAKE_STATUS);
     }   
+
+    /**
+     * Sets Fuel Range List. Fuel Range - The estimate range in KM the vehicle can travel based on fuel level and consumption.
+     * @param fuelRange
+     */
+    public void setFuelRange(List<FuelRange> fuelRange) {
+        setParameters(KEY_FUEL_RANGE, fuelRange);
+    }
+
+    /**
+     * Gets Fuel Range List.
+     * @return List<FuelRange>
+     *     Fuel Range - The estimate range in KM the vehicle can travel based on fuel level and consumption.
+     */
+    @SuppressWarnings("unchecked")
+    public List<FuelRange> getFuelRange() {
+        return (List<FuelRange>) getObject(FuelRange.class, KEY_FUEL_RANGE);
+    }
 }

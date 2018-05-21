@@ -1,6 +1,6 @@
 {
   "request":{
-    "name":"AddCommand",
+    "name":"GetVehicleData",
     "correlationID":129,
     "parameters":{
       "speed":true,
@@ -29,11 +29,12 @@
       "clusterModeStatus":true,
       "myKey":true,
       "turnSignal":true,
-      "electronicParkBrakeStatus":true
+      "electronicParkBrakeStatus":true,
+      "fuelRange":true
     }
   },
   "response":{
-    "name":"AddCommandResponse",
+    "name":"GetVehicleDataResponse",
     "correlationID":130,
     "parameters":{
       "speed":35.6,
@@ -155,7 +156,17 @@
         "e911Override":"NO_DATA_EXISTS"
       },
       "turnSignal":"OFF",
-      "electronicParkBrakeStatus":"CLOSED"
+      "electronicParkBrakeStatus":"CLOSED",
+      "fuelRange":[
+        {
+          "type":"GASOLINE",
+          "range":100.0
+        },
+        {
+          "type":"DIESEL",
+          "range":10.0
+        }
+      ]
     }
   }
 }

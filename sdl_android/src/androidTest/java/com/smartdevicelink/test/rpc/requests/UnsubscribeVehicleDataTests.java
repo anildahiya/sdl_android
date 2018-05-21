@@ -51,6 +51,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		msg.setMyKey(Test.GENERAL_BOOLEAN);
 		msg.setTurnSignal(Test.GENERAL_BOOLEAN);
 		msg.setElectronicParkBrakeStatus(Test.GENERAL_BOOLEAN);
+		msg.setFuelRange(Test.GENERAL_BOOLEAN);
 
 		return msg;
 	}
@@ -96,6 +97,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
             result.put(UnsubscribeVehicleData.KEY_MY_KEY, Test.GENERAL_BOOLEAN);
 			result.put(UnsubscribeVehicleData.KEY_TURN_SIGNAL, Test.GENERAL_BOOLEAN);
 			result.put(UnsubscribeVehicleData.KEY_ELECTRONIC_PARK_BRAKE_STATUS, Test.GENERAL_BOOLEAN);
+			result.put(UnsubscribeVehicleData.KEY_FUEL_RANGE, Test.GENERAL_BOOLEAN);
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -134,7 +136,8 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getMyKey());
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getTurnSignal());
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getElectronicParkBrakeStatus());
-
+		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getFuelRange());
+		
 		// Invalid/Null Tests
 		UnsubscribeVehicleData msg = new UnsubscribeVehicleData();
 		assertNotNull(Test.NOT_NULL, msg);
@@ -166,6 +169,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
         assertNull(Test.NULL, msg.getMyKey());
 		assertNull(Test.NULL, msg.getTurnSignal());
 		assertNull(Test.NULL, msg.getElectronicParkBrakeStatus());
+		assertNull(Test.NULL, msg.getFuelRange());
 	}
 
 	/**
@@ -213,7 +217,8 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_MY_KEY), cmd.getMyKey());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_TURN_SIGNAL), cmd.getTurnSignal());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_ELECTRONIC_PARK_BRAKE_STATUS), cmd.getElectronicParkBrakeStatus());
-		} 
+			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_FUEL_RANGE), cmd.getFuelRange());
+		}
 
 		catch (JSONException e) {
 			fail(Test.JSON_FAIL);

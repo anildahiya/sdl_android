@@ -130,6 +130,7 @@ import com.smartdevicelink.proxy.rpc.enums.SystemAction;
 import com.smartdevicelink.proxy.rpc.enums.SystemCapabilityType;
 import com.smartdevicelink.proxy.rpc.enums.SystemContext;
 import com.smartdevicelink.proxy.rpc.enums.TBTState;
+import com.smartdevicelink.proxy.rpc.enums.TPMS;
 import com.smartdevicelink.proxy.rpc.enums.TemperatureUnit;
 import com.smartdevicelink.proxy.rpc.enums.TextAlignment;
 import com.smartdevicelink.proxy.rpc.enums.TextFieldName;
@@ -276,6 +277,7 @@ public class Test {
 	public static final VideoStreamingCapability       GENERAL_VIDEOSTREAMINGCAPABILITY       = new VideoStreamingCapability();
 	public static final VideoStreamingFormat           GENERAL_VIDEOSTREAMINGFORMAT           = new VideoStreamingFormat();
 	public static final VideoStreamingState            GENERAL_VIDEOSTREAMINGSTATE            = VideoStreamingState.STREAMABLE;
+	public static final TPMS          				   GENERAL_TPMS          				  = TPMS.UNKNOWN;
 
 	public static final ModuleType 					   GENERAL_MODULETYPE           		  = ModuleType.CLIMATE;
 	public static final Temperature 				   GENERAL_TEMPERATURE                	  = new Temperature();

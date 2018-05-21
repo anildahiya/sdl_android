@@ -78,6 +78,8 @@ public class VehicleDataHelper{
 	public static final FuelRange FUEL_RANGE = new FuelRange();
 	public static final List<FuelRange> FUEL_RANGE_LIST = new ArrayList<FuelRange>(1);
 
+	public static final double ENGINE_OIL_LIFE = 98.3;
+	
 	//other variables inside some of the above objects
     // tire status
 	public static final WarningLightStatus 	  TIRE_PRESSURE_TELL_TALE = WarningLightStatus.ON;
@@ -350,9 +352,12 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setEmergencyEvent(EMERGENCY_EVENT);
 		VEHICLE_DATA.setClusterModeStatus(CLUSTER_MODE_STATUS);
 		VEHICLE_DATA.setMyKey(MY_KEY);
+
 		VEHICLE_DATA.setTurnSignal(TURN_SIGNAL);
 		VEHICLE_DATA.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 		VEHICLE_DATA.setFuelRange(FUEL_RANGE_LIST);
+		VEHICLE_DATA.setEngineOilLife(ENGINE_OIL_LIFE);
+
 		
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
@@ -383,6 +388,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setTurnSignal(TURN_SIGNAL);
 		VEHICLE_DATA_RESPONSE.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 		VEHICLE_DATA_RESPONSE.setFuelRange(FUEL_RANGE_LIST);
+		VEHICLE_DATA_RESPONSE.setEngineOilLife(ENGINE_OIL_LIFE);
 	}
 	
     private VehicleDataHelper(){}	

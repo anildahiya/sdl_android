@@ -29,7 +29,8 @@
       "myKey":true,
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
-      "fuelRange":true
+      "fuelRange":true,
+      "engineOilLife":true
     }
   },
   "response":{
@@ -140,8 +141,12 @@
         "dataType": "VEHICLEDATA_ELECTRONICPARKBRAKESTATUS",
         "resultCode": "SUCCESS"
       },
-      "fuelRange":{
-        "dataType":"VEHICLEDATA_FUELRANGE",
+      "fuelRange": {
+        "dataType": "VEHICLEDATA_FUELRANGE",
+        "resultCode": "SUCCESS"
+      },
+      "engineOilLife":{
+        "dataType":"VEHICLEDATA_ENGINEOILLIFE",
         "resultCode":"SUCCESS"
       }
     }

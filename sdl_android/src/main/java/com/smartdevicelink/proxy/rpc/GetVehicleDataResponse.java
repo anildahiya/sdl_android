@@ -48,6 +48,7 @@ public class GetVehicleDataResponse extends RPCResponse {
     public static final String KEY_TURN_SIGNAL = "turnSignal";
     public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_FUEL_RANGE = "fuelRange";
+    public static final String KEY_ENGINE_OIL_LIFE = "engineOilLife";
 
 	/** 
 	 * Constructs a new GetVehicleDataResponse object
@@ -272,5 +273,14 @@ public class GetVehicleDataResponse extends RPCResponse {
     @SuppressWarnings("unchecked")
     public List<FuelRange> getFuelRange() {
         return (List<FuelRange>) getObject(FuelRange.class, KEY_FUEL_RANGE);
+    }
+
+    public void setEngineOilLife(Double engineOilLife) {
+        setParameters(KEY_ENGINE_OIL_LIFE, engineOilLife);
+    }
+
+    public Double getEngineOilLife() {
+        Object object = getParameters(KEY_ENGINE_OIL_LIFE);
+        return SdlDataTypeConverter.objectToDouble(object);
     }
 }

@@ -112,6 +112,10 @@ public enum VehicleDataType {
     VEHICLEDATA_TURNSIGNAL,
     VEHICLEDATA_ELECTRONICPARKBRAKESTATUS,
     VEHICLEDATA_FUELRANGE,
+    /**
+     * Notifies ENGINEOILLIFEData may be subscribed
+     */
+    VEHICLEDATA_ENGINEOILLIFE,
     ;
 
 	/**

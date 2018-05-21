@@ -238,6 +238,7 @@ public class GetVehicleData extends RPCRequest {
     public static final String KEY_TURN_SIGNAL = "turnSignal";
     public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_FUEL_RANGE = "fuelRange";
+    public static final String KEY_ENGINE_OIL_LIFE = "engineOilLife";
 
 	/**
 	 * Constructs a new GetVehicleData object
@@ -471,5 +472,13 @@ public class GetVehicleData extends RPCRequest {
      */
     public Boolean getFuelRange() {
         return getBoolean(KEY_FUEL_RANGE);
+    }
+
+    public void setEngineOilLife(Boolean engineOilLife) {
+        setParameters(KEY_ENGINE_OIL_LIFE, engineOilLife);
+    }
+
+    public Boolean getEngineOilLife() {
+        return getBoolean(KEY_ENGINE_OIL_LIFE);
     }
 }

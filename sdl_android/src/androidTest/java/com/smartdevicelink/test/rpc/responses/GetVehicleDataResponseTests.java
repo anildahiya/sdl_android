@@ -88,6 +88,7 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 			result.put(GetVehicleDataResponse.KEY_TURN_SIGNAL, VehicleDataHelper.TURN_SIGNAL);
 			result.put(GetVehicleDataResponse.KEY_ELECTRONIC_PARK_BRAKE_STATUS, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS);
 			result.put(GetVehicleDataResponse.KEY_FUEL_RANGE, VehicleDataHelper.JSON_FUEL_RANGE);
+			result.put(GetVehicleDataResponse.KEY_ENGINE_OIL_LIFE, VehicleDataHelper.ENGINE_OIL_LIFE);
         } catch(JSONException e){
         	fail(Test.JSON_FAIL);
         }
@@ -266,6 +267,8 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 
 			reference.put(GetVehicleDataResponse.KEY_FUEL_RANGE, fuelRangeArrayObj);
 
+			reference.put(GetVehicleDataResponse.KEY_ENGINE_OIL_LIFE, VehicleDataHelper.ENGINE_OIL_LIFE);
+			
 			JSONObject underTest = msg.serializeJSON();
 			
 			//go inside underTest and only return the JSONObject inside the parameters key inside the response key
@@ -443,6 +446,8 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 		assertEquals(Test.MATCH, VehicleDataHelper.TURN_SIGNAL, ( (GetVehicleDataResponse) msg ).getTurnSignal());
 		assertEquals(Test.MATCH, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS, ( (GetVehicleDataResponse) msg ).getElectronicParkBrakeStatus());
 
+		assertEquals(Test.MATCH, VehicleDataHelper.ENGINE_OIL_LIFE, ( (GetVehicleDataResponse) msg ).getEngineOilLife());
+
 		// Invalid/Null Tests
 		GetVehicleDataResponse msg = new GetVehicleDataResponse();
 		assertNotNull(Test.NOT_NULL, msg);
@@ -474,6 +479,7 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
         assertNull(Test.NULL, msg.getMyKey());
 		assertNull(Test.NULL, msg.getTurnSignal());
 		assertNull(Test.NULL, msg.getElectronicParkBrakeStatus());
+		assertNull(Test.NULL, msg.getEngineOilLife());
     }
     
 
@@ -561,6 +567,9 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 			assertTrue(Test.TRUE, Validator.validateMyKey(myKey, cmd.getMyKey()) );
 
 			assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, GetVehicleDataResponse.KEY_ELECTRONIC_PARK_BRAKE_STATUS), cmd.getElectronicParkBrakeStatus().toString());
+
+			assertEquals(Test.MATCH, JsonUtils.readDoubleFromJsonObject(parameters, GetVehicleDataResponse.KEY_ENGINE_OIL_LIFE), cmd.getEngineOilLife());
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}    	

@@ -265,6 +265,7 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 	public static final String KEY_FUEL_RANGE = "fuelRange";
+	public static final String KEY_ENGINE_OIL_LIFE = "engineOilLife";
 
 	/**
 	 * Constructs a new SubscribeVehicleData object
@@ -775,5 +776,27 @@ public class SubscribeVehicleData extends RPCRequest {
 	 */
 	public Boolean getFuelRange() {
 		return getBoolean(KEY_FUEL_RANGE);
+    }
+
+	/**
+	 * Sets a boolean value. If true, subscribes engineOilLife data
+	 *
+	 * @param engineOilLife
+	 *            a boolean value
+	 */
+	public void setEngineOilLife(Boolean engineOilLife) {
+		setParameters(KEY_ENGINE_OIL_LIFE, engineOilLife);
+	}
+
+	/**
+	 * Gets a boolean value. If true, means the Engine Oil Life data has been
+	 * subscribed.
+	 *
+	 * @return Boolean -a Boolean value. If true, means the Engine Oil Life data
+	 *         has been subscribed.
+	 *
+	 */
+	public Boolean getEngineOilLife() {
+		return getBoolean(KEY_ENGINE_OIL_LIFE);
 	}
 }

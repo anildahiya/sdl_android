@@ -261,6 +261,8 @@ public class UnsubscribeVehicleData extends RPCRequest {
 
 	public static final String KEY_FUEL_RANGE = "fuelRange";
 
+	public static final String KEY_ENGINE_OIL_LIFE = "engineOilLife";
+
 	/**
 	 * Constructs a new UnsubscribeVehicleData object
 	 */
@@ -770,5 +772,27 @@ public class UnsubscribeVehicleData extends RPCRequest {
 	 */
 	public Boolean getFuelRange() {
 		return getBoolean(KEY_FUEL_RANGE);
+	}
+
+	/**
+	 * Sets a boolean value. If true, unsubscribes engineOilLife data
+	 *
+	 * @param engineOilLife
+	 *            a boolean value
+	 */
+	public void setEngineOilLife(Boolean engineOilLife) {
+		setParameters(KEY_ENGINE_OIL_LIFE, engineOilLife);
+	}
+
+	/**
+	 * Gets a boolean value. If true, means the Engine Oil Life data has been
+	 * unsubscribed.
+	 *
+	 * @return Boolean -a Boolean value. If true, means the Engine Oil Life data
+	 *         has been unsubscribed.
+	 *
+	 */
+	public Boolean getEngineOilLife() {
+		return getBoolean(KEY_ENGINE_OIL_LIFE);
 	}
 }

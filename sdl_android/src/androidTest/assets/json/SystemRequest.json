@@ -5,6 +5,7 @@
     "parameters":{
       "fileName":"fileName.txt",
       "requestType":"AUTH_CHALLENGE",
+      "requestSubType":"requestSubType",
       "data":[
         "data1",
         "data2",

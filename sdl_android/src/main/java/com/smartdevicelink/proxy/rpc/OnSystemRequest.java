@@ -91,6 +91,7 @@ public class OnSystemRequest extends RPCNotification {
 	public static final String KEY_DATA = "data";
 	public static final String KEY_OFFSET = "offset";
 	public static final String KEY_LENGTH = "length";
+    public static final String KEY_REQUEST_SUB_TYPE = "requestSubType";
 	
 	private String body;
 	private Headers headers;	
@@ -332,4 +333,12 @@ public class OnSystemRequest extends RPCNotification {
     public void setLength(Long length) {
         setParameters(KEY_LENGTH, length);
     }
+
+    public void setRequestSubType(String requestSubType) {
+        setParameters(KEY_REQUEST_SUB_TYPE, requestSubType);
+    }
+    public String getRequestSubType() {
+        return getString(KEY_REQUEST_SUB_TYPE);
+    }
+
 }

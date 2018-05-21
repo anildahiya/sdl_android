@@ -60,6 +60,8 @@ public class RequestTypeTests extends TestCase {
 		RequestType enumMedia = RequestType.valueForString(example);
 		example = "FOTA";
 		RequestType enumFota = RequestType.valueForString(example);
+		example = "OEM_SPECIFIC";
+		RequestType enumOemSpecific = RequestType.valueForString(example);
 		
 		assertNotNull("HTTP returned null", enumHttp);
 		assertNotNull("FILE_RESUME returned null", enumFileResume);
@@ -67,6 +69,7 @@ public class RequestTypeTests extends TestCase {
 		assertNotNull("AUTH_CHALLENGE returned null", enumAuthChallenge);
 		assertNotNull("AUTH_ACK returned null", enumAuthAck);
 		assertNotNull("PROPRIETARY returned null", enumProprietary);
+		assertNotNull("OEM_SPECIFIC returned null", enumOemSpecific);
 		
 		assertNotNull(Test.NOT_NULL, enumQueryApps);
 		assertNotNull(Test.NOT_NULL, enumLaunchApp);
@@ -82,6 +85,7 @@ public class RequestTypeTests extends TestCase {
 		assertNotNull(Test.NOT_NULL, enumEmergency);
 		assertNotNull(Test.NOT_NULL, enumMedia);
 		assertNotNull(Test.NOT_NULL, enumFota);
+		assertNotNull(Test.NOT_NULL, enumOemSpecific);
 	}
 
 	/**
@@ -139,7 +143,8 @@ public class RequestTypeTests extends TestCase {
 		enumTestList.add(RequestType.VEHICLE_DIAGNOSTICS);	
 		enumTestList.add(RequestType.EMERGENCY);	
 		enumTestList.add(RequestType.MEDIA);	
-		enumTestList.add(RequestType.FOTA);	
+		enumTestList.add(RequestType.FOTA);
+		enumTestList.add(RequestType.OEM_SPECIFIC);
 
 		assertTrue("Enum value list does not match enum class list", 
 				enumValueList.containsAll(enumTestList) && enumTestList.containsAll(enumValueList));

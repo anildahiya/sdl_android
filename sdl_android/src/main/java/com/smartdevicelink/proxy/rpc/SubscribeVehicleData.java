@@ -263,6 +263,7 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_MY_KEY = "myKey";
 	public static final String KEY_SPEED = "speed";
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
+	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 
 	/**
 	 * Constructs a new SubscribeVehicleData object
@@ -731,4 +732,25 @@ public class SubscribeVehicleData extends RPCRequest {
 		}
 	}      
     
+	/**
+	 * Sets a boolean value. If true, subscribes electronicParkBrakeStatus data.
+	 *
+	 * @param electronicParkBrakeStatus
+	 *            a boolean value
+	 */
+	public void setElectronicParkBrakeStatus(Boolean electronicParkBrakeStatus) {
+		setParameters(KEY_ELECTRONIC_PARK_BRAKE_STATUS, electronicParkBrakeStatus);
+	}
+
+	/**
+	 * Gets a boolean value. If true, means the Electric Park Brake data has been
+	 * subscribed.
+	 *
+	 * @return Boolean -a Boolean value. If true, means the Electric Park Brake data
+	 *         has been subscribed.
+	 *
+	 */
+	public Boolean getElectronicParkBrakeStatus() {
+		return getBoolean(KEY_ELECTRONIC_PARK_BRAKE_STATUS);
+	}
 }

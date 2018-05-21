@@ -21,6 +21,7 @@ import com.smartdevicelink.proxy.rpc.enums.ComponentVolumeStatus;
 import com.smartdevicelink.proxy.rpc.enums.DeviceLevelStatus;
 import com.smartdevicelink.proxy.rpc.enums.Dimension;
 import com.smartdevicelink.proxy.rpc.enums.ECallConfirmationStatus;
+import com.smartdevicelink.proxy.rpc.enums.ElectronicParkBrakeStatus;
 import com.smartdevicelink.proxy.rpc.enums.EmergencyEventType;
 import com.smartdevicelink.proxy.rpc.enums.FuelCutoffStatus;
 import com.smartdevicelink.proxy.rpc.enums.IgnitionStableStatus;
@@ -57,6 +58,7 @@ public class VehicleDataHelper{
 	public static final WiperStatus WIPER_STATUS = WiperStatus.COURTESYWIPE;
 	public static final HeadLampStatus HEAD_LAMP_STATUS = new HeadLampStatus();
 	public static final TurnSignal TURN_SIGNAL = TurnSignal.BOTH;
+	public static final ElectronicParkBrakeStatus ELECTRONIC_PARK_BRAKE_STATUS = ElectronicParkBrakeStatus.CLOSED;
 	public static final double ACC_PEDAL_POSITION = 28.29;
 	public static final double STEERING_WHEEL_ANGLE = 70.5;
 	public static final ECallInfo E_CALL_INFO = new ECallInfo();
@@ -321,7 +323,8 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setClusterModeStatus(CLUSTER_MODE_STATUS);
 		VEHICLE_DATA.setMyKey(MY_KEY);
 		VEHICLE_DATA.setTurnSignal(TURN_SIGNAL);
-		
+		VEHICLE_DATA.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
+
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
 		VEHICLE_DATA_RESPONSE.setRpm(RPM);
@@ -349,6 +352,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setClusterModeStatus(CLUSTER_MODE_STATUS);
 		VEHICLE_DATA_RESPONSE.setMyKey(MY_KEY);
 		VEHICLE_DATA_RESPONSE.setTurnSignal(TURN_SIGNAL);
+		VEHICLE_DATA_RESPONSE.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 	}
 	
     private VehicleDataHelper(){}	

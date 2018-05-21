@@ -27,7 +27,8 @@
       "emergencyEvent":false,
       "clusterModeStatus":true,
       "myKey":true,
-      "turnSignal":true
+      "turnSignal":true,
+      "electronicParkBrakeStatus":true
     }
   },
   "response":{
@@ -130,8 +131,12 @@
         "dataType":"VEHICLEDATA_MYKEY",
         "resultCode":"IGNORED"
       },
-      "turnSignal":{
-        "dataType":"VEHICLEDATA_TURNSIGNAL",
+      "turnSignal": {
+        "dataType": "VEHICLEDATA_TURNSIGNAL",
+        "resultCode":"SUCCESS"
+      },
+      "electronicParkBrakeStatus":{
+        "dataType":"VEHICLEDATA_ELECTRONICPARKBRAKESTATUS",
         "resultCode":"SUCCESS"
       }
     }

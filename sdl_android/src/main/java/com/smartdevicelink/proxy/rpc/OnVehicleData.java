@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCNotification;
 import com.smartdevicelink.proxy.rpc.enums.ComponentVolumeStatus;
+import com.smartdevicelink.proxy.rpc.enums.ElectronicParkBrakeStatus;
 import com.smartdevicelink.proxy.rpc.enums.PRNDL;
 import com.smartdevicelink.proxy.rpc.enums.TurnSignal;
 import com.smartdevicelink.proxy.rpc.enums.VehicleDataEventStatus;
@@ -274,6 +275,7 @@ public class OnVehicleData extends RPCNotification {
 	public static final String KEY_CLUSTER_MODE_STATUS = "clusterModeStatus";
 	public static final String KEY_MY_KEY = "myKey";
     public static final String KEY_TURN_SIGNAL = "turnSignal";
+    public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 
     public OnVehicleData() {
         super(FunctionID.ON_VEHICLE_DATA.toString());
@@ -464,4 +466,11 @@ public class OnVehicleData extends RPCNotification {
     public TurnSignal getTurnSignal() {
         return (TurnSignal) getObject(TurnSignal.class, KEY_TURN_SIGNAL);
     }
+
+    public void setElectronicParkBrakeStatus(ElectronicParkBrakeStatus electronicParkBrakeStatus) {
+        setParameters(KEY_ELECTRONIC_PARK_BRAKE_STATUS, electronicParkBrakeStatus);
+    }
+    public ElectronicParkBrakeStatus getElectronicParkBrakeStatus() {
+        return (ElectronicParkBrakeStatus) getObject(ElectronicParkBrakeStatus.class, KEY_ELECTRONIC_PARK_BRAKE_STATUS);
+    }   
 }

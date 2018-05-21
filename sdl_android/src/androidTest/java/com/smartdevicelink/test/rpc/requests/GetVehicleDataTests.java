@@ -50,6 +50,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
 		msg.setClusterModeStatus(Test.GENERAL_BOOLEAN);
 		msg.setMyKey(Test.GENERAL_BOOLEAN);
 		msg.setTurnSignal(Test.GENERAL_BOOLEAN);
+		msg.setElectronicParkBrakeStatus(Test.GENERAL_BOOLEAN);
 
         return msg;
     }
@@ -95,6 +96,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
             result.put(GetVehicleData.KEY_CLUSTER_MODE_STATUS, Test.GENERAL_BOOLEAN);
             result.put(GetVehicleData.KEY_MY_KEY, Test.GENERAL_BOOLEAN);
 			result.put(GetVehicleData.KEY_TURN_SIGNAL, Test.GENERAL_BOOLEAN);
+			result.put(GetVehicleData.KEY_ELECTRONIC_PARK_BRAKE_STATUS, Test.GENERAL_BOOLEAN);
         }catch(JSONException e){
         	fail(Test.JSON_FAIL);
         }
@@ -134,6 +136,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
 		assertTrue(Test.TRUE, ( (GetVehicleData) msg ).getClusterModeStatus());
 		assertTrue(Test.TRUE, ( (GetVehicleData) msg ).getMyKey());
 		assertTrue(Test.TRUE, ( (GetVehicleData) msg ).getTurnSignal());
+		assertTrue(Test.TRUE, ( (GetVehicleData) msg ).getElectronicParkBrakeStatus());
 
 		// Invalid/Null Tests
         GetVehicleData msg = new GetVehicleData();
@@ -166,6 +169,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
         assertNull(Test.NULL, msg.getClusterModeStatus());
         assertNull(Test.NULL, msg.getMyKey());
 		assertNull(Test.NULL, msg.getTurnSignal());
+		assertNull(Test.NULL, msg.getElectronicParkBrakeStatus());
     }
     
     /**
@@ -213,6 +217,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, GetVehicleData.KEY_CLUSTER_MODE_STATUS), cmd.getClusterModeStatus());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, GetVehicleData.KEY_MY_KEY), cmd.getMyKey());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, GetVehicleData.KEY_TURN_SIGNAL), cmd.getTurnSignal());
+			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, GetVehicleData.KEY_ELECTRONIC_PARK_BRAKE_STATUS), cmd.getElectronicParkBrakeStatus());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}    	

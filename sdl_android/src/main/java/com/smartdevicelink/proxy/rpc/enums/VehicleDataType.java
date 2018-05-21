@@ -110,7 +110,9 @@ public enum VehicleDataType {
      */
     VEHICLEDATA_MYKEY,
     VEHICLEDATA_TURNSIGNAL,
+    VEHICLEDATA_ELECTRONICPARKBRAKESTATUS,
     ;
+
 	/**
      * Convert String to VehicleDataType
      * @param value String

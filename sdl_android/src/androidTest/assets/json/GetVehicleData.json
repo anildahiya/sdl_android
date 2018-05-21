@@ -28,7 +28,8 @@
       "emergencyEvent":false,
       "clusterModeStatus":true,
       "myKey":true,
-      "turnSignal":true
+      "turnSignal":true,
+      "electronicParkBrakeStatus":true
     }
   },
   "response":{
@@ -153,7 +154,8 @@
       "myKey":{
         "e911Override":"NO_DATA_EXISTS"
       },
-      "turnSignal":"OFF"
+      "turnSignal":"OFF",
+      "electronicParkBrakeStatus":"CLOSED"
     }
   }
 }

@@ -30,6 +30,8 @@ import com.smartdevicelink.proxy.rpc.LightControlCapabilities;
 import com.smartdevicelink.proxy.rpc.LightControlData;
 import com.smartdevicelink.proxy.rpc.LightState;
 import com.smartdevicelink.proxy.rpc.LocationDetails;
+import com.smartdevicelink.proxy.rpc.MassageCushionFirmness;
+import com.smartdevicelink.proxy.rpc.MassageModeData;
 import com.smartdevicelink.proxy.rpc.MenuParams;
 import com.smartdevicelink.proxy.rpc.ModuleData;
 import com.smartdevicelink.proxy.rpc.NavigationCapability;
@@ -48,6 +50,9 @@ import com.smartdevicelink.proxy.rpc.SRGBColor;
 import com.smartdevicelink.proxy.rpc.ScreenParams;
 import com.smartdevicelink.proxy.rpc.SdlMsgVersion;
 import com.smartdevicelink.proxy.rpc.SisData;
+import com.smartdevicelink.proxy.rpc.SeatControlCapabilities;
+import com.smartdevicelink.proxy.rpc.SeatControlData;
+import com.smartdevicelink.proxy.rpc.SeatMemoryAction;
 import com.smartdevicelink.proxy.rpc.SoftButton;
 import com.smartdevicelink.proxy.rpc.SoftButtonCapabilities;
 import com.smartdevicelink.proxy.rpc.StartTime;
@@ -104,6 +109,9 @@ import com.smartdevicelink.proxy.rpc.enums.LayoutMode;
 import com.smartdevicelink.proxy.rpc.enums.LightName;
 import com.smartdevicelink.proxy.rpc.enums.LightStatus;
 import com.smartdevicelink.proxy.rpc.enums.LockScreenStatus;
+import com.smartdevicelink.proxy.rpc.enums.MassageCushion;
+import com.smartdevicelink.proxy.rpc.enums.MassageMode;
+import com.smartdevicelink.proxy.rpc.enums.MassageZone;
 import com.smartdevicelink.proxy.rpc.enums.MediaClockFormat;
 import com.smartdevicelink.proxy.rpc.enums.ModuleType;
 import com.smartdevicelink.proxy.rpc.enums.PowerModeQualificationStatus;
@@ -114,8 +122,10 @@ import com.smartdevicelink.proxy.rpc.enums.RadioBand;
 import com.smartdevicelink.proxy.rpc.enums.RadioState;
 import com.smartdevicelink.proxy.rpc.enums.RequestType;
 import com.smartdevicelink.proxy.rpc.enums.SamplingRate;
+import com.smartdevicelink.proxy.rpc.enums.SeatMemoryActionType;
 import com.smartdevicelink.proxy.rpc.enums.SoftButtonType;
 import com.smartdevicelink.proxy.rpc.enums.SpeechCapabilities;
+import com.smartdevicelink.proxy.rpc.enums.SupportedSeat;
 import com.smartdevicelink.proxy.rpc.enums.SystemAction;
 import com.smartdevicelink.proxy.rpc.enums.SystemCapabilityType;
 import com.smartdevicelink.proxy.rpc.enums.SystemContext;
@@ -192,6 +202,8 @@ public class Test {
 	public static final ButtonName                     GENERAL_BUTTONNAME                     = ButtonName.OK;
 	public static final UpdateMode                     GENERAL_UPDATEMODE                     = UpdateMode.RESUME;
 	public static final TouchCoord                     GENERAL_TOUCHCOORD                     = new TouchCoord();
+	public static final MassageModeData                GENERAL_MASSAGEMODEDATA                = new MassageModeData();
+	public static final MassageCushionFirmness         GENERAL_MASSAGECUSHIONFIRMNESS         = new MassageCushionFirmness();
 	public static final DisplayType                    GENERAL_DISPLAYTYPE                    = DisplayType.CID;
 	public static final VehicleType                    GENERAL_VEHICLETYPE                    = new VehicleType();
 	public static final RequestType                    GENERAL_REQUESTTYPE                    = RequestType.AUTH_REQUEST;	
@@ -210,6 +222,11 @@ public class Test {
 	public static final SdlMsgVersion                  GENERAL_SDLMSGVERSION                  = new SdlMsgVersion();
 	public static final PermissionItem                 GENERAL_PERMISSIONITEM                 = new PermissionItem();
 	public static final SoftButtonType                 GENERAL_SOFTBUTTONTYPE                 = SoftButtonType.SBT_BOTH;
+	public static final MassageZone                    GENERAL_MASSAGEZONE                    = MassageZone.LUMBAR;
+	public static final MassageMode                    GENERAL_MASSAGEMODE                    = MassageMode.HIGH;
+	public static final MassageCushion                 GENERAL_MASSAGECUSHION                 = MassageCushion.BACK_BOLSTERS;
+	public static final SeatMemoryActionType           GENERAL_SEATMEMORYACTIONTYPE           = SeatMemoryActionType.SAVE;
+	public static final SupportedSeat           	   GENERAL_SUPPORTEDSEAT                  = SupportedSeat.DRIVER;
 	public static final KeyboardLayout                 GENERAL_KEYBOARDLAYOUT                 = KeyboardLayout.QWERTY;
 	public static final ImageFieldName                 GENERAL_IMAGEFIELDNAME                 = ImageFieldName.graphic;
 	public static final HMIPermissions                 GENERAL_HMIPERMISSIONS                 = new HMIPermissions();
@@ -241,6 +258,7 @@ public class Test {
 	public static final PresetBankCapabilities         GENERAL_PRESETBANKCAPABILITIES         = new PresetBankCapabilities();
 	public static final VehicleDataEventStatus         GENERAL_VEHCILEDATAEVENTSTATUS         = VehicleDataEventStatus.YES;
 	public static final TouchEventCapabilities         GENERAL_TOUCHEVENTCAPABILITIES         = new TouchEventCapabilities();
+	public static final SeatMemoryAction               GENERAL_SEATMEMORYACTION               = new SeatMemoryAction();
 	public static final SoftButtonCapabilities         GENERAL_SOFTBUTTONCAPABILITIES         = new SoftButtonCapabilities();
 	public static final ECallConfirmationStatus        GENERAL_ECALLCONFIRMATIONSTATUS        = ECallConfirmationStatus.CALL_IN_PROGRESS;	
 	public static final AudioPassThruCapabilities      GENERAL_AUDIOPASSTHRUCAPABILITIES      = new AudioPassThruCapabilities();
@@ -268,6 +286,7 @@ public class Test {
 	public static final LightStatus                    GENERAL_LIGHTSTATUS           		  = LightStatus.OFF;
 	public static final RadioBand 				       GENERAL_RADIOBAND               	      = RadioBand.AM;
 	public static final ClimateControlData             GENERAL_CLIMATECONTROLDATA             = new ClimateControlData();
+	public static final SeatControlData                GENERAL_SEATCONTROLDATA                = new SeatControlData();
 	public static final RdsData                        GENERAL_RDSDATA                        = new RdsData();
 	public static final StationIDNumber                GENERAL_STATIONIDNUMBER                = new StationIDNumber();
 	public static final SRGBColor                      GENERAL_SRGBCOLOR                	  = new SRGBColor();
@@ -278,6 +297,7 @@ public class Test {
 	public static final ModuleData 					   GENERAL_MODULEDATA                     = new ModuleData();
 	public static final ClimateControlCapabilities     GENERAL_CLIMATECONTROLCAPABILITIES     = new ClimateControlCapabilities();
 	public static final RadioControlCapabilities       GENERAL_RADIOCONTROLCAPABILITIES       = new RadioControlCapabilities();
+
 	public static final EqualizerSettings              GENERAL_EQUALIZERSETTINGS              = new EqualizerSettings();
 	public static final LightCapabilities              GENERAL_LIGHTCAPABILITIES              = new LightCapabilities();
 	public static final LightState              	   GENERAL_LIGHTSTATE                     = new LightState();
@@ -287,6 +307,7 @@ public class Test {
 	public static final AudioControlData               GENERAL_AUDIOCONTROLDATA               = new AudioControlData();
 	public static final LightControlData               GENERAL_LIGHTCONTROLDATA               = new LightControlData();
 	public static final HMISettingsControlData         GENERAL_HMISETTINGSCONTROLDATA         = new HMISettingsControlData();
+	public static final SeatControlCapabilities        GENERAL_SEATCONTROLCAPABILITIES        = new SeatControlCapabilities();
 
 	public static final HMICapabilities                GENERAL_HMICAPABILITIES                = new HMICapabilities();
 
@@ -305,6 +326,8 @@ public class Test {
 	public static final List<TextField>                 GENERAL_TEXTFIELD_LIST                 = new ArrayList<TextField>(1);
 	public static final List<DIDResult>                 GENERAL_DIDRESULT_LIST                 = new ArrayList<DIDResult>(1);
 	public static final List<TouchCoord>                GENERAL_TOUCHCOORD_LIST                = new ArrayList<TouchCoord>(1);
+	public static final List<MassageModeData>           GENERAL_MASSAGEMODEDATA_LIST           = new ArrayList<MassageModeData>(1);
+	public static final List<MassageCushionFirmness>    GENERAL_MASSAGECUSHIONFIRMNESS_LIST    = new ArrayList<MassageCushionFirmness>(1);
 	public static final List<AppHMIType>                GENERAL_APPHMITYPE_LIST                = new ArrayList<AppHMIType>(2);
 	public static final List<VrHelpItem>                GENERAL_VRHELPITEM_LIST                = new ArrayList<VrHelpItem>(2);
 	public static final List<SoftButton>                GENERAL_SOFTBUTTON_LIST                = new ArrayList<SoftButton>(1);
@@ -326,10 +349,12 @@ public class Test {
 	public static final List<VentilationMode>           GENERAL_VENTILATIONMODE_LIST           = Arrays.asList(new VentilationMode[]{VentilationMode.LOWER, VentilationMode.UPPER});
 	public static final List<ClimateControlCapabilities> GENERAL_CLIMATECONTROLCAPABILITIES_LIST = new ArrayList<ClimateControlCapabilities>(1);
 	public static final List<RadioControlCapabilities>   GENERAL_RADIOCONTROLCAPABILITIES_LIST   = new ArrayList<RadioControlCapabilities>(1);
+
 	public static final List<EqualizerSettings>         GENERAL_EQUALIZERSETTINGS_LIST         = new ArrayList<EqualizerSettings>(1);
 	public static final List<LightCapabilities>         GENERAL_LIGHTCAPABILITIES_LIST         = new ArrayList<LightCapabilities>(1);
 	public static final List<LightState>                GENERAL_LIGHTSTATE_LIST         	   = new ArrayList<LightState>(1);
 	public static final List<AudioControlCapabilities>  GENERAL_AUDIOCONTROLCAPABILITIES_LIST  = new ArrayList<AudioControlCapabilities>(1);
+	public static final List<SeatControlCapabilities>   GENERAL_SEATCONTROLCAPABILITIES_LIST   = new ArrayList<SeatControlCapabilities>(1);
 
 	public static final JSONArray  JSON_TURNS                     = new JSONArray();
 	public static final JSONArray  JSON_CHOICES                   = new JSONArray();		
@@ -378,7 +403,11 @@ public class Test {
 		GENERAL_TOUCHEVENTCAPABILITIES.setDoublePressAvailable(GENERAL_BOOLEAN);
 		GENERAL_TOUCHEVENTCAPABILITIES.setMultiTouchAvailable(GENERAL_BOOLEAN);
 		GENERAL_TOUCHEVENTCAPABILITIES.setPressAvailable(GENERAL_BOOLEAN);
-		
+
+		GENERAL_SEATMEMORYACTION.setAction(GENERAL_SEATMEMORYACTIONTYPE);
+		GENERAL_SEATMEMORYACTION.setLabel(GENERAL_STRING);
+		GENERAL_SEATMEMORYACTION.setId(GENERAL_INT);
+
 		GENERAL_IMAGERESOLUTION.setResolutionHeight(GENERAL_INT);
 		GENERAL_IMAGERESOLUTION.setResolutionWidth(GENERAL_INT);
 
@@ -424,6 +453,23 @@ public class Test {
 		GENERAL_SISDATA.setStationIDNumber(GENERAL_STATIONIDNUMBER);
 		GENERAL_SISDATA.setStationShortName(GENERAL_STRING);
 
+		GENERAL_SEATCONTROLDATA.setMemory(GENERAL_SEATMEMORYACTION);
+		GENERAL_SEATCONTROLDATA.setMassageCushionFirmness(GENERAL_MASSAGECUSHIONFIRMNESS_LIST);
+		GENERAL_SEATCONTROLDATA.setMassageMode(GENERAL_MASSAGEMODEDATA_LIST);
+		GENERAL_SEATCONTROLDATA.setMassageEnabled(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLDATA.setHeadSupportHorizontalPosition(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setHeadSupportVerticalPosition(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setBackTiltAngle(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setBackVerticalPosition(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setFrontVerticalPosition(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setVerticalPosition(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setHorizontalPosition(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setCoolingLevel(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setHeatingLevel(GENERAL_INT);
+		GENERAL_SEATCONTROLDATA.setHeatingEnabled(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLDATA.setCoolingEnabled(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLDATA.setId(GENERAL_SUPPORTEDSEAT);
+
 		GENERAL_RDSDATA.setProgramService(GENERAL_STRING);
 		GENERAL_RDSDATA.setRadioText(GENERAL_STRING);
 		GENERAL_RDSDATA.setClockText(GENERAL_STRING);
@@ -454,11 +500,19 @@ public class Test {
 		GENERAL_CHOICE.setImage(GENERAL_IMAGE);
 		GENERAL_CHOICE.setSecondaryImage(GENERAL_IMAGE);
 		GENERAL_CHOICE.setVrCommands(GENERAL_STRING_LIST);
-		
+
+		GENERAL_MASSAGEMODEDATA.setMassageMode(GENERAL_MASSAGEMODE);
+		GENERAL_MASSAGEMODEDATA.setMassageZone(GENERAL_MASSAGEZONE);
+		GENERAL_MASSAGEMODEDATA_LIST.add(GENERAL_MASSAGEMODEDATA);
+
+		GENERAL_MASSAGECUSHIONFIRMNESS.setCushion(GENERAL_MASSAGECUSHION);
+		GENERAL_MASSAGECUSHIONFIRMNESS.setFirmness(GENERAL_INT);
+		GENERAL_MASSAGECUSHIONFIRMNESS_LIST.add(GENERAL_MASSAGECUSHIONFIRMNESS);
+
 		GENERAL_TOUCHCOORD.setX(GENERAL_INT);
 		GENERAL_TOUCHCOORD.setY(GENERAL_INT);		
 		GENERAL_TOUCHCOORD_LIST.add(GENERAL_TOUCHCOORD);
-		
+
 		GENERAL_TOUCHEVENT.setId(GENERAL_INT);
 		GENERAL_TOUCHEVENT.setTs(GENERAL_LONG_LIST);
 		GENERAL_TOUCHEVENT.setC(GENERAL_TOUCHCOORD_LIST);		
@@ -699,6 +753,24 @@ public class Test {
 		GENERAL_LIGHTSTATE.setStatus(GENERAL_LIGHTSTATUS);
 		GENERAL_LIGHTSTATE.setSRGBColor(GENERAL_SRGBCOLOR);
 		GENERAL_LIGHTSTATE_LIST.add(GENERAL_LIGHTSTATE);
+
+		GENERAL_SEATCONTROLCAPABILITIES.setMemoryAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setMassageCushionFirmnessAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setMassageModeAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setMassageEnabledAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setHeadSupportVerticalPositionAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setHeadSupportHorizontalPositionAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setBackTiltAngleAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setBackVerticalPositionAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setFrontVerticalPositionAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setVerticalPositionAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setHorizontalPositionAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setCoolingLevelAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setHeatingLevelAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setCoolingEnabledAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setHeatingEnabledAvailable(GENERAL_BOOLEAN);
+		GENERAL_SEATCONTROLCAPABILITIES.setModuleName(GENERAL_STRING);
+		GENERAL_SEATCONTROLCAPABILITIES_LIST.add(GENERAL_SEATCONTROLCAPABILITIES);
 
 		GENERAL_REMOTECONTROLCAPABILITIES.setButtonCapabilities(GENERAL_BUTTONCAPABILITIES_LIST);
 		GENERAL_REMOTECONTROLCAPABILITIES.setClimateControlCapabilities(GENERAL_CLIMATECONTROLCAPABILITIES_LIST);

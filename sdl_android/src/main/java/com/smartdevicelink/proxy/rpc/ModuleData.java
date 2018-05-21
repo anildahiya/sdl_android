@@ -2,15 +2,17 @@ package com.smartdevicelink.proxy.rpc;
 
 import com.smartdevicelink.proxy.RPCStruct;
 import com.smartdevicelink.proxy.rpc.enums.ModuleType;
+
 import java.util.Hashtable;
 
-public class ModuleData extends RPCStruct{
-    public static final String KEY_MODULE_TYPE= "moduleType";
+public class ModuleData extends RPCStruct {
+    public static final String KEY_MODULE_TYPE = "moduleType";
     public static final String KEY_RADIO_CONTROL_DATA = "radioControlData";
     public static final String KEY_CLIMATE_CONTROL_DATA = "climateControlData";
     public static final String KEY_AUDIO_CONTROL_DATA = "audioControlData";
     public static final String KEY_LIGHT_CONTROL_DATA = "lightControlData";
     public static final String KEY_HMI_SETTINGS_CONTROL_DATA = "hmiSettingsControlData";
+    public static final String KEY_SEAT_CONTROL_DATA = "seatControlData";
 
     public ModuleData() {
     }
@@ -22,9 +24,8 @@ public class ModuleData extends RPCStruct{
     /**
      * Sets the moduleType portion of the ModuleData class
      *
-     * @param moduleType
-     * The moduleType indicates which type of data should be changed and identifies which data object exists in this struct.
-     * For example, if the moduleType is CLIMATE then a "climateControlData" should exist
+     * @param moduleType The moduleType indicates which type of data should be changed and identifies which data object exists in this struct.
+     *                   For example, if the moduleType is CLIMATE then a "climateControlData" should exist
      */
     public void setModuleType(ModuleType moduleType) {
         setValue(KEY_MODULE_TYPE, moduleType);
@@ -129,4 +130,23 @@ public class ModuleData extends RPCStruct{
     public HMISettingsControlData getHmiSettingsControlData() {
         return (HMISettingsControlData) getObject(HMISettingsControlData.class, KEY_HMI_SETTINGS_CONTROL_DATA);
     }
+
+    /**
+     * * Sets the seatControlData portion of the ModuleData class
+     *
+     * @param seatControlData
+     */
+    public void setSeatControlData(SeatControlData seatControlData) {
+        setValue(KEY_SEAT_CONTROL_DATA, seatControlData);
+    }
+
+    /**
+     * Gets the seatControlData portion of the ModuleData class
+     *
+     * @return SeatControlData
+     */
+    public SeatControlData getSeatControlData() {
+        return (SeatControlData) getObject(SeatControlData.class, KEY_SEAT_CONTROL_DATA);
+    }
+
 }

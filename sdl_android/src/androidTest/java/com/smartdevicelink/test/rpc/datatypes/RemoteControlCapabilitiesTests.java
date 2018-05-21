@@ -8,6 +8,7 @@ import com.smartdevicelink.proxy.rpc.HMISettingsControlCapabilities;
 import com.smartdevicelink.proxy.rpc.LightControlCapabilities;
 import com.smartdevicelink.proxy.rpc.RadioControlCapabilities;
 import com.smartdevicelink.proxy.rpc.RemoteControlCapabilities;
+import com.smartdevicelink.proxy.rpc.SeatControlCapabilities;
 import com.smartdevicelink.test.JsonUtils;
 import com.smartdevicelink.test.Test;
 import com.smartdevicelink.test.Validator;
@@ -41,6 +42,7 @@ public class RemoteControlCapabilitiesTests extends TestCase{
         msg.setAudioControlCapabilities(Test.GENERAL_AUDIOCONTROLCAPABILITIES_LIST);
         msg.setHmiSettingsControlCapabilities(Test.GENERAL_HMISETTINGSCONTROLCAPABILITIES);
         msg.setLightControlCapabilities(Test.GENERAL_LIGHTCONTROLCAPABILITIES);
+        msg.setSeatControlCapabilities(Test.GENERAL_SEATCONTROLCAPABILITIES_LIST);
     }
 
     /**
@@ -54,12 +56,14 @@ public class RemoteControlCapabilitiesTests extends TestCase{
         List<AudioControlCapabilities> audioControlCapabilities = msg.getAudioControlCapabilities();
         HMISettingsControlCapabilities hmiSettingsControlCapabilities  = msg.getHmiSettingsControlCapabilities();
         LightControlCapabilities lightControlCapabilities = msg.getLightControlCapabilities();
+        List<SeatControlCapabilities> seatControlCapabilities = msg.getSeatControlCapabilities();
 
         // Valid Tests
         assertEquals(Test.MATCH, Test.GENERAL_BUTTONCAPABILITIES_LIST.size(), buttonCapabilities.size());
         assertEquals(Test.MATCH, Test.GENERAL_RADIOCONTROLCAPABILITIES_LIST.size(), radioControlCapabilities.size());
         assertEquals(Test.MATCH, Test.GENERAL_CLIMATECONTROLCAPABILITIES_LIST.size(), climateControlCapabilities.size());
         assertEquals(Test.MATCH, Test.GENERAL_AUDIOCONTROLCAPABILITIES_LIST.size(), audioControlCapabilities.size());
+        assertEquals(Test.MATCH, Test.GENERAL_SEATCONTROLCAPABILITIES_LIST.size(), seatControlCapabilities.size());
 
         assertTrue(Test.TRUE, Validator.validateButtonCapabilities(Test.GENERAL_BUTTONCAPABILITIES_LIST, buttonCapabilities));
         assertTrue(Test.TRUE, Validator.validateRadioControlCapabilities(Test.GENERAL_RADIOCONTROLCAPABILITIES_LIST, radioControlCapabilities));
@@ -68,6 +72,8 @@ public class RemoteControlCapabilitiesTests extends TestCase{
         assertTrue(Test.TRUE, Validator.validateHMISettingsControlCapabilities(Test.GENERAL_HMISETTINGSCONTROLCAPABILITIES, hmiSettingsControlCapabilities));
         assertTrue(Test.TRUE, Validator.validateLightControlCapabilities(Test.GENERAL_LIGHTCONTROLCAPABILITIES, lightControlCapabilities));
 
+        assertTrue(Test.TRUE, Validator.validateSeatControlCapabilitiesList(Test.GENERAL_SEATCONTROLCAPABILITIES_LIST, seatControlCapabilities));
+
         // Invalid/Null Tests
         RemoteControlCapabilities msg = new RemoteControlCapabilities();
         assertNotNull(Test.NOT_NULL, msg);
@@ -75,6 +81,7 @@ public class RemoteControlCapabilitiesTests extends TestCase{
         assertNull(Test.NULL, msg.getButtonCapabilities());
         assertNull(Test.NULL, msg.getRadioControlCapabilities());
         assertNull(Test.NULL, msg.getClimateControlCapabilities());
+        assertNull(Test.NULL, msg.getSeatControlCapabilities());
 
         assertNull(Test.NULL, msg.getAudioControlCapabilities());
         assertNull(Test.NULL, msg.getHmiSettingsControlCapabilities());
@@ -89,6 +96,7 @@ public class RemoteControlCapabilitiesTests extends TestCase{
             reference.put(RemoteControlCapabilities.KEY_BUTTON_CAPABILITIES, Test.JSON_BUTTONCAPABILITIES);
             reference.put(RemoteControlCapabilities.KEY_RADIO_CONTROL_CAPABILITIES, Test.JSON_RADIOCONTROLCAPABILITIES);
             reference.put(RemoteControlCapabilities.KEY_CLIMATE_CONTROL_CAPABILITIES, Test.JSON_CLIMATECONTROLCAPABILITIES);
+            reference.put(RemoteControlCapabilities.KEY_SEAT_CONTROL_CAPABILITIES, Test.GENERAL_SEATCONTROLCAPABILITIES_LIST);
 
             reference.put(RemoteControlCapabilities.KEY_AUDIO_CONTROL_CAPABILITIES, Test.GENERAL_AUDIOCONTROLCAPABILITIES_LIST);
             reference.put(RemoteControlCapabilities.KEY_HMI_SETTINGS_CONTROL_CAPABILITIES, JsonRPCMarshaller.serializeHashtable(Test.GENERAL_HMISETTINGSCONTROLCAPABILITIES.getStore()));
@@ -163,6 +171,13 @@ public class RemoteControlCapabilitiesTests extends TestCase{
                     Hashtable<String, Object> hashReference = JsonRPCMarshaller.deserializeJSONObject(objectEquals);
                     Hashtable<String, Object> hashTest = JsonRPCMarshaller.deserializeJSONObject(testEquals);
                     assertTrue(Test.TRUE, Validator.validateLightControlCapabilities( new LightControlCapabilities(hashReference), new LightControlCapabilities(hashTest)));
+                } else if(key.equals(RemoteControlCapabilities.KEY_SEAT_CONTROL_CAPABILITIES)){
+                    List<SeatControlCapabilities> sccReference = (List<SeatControlCapabilities>) JsonUtils.readObjectFromJsonObject(reference, key);
+                    JSONArray sccArray = JsonUtils.readJsonArrayFromJsonObject(underTest, key);
+                    int i = 0;
+                    for(SeatControlCapabilities scc : sccReference){
+                        assertTrue(Validator.validateSeatControlCapabilities(scc, new SeatControlCapabilities(JsonRPCMarshaller.deserializeJSONObject(sccArray.getJSONObject(i++)))));
+                    }
                 }
             }
         } catch(JSONException e){

@@ -7,6 +7,7 @@ import com.smartdevicelink.proxy.rpc.HMISettingsControlData;
 import com.smartdevicelink.proxy.rpc.LightControlData;
 import com.smartdevicelink.proxy.rpc.ModuleData;
 import com.smartdevicelink.proxy.rpc.RadioControlData;
+import com.smartdevicelink.proxy.rpc.SeatControlData;
 import com.smartdevicelink.proxy.rpc.enums.ModuleType;
 import com.smartdevicelink.test.JsonUtils;
 import com.smartdevicelink.test.Test;
@@ -38,6 +39,7 @@ public class ModuleDataTests extends TestCase{
         msg.setAudioControlData(Test.GENERAL_AUDIOCONTROLDATA);
         msg.setHmiSettingsControlData(Test.GENERAL_HMISETTINGSCONTROLDATA);
         msg.setLightControlData(Test.GENERAL_LIGHTCONTROLDATA);
+        msg.setSeatControlData(Test.GENERAL_SEATCONTROLDATA);
     }
 
     /**
@@ -51,6 +53,7 @@ public class ModuleDataTests extends TestCase{
         AudioControlData audioControlData = msg.getAudioControlData();
         HMISettingsControlData hmiSettingsControlData = msg.getHmiSettingsControlData();
         LightControlData lightControlData = msg.getLightControlData();
+        SeatControlData seatControlData = msg.getSeatControlData();
 
         // Valid Tests
         assertEquals(Test.MATCH, Test.GENERAL_MODULETYPE, moduleType);
@@ -59,6 +62,7 @@ public class ModuleDataTests extends TestCase{
         assertTrue(Test.TRUE, Validator.validateAudioControlData(Test.GENERAL_AUDIOCONTROLDATA, audioControlData));
         assertTrue(Test.TRUE, Validator.validateHMISettingsControlData(Test.GENERAL_HMISETTINGSCONTROLDATA, hmiSettingsControlData));
         assertTrue(Test.TRUE, Validator.validateLightControlData(Test.GENERAL_LIGHTCONTROLDATA, lightControlData));
+        assertTrue(Test.TRUE, Validator.validateSeatControlData(Test.GENERAL_SEATCONTROLDATA, seatControlData));
 
         // Invalid/Null Tests
         ModuleData msg = new ModuleData();
@@ -70,6 +74,7 @@ public class ModuleDataTests extends TestCase{
         assertNull(Test.NULL, msg.getAudioControlData());
         assertNull(Test.NULL, msg.getHmiSettingsControlData());
         assertNull(Test.NULL, msg.getLightControlData());
+        assertNull(Test.NULL, msg.getSeatControlData());
     }
 
     public void testJson(){
@@ -82,6 +87,7 @@ public class ModuleDataTests extends TestCase{
             reference.put(ModuleData.KEY_AUDIO_CONTROL_DATA, JsonRPCMarshaller.serializeHashtable(Test.GENERAL_AUDIOCONTROLDATA.getStore()));
             reference.put(ModuleData.KEY_HMI_SETTINGS_CONTROL_DATA, JsonRPCMarshaller.serializeHashtable(Test.GENERAL_HMISETTINGSCONTROLDATA.getStore()));
             reference.put(ModuleData.KEY_LIGHT_CONTROL_DATA, JsonRPCMarshaller.serializeHashtable(Test.GENERAL_LIGHTCONTROLDATA.getStore()));
+            reference.put(ModuleData.KEY_SEAT_CONTROL_DATA, JsonRPCMarshaller.serializeHashtable(Test.GENERAL_SEATCONTROLDATA.getStore()));
 
             JSONObject underTest = msg.serializeJSON();
             assertEquals(Test.MATCH, reference.length(), underTest.length());
@@ -120,6 +126,13 @@ public class ModuleDataTests extends TestCase{
                     Hashtable<String, Object> hashReference = JsonRPCMarshaller.deserializeJSONObject(objectEquals);
                     Hashtable<String, Object> hashTest = JsonRPCMarshaller.deserializeJSONObject(testEquals);
                     assertTrue(Test.TRUE, Validator.validateLightControlData(new LightControlData(hashReference), new LightControlData(hashTest)));
+                } else if(key.equals(ModuleData.KEY_SEAT_CONTROL_DATA)){
+                    JSONObject objectEquals = (JSONObject) JsonUtils.readObjectFromJsonObject(reference, key);
+                    JSONObject testEquals = (JSONObject) JsonUtils.readObjectFromJsonObject(underTest, key);
+                    Hashtable<String, Object> hashReference = JsonRPCMarshaller.deserializeJSONObject(objectEquals);
+                    Hashtable<String, Object> hashTest = JsonRPCMarshaller.deserializeJSONObject(testEquals);
+                    assertTrue(Test.TRUE, Validator.validateSeatControlData(new SeatControlData(hashReference), new SeatControlData(hashTest)));
+
                 } else{
                     assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(reference, key), JsonUtils.readObjectFromJsonObject(underTest, key));
                 }

@@ -11,6 +11,7 @@ public class RemoteControlCapabilities extends RPCStruct{
     public static final String KEY_AUDIO_CONTROL_CAPABILITIES = "audioControlCapabilities";
     public static final String KEY_HMI_SETTINGS_CONTROL_CAPABILITIES = "hmiSettingsControlCapabilities";
     public static final String KEY_LIGHT_CONTROL_CAPABILITIES = "lightControlCapabilities";
+    public static final String KEY_SEAT_CONTROL_CAPABILITIES = "seatControlCapabilities";
 
     public RemoteControlCapabilities() {
     }
@@ -139,5 +140,25 @@ public class RemoteControlCapabilities extends RPCStruct{
      */
     public LightControlCapabilities getLightControlCapabilities() {
         return (LightControlCapabilities) getObject(LightControlCapabilities.class, KEY_LIGHT_CONTROL_CAPABILITIES);
+    }
+
+    /**
+     * Sets the seatControlCapabilities portion of the RemoteControlCapabilities class
+     *
+     * @param seatControlCapabilities
+     * If included, the platform supports seat controls.
+     */
+    public void setSeatControlCapabilities(List<SeatControlCapabilities> seatControlCapabilities) {
+        setValue(KEY_SEAT_CONTROL_CAPABILITIES, seatControlCapabilities);
+    }
+
+    /**
+     * Gets the seatControlCapabilities portion of the RemoteControlCapabilities class
+     *
+     * @return List<SeatControlCapabilities>
+     * If included, the platform supports seat controls.
+     */
+    public List<SeatControlCapabilities> getSeatControlCapabilities() {
+        return (List<SeatControlCapabilities>) getObject(SeatControlCapabilities.class, KEY_SEAT_CONTROL_CAPABILITIES);
     }
 }

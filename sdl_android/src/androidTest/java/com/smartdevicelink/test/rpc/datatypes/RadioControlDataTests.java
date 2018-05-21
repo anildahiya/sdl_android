@@ -41,6 +41,7 @@ public class RadioControlDataTests extends TestCase{
         msg.setRadioEnable(Test.GENERAL_BOOLEAN);
         msg.setState(Test.GENERAL_RADIOSTATE);
         msg.setSisData(Test.GENERAL_SISDATA);
+        msg.setHdRadioEnable(Test.GENERAL_BOOLEAN);
     }
 
     /**
@@ -59,6 +60,7 @@ public class RadioControlDataTests extends TestCase{
         boolean radioEnable = msg.getRadioEnable();
         RadioState state = msg.getState();
         SisData sisData = msg.getSisData();
+        boolean hdRadioEnable = msg.getHdRadioEnable();
 
         // Valid Tests
         assertEquals(Test.MATCH, Test.GENERAL_INT, frequencyInteger);
@@ -72,6 +74,7 @@ public class RadioControlDataTests extends TestCase{
         assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, radioEnable);
         assertEquals(Test.MATCH, Test.GENERAL_RADIOSTATE, state);
         assertTrue(Test.TRUE, Validator.validateSisData(Test.GENERAL_SISDATA, sisData));
+        assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, hdRadioEnable);
 
         // Invalid/Null Tests
         RadioControlData msg = new RadioControlData();
@@ -88,6 +91,7 @@ public class RadioControlDataTests extends TestCase{
         assertNull(Test.NULL, msg.getRadioEnable());
         assertNull(Test.NULL, msg.getState());
         assertNull(Test.NULL, msg.getSisData());
+        assertNull(Test.NULL, msg.getHdRadioEnable());
     }
 
     public void testJson(){
@@ -105,6 +109,7 @@ public class RadioControlDataTests extends TestCase{
             reference.put(RadioControlData.KEY_RADIO_ENABLE, Test.GENERAL_BOOLEAN);
             reference.put(RadioControlData.KEY_STATE, Test.GENERAL_RADIOSTATE);
             reference.put(RadioControlData.KEY_SIS_DATA, JsonRPCMarshaller.serializeHashtable(Test.GENERAL_SISDATA.getStore()));
+            reference.put(RadioControlData.KEY_HD_RADIO_ENABLE, Test.GENERAL_BOOLEAN);
 
             JSONObject underTest = msg.serializeJSON();
             assertEquals(Test.MATCH, reference.length(), underTest.length());

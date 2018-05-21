@@ -73,6 +73,7 @@ import com.smartdevicelink.proxy.rpc.VrHelpItem;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
 import com.smartdevicelink.proxy.rpc.enums.AppHMIType;
 import com.smartdevicelink.proxy.rpc.enums.AppInterfaceUnregisteredReason;
+import com.smartdevicelink.proxy.rpc.enums.AudioStreamingIndicator;
 import com.smartdevicelink.proxy.rpc.enums.AudioStreamingState;
 import com.smartdevicelink.proxy.rpc.enums.AudioType;
 import com.smartdevicelink.proxy.rpc.enums.BitsPerSample;
@@ -279,6 +280,7 @@ public class Test {
 	public static final VideoStreamingFormat           GENERAL_VIDEOSTREAMINGFORMAT           = new VideoStreamingFormat();
 	public static final VideoStreamingState            GENERAL_VIDEOSTREAMINGSTATE            = VideoStreamingState.STREAMABLE;
 	public static final TPMS          				   GENERAL_TPMS          				  = TPMS.UNKNOWN;
+	public static final AudioStreamingIndicator 	   GENERAL_AUDIOSTREAMINGINDICATOR        = AudioStreamingIndicator.PLAY;
 
 	public static final ModuleType 					   GENERAL_MODULETYPE           		  = ModuleType.CLIMATE;
 	public static final Temperature 				   GENERAL_TEMPERATURE                	  = new Temperature();

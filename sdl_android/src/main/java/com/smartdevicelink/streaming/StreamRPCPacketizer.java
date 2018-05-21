@@ -3,6 +3,7 @@ package com.smartdevicelink.streaming;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
+import java.util.zip.CRC32;
 
 import com.smartdevicelink.SdlConnection.SdlSession;
 
@@ -36,15 +37,17 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
     private Object mPauseLock;
     private boolean mPaused;
     private boolean isRPCProtected = false;
+	private boolean isCrcEnabled = false;
 	private OnPutFileUpdateListener callBack; 
 
-	public StreamRPCPacketizer(SdlProxyBase<IProxyListenerBase> proxy, IStreamListener streamListener, InputStream is, RPCRequest request, SessionType sType, byte rpcSessionID, byte wiproVersion, long lLength, SdlSession session) throws IOException {
+	public StreamRPCPacketizer(SdlProxyBase<IProxyListenerBase> proxy, IStreamListener streamListener, InputStream is, RPCRequest request, SessionType sType, byte rpcSessionID, byte wiproVersion, long lLength, SdlSession session, boolean bCrcEnabled) throws IOException {
 		super(streamListener, is, request, sType, rpcSessionID, wiproVersion, session);
 		lFileSize = lLength;
 		iInitialCorrID = request.getCorrelationID();
         mPauseLock = new Object();
         mPaused = false;
         isRPCProtected = request.isPayloadProtected();
+        isCrcEnabled = bCrcEnabled;
 		if (proxy != null)
 		{
 			_proxy = proxy;
@@ -92,7 +95,7 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 		return;	
 	}
 	
-	private void handleStreamException(RPCResponse rpc, Exception e, String error)
+	private void handleStreamException(RPCResponse rpc, Exception e, String error, Long crcValue)
 	{
 		StreamRPCResponse result = new StreamRPCResponse();
 		result.setFileName(sFileName);
@@ -102,6 +105,7 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 			result.setSuccess(rpc.getSuccess());
 			result.setResultCode(rpc.getResultCode());
 			result.setInfo(rpc.getInfo());
+			result.setCrc(crcValue);
 		}
 		else
 		{
@@ -172,7 +176,7 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 
 			if (iOffsetCounter != iSkipBytes)
 			{
-				handleStreamException(null,null," Error, PutFile offset invalid for file: " + sFileName);
+				handleStreamException(null,null," Error, PutFile offset invalid for file: " + sFileName, null);
 			}
 			if(callBack!=null){
 				callBack.onStart(_request.getCorrelationID(), lFileSize);
@@ -201,9 +205,7 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 					if (msg.getOffset() != 0)
 			        	msg.setLength((Long)null); //only need to send length when offset 0
 
-					msgBytes = JsonRPCMarshaller.marshall(msg, _wiproVersion);					
 					pm = new ProtocolMessage();
-					pm.setData(msgBytes);
 
 					pm.setSessionID(_rpcSessionID);
 					pm.setMessageType(MessageType.RPC);
@@ -215,6 +217,18 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 					else
 						pm.setBulkDataNoCopy(buffer);
 
+					if(isCrcEnabled){
+						CRC32 crc = new CRC32();
+						crc.update(buffer, 0, length);
+						Long crcValue = crc.getValue();
+						msg.setCrc(crcValue);
+					} else {
+						msg.setCrc(null);
+					}
+
+					msgBytes = JsonRPCMarshaller.marshall(msg, _wiproVersion);
+					pm.setData(msgBytes);
+
 					pm.setCorrID(msg.getCorrelationID());
 					pm.setPayloadProtected(isRPCProtected);
 					priorityCoefficient++;
@@ -225,6 +239,7 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 					notification.setFileSize(iFileLength);										
 			        iOffsetCounter = iOffsetCounter + length;
 			        notification.setBytesComplete(iOffsetCounter);
+			        notification.setCrc(msg.getCrc());
 			        notificationList.put(msg.getCorrelationID(),notification);
 			        
 			        msg.setOffset(iOffsetCounter);
@@ -235,7 +250,7 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 				}
 			}
 		} catch (Exception e) {
-			handleStreamException(null, e, "");
+			handleStreamException(null, e, "", null);
 		}
 	}
 
@@ -261,7 +276,7 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 			if(callBack!=null){
 				callBack.onError(response.getCorrelationID(), response.getResultCode(), response.getInfo());
 			}
-			handleStreamException(response, null, "");
+			handleStreamException(response, null, "", streamNote.getCrc());
 			
 		}		
 		
@@ -279,7 +294,7 @@ public class StreamRPCPacketizer extends AbstractPacketizer implements IPutFileR
 	public void onPutFileStreamError(Exception e, String info) 
 	{
 		if (thread != null)
-			handleStreamException(null, e, info);
+			handleStreamException(null, e, info, null);
 		
 	}
 }

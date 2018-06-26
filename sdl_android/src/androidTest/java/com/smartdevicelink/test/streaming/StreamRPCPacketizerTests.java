@@ -27,7 +27,7 @@ public class StreamRPCPacketizerTests extends TestCase {
 		
 	/**
 	 * This is a unit test for the following methods : 
-	 * {@link com.smartdevicelink.streaming.StreamRPCPacketizer#StreamRPCPacketizer(SdlProxyBase, IStreamListener, InputStream, RPCRequest, SessionType, byte, byte, long, SdlSession)}
+	 * {@link com.smartdevicelink.streaming.StreamRPCPacketizer#StreamRPCPacketizer(SdlProxyBase, IStreamListener, InputStream, RPCRequest, SessionType, byte, byte, long, SdlSession, boolean)}
 	 */
 	public void testConstructor () {
 		
@@ -37,15 +37,17 @@ public class StreamRPCPacketizerTests extends TestCase {
 		RPCRequest  testRequest      = new RPCRequest("test");
 		SessionType testSessionType  = SessionType.RPC;
 		InputStream testInputStream  = null;
+		boolean bCrcEnabled 		 = Test.GENERAL_BOOLEAN;
 		IStreamListener testListener = new MockStreamListener();
-		
+
 		byte            testWiproVersion = (byte) 0x0B;
 		MockInterfaceBroker _interfaceBroker = new MockInterfaceBroker();
 		BaseTransportConfig _transportConfig = new BTTransportConfig(true);
 		SdlSession testSdlSession = SdlSession.createSession(testWiproVersion,_interfaceBroker, _transportConfig);
 		try {
 			testInputStream = new BufferedInputStream(new ByteArrayInputStream("sdl streaming test".getBytes()));
-			StreamRPCPacketizer testStreamRpcPacketizer = new StreamRPCPacketizer(null, testListener, testInputStream, testRequest, testSessionType, testSessionId, testWV, testWV, testSdlSession);
+			StreamRPCPacketizer testStreamRpcPacketizer = new StreamRPCPacketizer(null, testListener, testInputStream, testRequest, testSessionType, testSessionId, testWV, testWV, testSdlSession, bCrcEnabled);
+
 			assertNotNull(Test.NOT_NULL, testStreamRpcPacketizer);
 			
 			// NOTE: Cannot test thread handling methods currently.

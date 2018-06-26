@@ -242,20 +242,20 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
 		}
 	}
 
-	public void startRPCStream(InputStream is, RPCRequest request, SessionType sType, byte rpcSessionID, byte wiproVersion) {
+	public void startRPCStream(InputStream is, RPCRequest request, SessionType sType, byte rpcSessionID, byte wiproVersion, boolean isCrcEnabled) {
 		try {
-			mRPCPacketizer = new StreamRPCPacketizer(null, this, is, request, sType, rpcSessionID, wiproVersion, 0, this);
+			mRPCPacketizer = new StreamRPCPacketizer(null, this, is, request, sType, rpcSessionID, wiproVersion, 0, this, isCrcEnabled);
 			mRPCPacketizer.start();
 		} catch (Exception e) {
 	        Log.e("SdlConnection", "Unable to start streaming:" + e.toString());
 	    }
 	}
 
-	public OutputStream startRPCStream(RPCRequest request, SessionType sType, byte rpcSessionID, byte wiproVersion) {
+	public OutputStream startRPCStream(RPCRequest request, SessionType sType, byte rpcSessionID, byte wiproVersion, boolean isCrcEnabled) {
 		try {
 			OutputStream os = new PipedOutputStream();
 	        InputStream is = new PipedInputStream((PipedOutputStream) os);
-			mRPCPacketizer = new StreamRPCPacketizer(null, this, is, request, sType, rpcSessionID, wiproVersion, 0, this);
+			mRPCPacketizer = new StreamRPCPacketizer(null, this, is, request, sType, rpcSessionID, wiproVersion, 0, this, isCrcEnabled);
 			mRPCPacketizer.start();
 			return os;
 		} catch (Exception e) {

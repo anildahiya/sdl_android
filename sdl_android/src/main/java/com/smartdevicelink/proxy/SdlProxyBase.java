@@ -3721,7 +3721,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	}
 
 	@SuppressWarnings("unchecked")
-	private RPCStreamController startRPCStream(String sLocalFile, PutFile request, SessionType sType, byte rpcSessionID, byte wiproVersion)
+	private RPCStreamController startRPCStream(String sLocalFile, PutFile request, SessionType sType, byte rpcSessionID, byte wiproVersion, boolean bCrcEnabled)
 	{		
 		if (sdlSession == null) return null;		
 					
@@ -3736,7 +3736,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		}
 
 		try {
-			StreamRPCPacketizer rpcPacketizer = new StreamRPCPacketizer((SdlProxyBase<IProxyListenerBase>) this, sdlSession, is, request, sType, rpcSessionID, wiproVersion, lSize, sdlSession);
+			StreamRPCPacketizer rpcPacketizer = new StreamRPCPacketizer((SdlProxyBase<IProxyListenerBase>) this, sdlSession, is, request, sType, rpcSessionID, wiproVersion, lSize, sdlSession, bCrcEnabled);
 			rpcPacketizer.start();
 			return new RPCStreamController(rpcPacketizer, request.getCorrelationID());
 		} catch (Exception e) {
@@ -3746,7 +3746,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	}
 
 	@SuppressWarnings({"unchecked", "UnusedReturnValue"})
-	private RPCStreamController startRPCStream(InputStream is, PutFile request, SessionType sType, byte rpcSessionID, byte wiproVersion)
+	private RPCStreamController startRPCStream(InputStream is, PutFile request, SessionType sType, byte rpcSessionID, byte wiproVersion, boolean bCrcEnabled)
 	{		
 		if (sdlSession == null) return null;
 		Long lSize = request.getLength();
@@ -3757,7 +3757,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		}		
 		
 		try {
-			StreamRPCPacketizer rpcPacketizer = new StreamRPCPacketizer((SdlProxyBase<IProxyListenerBase>) this, sdlSession, is, request, sType, rpcSessionID, wiproVersion, lSize, sdlSession);
+			StreamRPCPacketizer rpcPacketizer = new StreamRPCPacketizer((SdlProxyBase<IProxyListenerBase>) this, sdlSession, is, request, sType, rpcSessionID, wiproVersion, lSize, sdlSession, bCrcEnabled);
 			rpcPacketizer.start();
 			return new RPCStreamController(rpcPacketizer, request.getCorrelationID());
 		} catch (Exception e) {
@@ -3766,29 +3766,40 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
         }			
 	}
 
-	private RPCStreamController startPutFileStream(String sPath, PutFile msg) {
+	private RPCStreamController startPutFileStream(String sPath, PutFile msg, boolean isCrcEnabled) {
 		if (sdlSession == null) return null;		
-		return startRPCStream(sPath, msg, SessionType.RPC, sdlSession.getSessionId(), _wiproVersion);		
+		return startRPCStream(sPath, msg, SessionType.RPC, sdlSession.getSessionId(), _wiproVersion, isCrcEnabled);
 	}
 
-	private RPCStreamController startPutFileStream(InputStream is, PutFile msg) {
+	private RPCStreamController startPutFileStream(InputStream is, PutFile msg, boolean isCrcEnabled) {
 		if (sdlSession == null) return null;		
 		if (is == null) return null;
-		return startRPCStream(is, msg, SessionType.RPC, sdlSession.getSessionId(), _wiproVersion);
+		return startRPCStream(is, msg, SessionType.RPC, sdlSession.getSessionId(), _wiproVersion, isCrcEnabled);
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
+	@Deprecated
 	public boolean startRPCStream(InputStream is, RPCRequest msg) {
-		if (sdlSession == null) return false;		
-		sdlSession.startRPCStream(is, msg, SessionType.RPC, sdlSession.getSessionId(), _wiproVersion);
+		return startRPCStream(is, msg, false);
+	}
+
+	@SuppressWarnings("UnusedReturnValue")
+	public boolean startRPCStream(InputStream is, RPCRequest msg, boolean isCrcEnabled) {
+		if (sdlSession == null) return false;
+		sdlSession.startRPCStream(is, msg, SessionType.RPC, sdlSession.getSessionId(), _wiproVersion, isCrcEnabled);
 		return true;
 	}
-	
+
+	@Deprecated
 	public OutputStream startRPCStream(RPCRequest msg) {
-		if (sdlSession == null) return null;		
-		return sdlSession.startRPCStream(msg, SessionType.RPC, sdlSession.getSessionId(), _wiproVersion);				
+		return startRPCStream(msg, false);
 	}
-	
+
+	public OutputStream startRPCStream(RPCRequest msg, boolean isCrcEnabled) {
+		if (sdlSession == null) return null;
+		return sdlSession.startRPCStream(msg, SessionType.RPC, sdlSession.getSessionId(), _wiproVersion, isCrcEnabled);
+	}
+
 	public void endRPCStream() {
 		if (sdlSession == null) return;		
 		sdlSession.stopRPCStream();
@@ -6163,16 +6174,39 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @throws SdlException if an unrecoverable error is encountered
 	 */
 	@SuppressWarnings("unused")
+	@Deprecated
 	public void putFileStream(InputStream inputStream, @NonNull String fileName, Long offset, Long length) throws SdlException {
 		PutFile msg = new PutFile(fileName, FileType.BINARY);
 		msg.setCorrelationID(10000);
 		msg.setSystemFile(true);
 		msg.setOffset(offset);
 		msg.setLength(length);
-
 		startRPCStream(inputStream, msg);
 	}
-	
+
+	/**
+	 * Used to push a binary stream of file data onto the module from a mobile
+	 * device. Responses are captured through callback on IProxyListener.
+	 *
+	 * @param inputStream The input stream of byte data that will be read from.
+	 * @param fileName The SDL file reference name used by the RPC.
+	 * @param offset The data offset in bytes. A value of zero is used to
+	 * indicate data starting from the beginning of the file and a value greater
+	 * than zero is used for resuming partial data chunks.
+	 * @param length The total length of the file being sent.
+	 * @param isCrcEnabled Indicates if CRC needs to be used.
+	 * @throws SdlException if an unrecoverable error is encountered
+	 */
+	@SuppressWarnings("unused")
+	public void putFileStream(InputStream inputStream, @NonNull String fileName, Long offset, Long length, boolean isCrcEnabled) throws SdlException {
+		PutFile msg = new PutFile(fileName, FileType.BINARY);
+		msg.setCorrelationID(10000);
+		msg.setSystemFile(true);
+		msg.setOffset(offset);
+		msg.setLength(length);
+		startRPCStream(inputStream, msg, isCrcEnabled);
+	}
+
 	/** 
 	 * Used to push a binary stream of file data onto the module from a mobile device.
 	 * Responses are captured through callback on IProxyListener.
@@ -6211,6 +6245,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @throws SdlException if an unrecoverable error is encountered
 	 */
 	@SuppressWarnings("unused")
+	@Deprecated
 	public OutputStream putFileStream(@NonNull String fileName, Long offset, Long length) throws SdlException {
 		PutFile msg = new PutFile(fileName, FileType.BINARY);
 		msg.setCorrelationID(10000);
@@ -6219,6 +6254,29 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		msg.setLength(length);
 
 		return startRPCStream(msg);
+	}
+
+	/**
+	 * Used to push a binary stream of file data onto the module from a mobile
+	 * device. Responses are captured through callback on IProxyListener.
+	 *
+	 * @param fileName The SDL file reference name used by the RPC.
+	 * @param offset The data offset in bytes. A value of zero is used to
+	 * indicate data starting from the beginning of the file and a value greater
+	 * than zero is used for resuming partial data chunks.
+	 * @param length The total length of the file being sent.
+	 * @param isCrcEnabled Indicates if CRC needs to be used.
+	 * @throws SdlException if an unrecoverable error is encountered
+	 */
+	@SuppressWarnings("unused")
+	public OutputStream putFileStream(@NonNull String fileName, Long offset, Long length, boolean isCrcEnabled) throws SdlException {
+		PutFile msg = new PutFile(fileName, FileType.BINARY);
+		msg.setCorrelationID(10000);
+		msg.setSystemFile(true);
+		msg.setOffset(offset);
+		msg.setLength(length);
+
+		return startRPCStream(msg, isCrcEnabled);
 	}
 
 	/**
@@ -6269,6 +6327,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @throws SdlException if an unrecoverable error is encountered
 	 */
 	@SuppressWarnings("unused")
+	@Deprecated
 	public void putFileStream(InputStream inputStream, @NonNull String fileName, Long offset, Long length, FileType fileType, Boolean isPersistentFile, Boolean isSystemFile, OnPutFileUpdateListener cb) throws SdlException {
 		PutFile msg = new PutFile(fileName, FileType.BINARY);
 		msg.setCorrelationID(10000);
@@ -6278,7 +6337,37 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		msg.setOnPutFileUpdateListener(cb);
 		startRPCStream(inputStream, msg);
 	}
-	
+
+	/**
+	 * Used to push a binary stream of file data onto the module from a mobile
+	 * device. Responses are captured through callback on IProxyListener.
+	 *
+	 * @param inputStream The input stream of byte data that will be read from.
+	 * @param fileName The SDL file reference name used by the RPC.
+	 * @param offset The data offset in bytes. A value of zero is used to
+	 * indicate data starting from the beginning of the file and a value greater
+	 * than zero is used for resuming partial data chunks.
+	 * @param length The total length of the file being sent.
+	 * @param fileType The selected file type. See the {@link FileType} enum for
+	 * details.
+	 * @param isPersistentFile Indicates if the file is meant to persist between
+	 * sessions / ignition cycles.
+	 * @param isSystemFile Indicates if the file is meant to be passed through
+	 * core to elsewhere in the system.
+	 * @param isCrcEnabled Indicates if CRC needs to be used.
+	 * @throws SdlException if an unrecoverable error is encountered
+	 */
+	@SuppressWarnings("unused")
+	public void putFileStream(InputStream inputStream, @NonNull String fileName, Long offset, Long length, FileType fileType, Boolean isPersistentFile, Boolean isSystemFile, OnPutFileUpdateListener cb, boolean isCrcEnabled) throws SdlException {
+		PutFile msg = new PutFile(fileName, FileType.BINARY);
+		msg.setCorrelationID(10000);
+		msg.setSystemFile(true);
+		msg.setOffset(offset);
+		msg.setLength(length);
+		msg.setOnPutFileUpdateListener(cb);
+		startRPCStream(inputStream, msg, isCrcEnabled);
+	}
+
 	/**
 	 * Used to push a binary stream of file data onto the module from a mobile device.
 	 * Responses are captured through callback on IProxyListener.
@@ -6326,6 +6415,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @throws SdlException if an unrecoverable error is encountered
 	 */
 	@SuppressWarnings("unused")
+	@Deprecated
 	public OutputStream putFileStream(@NonNull String fileName, Long offset, Long length, FileType fileType, Boolean isPersistentFile, Boolean isSystemFile, OnPutFileUpdateListener cb) throws SdlException {
 		PutFile msg = new PutFile(fileName, FileType.BINARY);
 		msg.setCorrelationID(10000);
@@ -6336,7 +6426,36 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 
 		return startRPCStream(msg);
 	}
-	
+
+	/**
+	 * Used to push a binary stream of file data onto the module from a mobile
+	 * device. Responses are captured through callback on IProxyListener.
+	 *
+	 * @param fileName The SDL file reference name used by the RPC.
+	 * @param offset The data offset in bytes. A value of zero is used to
+	 * indicate data starting from the beginning of the file and a value greater
+	 * than zero is used for resuming partial data chunks.
+	 * @param length The total length of the file being sent.
+	 * @param fileType The selected file type. See the {@link FileType} enum for
+	 * details.
+	 * @param isPersistentFile Indicates if the file is meant to persist between
+	 * sessions / ignition cycles.
+	 * @param isSystemFile Indicates if the file is meant to be passed through
+	 * core to elsewhere in the system.
+	 * @param isCrcEnabled Indicates if CRC needs to be used.
+	 * @throws SdlException if an unrecoverable error is encountered
+	 */
+	@SuppressWarnings("unused")
+	public OutputStream putFileStream(@NonNull String fileName, Long offset, Long length, FileType fileType, Boolean isPersistentFile, Boolean isSystemFile, OnPutFileUpdateListener cb, boolean isCrcEnabled) throws SdlException {
+		PutFile msg = new PutFile(fileName, FileType.BINARY);
+		msg.setCorrelationID(10000);
+		msg.setSystemFile(true);
+		msg.setOffset(offset);
+		msg.setLength(length);
+		msg.setOnPutFileUpdateListener(cb);
+		return startRPCStream(msg, isCrcEnabled);
+	}
+
 	/**
 	 * Used to push a stream of putfile RPC's containing binary data from a mobile device to the module.
 	 * Responses are captured through callback on IProxyListener.
@@ -6364,7 +6483,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		msg.setOffset(iOffset);
 		msg.setLength(0);
 
-		return startPutFileStream(sPath, msg);
+		return startPutFileStream(sPath, msg, false);
 	}
 	
 	/**
@@ -6390,6 +6509,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @throws SdlException if an unrecoverable error is encountered
 	 */
 	@SuppressWarnings("unused")
+	@Deprecated
 	public RPCStreamController putFileStream(String path, @NonNull String fileName, Long offset, @NonNull FileType fileType, Boolean isPersistentFile, Boolean isSystemFile, Boolean isPayloadProtected, Integer correlationId, OnPutFileUpdateListener cb ) throws SdlException {
 		PutFile msg = new PutFile(fileName, fileType);
 		msg.setCorrelationID(correlationId);
@@ -6400,7 +6520,43 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		msg.setPayloadProtected(isPayloadProtected);
 		msg.setOnPutFileUpdateListener(cb);
 
-		return startPutFileStream(path,msg);
+		return startPutFileStream(path,msg, false);
+	}
+
+	/**
+	 * Used to push a binary stream of file data onto the module from a mobile
+	 * device. Responses are captured through callback on IProxyListener.
+	 *
+	 * @param path The physical file path on the mobile device.
+	 * @param fileName The SDL file reference name used by the RPC.
+	 * @param offset The data offset in bytes. A value of zero is used to
+	 * indicate data starting from the beginning of the file and a value greater
+	 * than zero is used for resuming partial data chunks.
+	 * @param fileType The selected file type. See the {@link FileType} enum for
+	 * details.
+	 * @param isPersistentFile Indicates if the file is meant to persist between
+	 * sessions / ignition cycles.
+	 * @param isSystemFile Indicates if the file is meant to be passed through
+	 * core to elsewhere in the system.
+	 * @param correlationId A unique id that correlates each RPCRequest and
+	 * RPCResponse.
+	 * @param isCrcEnabled Indicates if CRC needs to be used.
+	 * @return RPCStreamController If the putFileStream was not started
+	 * successfully null is returned, otherwise a valid object reference is
+	 * returned .
+	 * @throws SdlException if an unrecoverable error is encountered
+	 */
+	@SuppressWarnings("unused")
+	public RPCStreamController putFileStream(String path, @NonNull String fileName, Long offset, @NonNull FileType fileType, Boolean isPersistentFile, Boolean isSystemFile, Boolean isPayloadProtected, Integer correlationId, OnPutFileUpdateListener cb, boolean isCrcEnabled) throws SdlException {
+		PutFile msg = new PutFile(fileName, fileType);
+		msg.setCorrelationID(correlationId);
+		msg.setPersistentFile(isPersistentFile);
+		msg.setSystemFile(isSystemFile);
+		msg.setOffset(offset);
+		msg.setLength(0L);
+		msg.setPayloadProtected(isPayloadProtected);
+		msg.setOnPutFileUpdateListener(cb);
+		return startPutFileStream(path,msg, isCrcEnabled);
 	}
 
 	/**
@@ -6430,7 +6586,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		msg.setOffset(iOffset);
 		msg.setLength(iLength);
 
-		return startPutFileStream(is, msg);
+		return startPutFileStream(is, msg, false);
 	}
 	
 	/**
@@ -6454,6 +6610,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 	 * @throws SdlException if an unrecoverable error is encountered
 	 */
 	@SuppressWarnings("unused")
+	@Deprecated
 	public RPCStreamController putFileStream(InputStream inputStream, @NonNull String fileName, Long offset, Long length, @NonNull FileType fileType, Boolean isPersistentFile, Boolean isSystemFile, Boolean isPayloadProtected, Integer correlationId) throws SdlException {
 		PutFile msg = new PutFile(fileName, fileType);
 		msg.setCorrelationID(correlationId);
@@ -6463,7 +6620,40 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		msg.setLength(length);
 		msg.setPayloadProtected(isPayloadProtected);
 
-		return startPutFileStream(inputStream, msg);
+		return startPutFileStream(inputStream, msg, false);
+	}
+
+	/**
+	 * Used to push a binary stream of file data onto the module from a mobile
+	 * device. Responses are captured through callback on IProxyListener.
+	 *
+	 * @param inputStream The input stream of byte data that will be read from.
+	 * @param fileName The SDL file reference name used by the RPC.
+	 * @param offset The data offset in bytes. A value of zero is used to
+	 * indicate data starting from the beginning of the file and a value greater
+	 * than zero is used for resuming partial data chunks.
+	 * @param length The total length of the file being sent.
+	 * @param fileType The selected file type. See the {@link FileType} enum for
+	 * details.
+	 * @param isPersistentFile Indicates if the file is meant to persist between
+	 * sessions / ignition cycles.
+	 * @param isSystemFile Indicates if the file is meant to be passed through
+	 * core to elsewhere in the system.
+	 * @param correlationId A unique id that correlates each RPCRequest and
+	 * RPCResponse.
+	 * @param isCrcEnabled Indicates if CRC needs to be used.
+	 * @throws SdlException if an unrecoverable error is encountered
+	 */
+	@SuppressWarnings("unused")
+	public RPCStreamController putFileStream(InputStream inputStream, @NonNull String fileName, Long offset, Long length, @NonNull FileType fileType, Boolean isPersistentFile, Boolean isSystemFile, Boolean isPayloadProtected, Integer correlationId, boolean isCrcEnabled) throws SdlException {
+		PutFile msg = new PutFile(fileName, fileType);
+		msg.setCorrelationID(correlationId);
+		msg.setPersistentFile(isPersistentFile);
+		msg.setSystemFile(isSystemFile);
+		msg.setOffset(offset);
+		msg.setLength(length);
+		msg.setPayloadProtected(isPayloadProtected);
+		return startPutFileStream(inputStream, msg, isCrcEnabled);
 	}
 
 	/**

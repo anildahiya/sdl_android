@@ -119,6 +119,7 @@ public class PutFile extends RPCRequest {
     public static final String KEY_SDL_FILE_NAME = "syncFileName";
     public static final String KEY_OFFSET = "offset";
     public static final String KEY_LENGTH = "length";
+	public static final String KEY_CRC = "crc";
     
 
 	/**
@@ -309,5 +310,13 @@ public class PutFile extends RPCRequest {
     
 	public OnPutFileUpdateListener getOnPutFileUpdateListener() {
 		return (OnPutFileUpdateListener)getOnRPCResponseListener();
+	}
+
+	public Long getCrc() {
+		return getLong( KEY_CRC );
+	}
+
+	public void setCrc( Long crc ) {
+		setParameters(KEY_CRC, crc);
 	}
 }

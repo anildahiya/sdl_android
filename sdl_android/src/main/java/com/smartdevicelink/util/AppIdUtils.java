@@ -16,14 +16,23 @@ public class AppIdUtils {
     }
 
     public static String removeDash(String value) {
-        String uuid = value.toString().replace("-", "");
-        return uuid;
+
+        if(value == null) return null;
+
+        return value.replace("-", "");
     }
 
     public static String getShortAppId(String value) {
+
+        if(value == null) return null;
+
         String uuidStr = removeDash(value);
-        uuidStr.substring(0, Math.min(uuidStr.length(), 10));
-        return uuidStr;
+
+        if(uuidStr != null){
+            return uuidStr.substring(0, Math.min(uuidStr.length(), 10));
+        } else {
+            return  null;
+        }
     }
 
 }

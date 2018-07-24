@@ -1,8 +1,10 @@
 package com.smartdevicelink.SdlConnection;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
 
@@ -44,8 +46,11 @@ import java.io.PipedOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static com.smartdevicelink.util.AndroidTools.createBroadcastIntent;
+import static com.smartdevicelink.util.AndroidTools.sendBroadcastIntent;
+import static com.smartdevicelink.util.AndroidTools.updateBroadcastIntent;
 
 public class SdlSession implements  IProtocolListener, TransportManager.TransportEventListener, IHeartbeatMonitorListener, IStreamListener, ISecurityInitializedListener {
 	private static final String TAG = "SdlSession";
@@ -74,6 +79,8 @@ public class SdlSession implements  IProtocolListener, TransportManager.Transpor
 
 	protected TransportManager transportManager;
 	protected WiProProtocol wiProProtocol;
+	private String applicationName = null;
+	private String appId = null;
 
 
 	@Deprecated
@@ -86,10 +93,20 @@ public class SdlSession implements  IProtocolListener, TransportManager.Transpor
 		return session;
 	}
 
-	public SdlSession(ISdlConnectionListener listener, MultiplexTransportConfig config){
+	public SdlSession(ISdlConnectionListener listener, MultiplexTransportConfig config, String applicationName, String appId){
 		transportConfig = config;
 		sessionListener = listener;
-		wiProProtocol = new WiProProtocol(this);
+		this.applicationName = applicationName;
+		this.appId = appId;
+
+		Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+		updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlSession()");
+		String sDetailedInfo = "PrimaryTransports value: " + ((config.getPrimaryTransports() != null) ?	TextUtils.join(", ", config.getPrimaryTransports()) : "null") + "\n";
+
+		updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+		sendBroadcastIntent(sendIntent);
+
+		wiProProtocol = new WiProProtocol(this, this.applicationName, this.appId);
 		wiProProtocol.setPrimaryTransports(config.getPrimaryTransports());
 		wiProProtocol.setRequiresHighBandwidth(config.requiresHighBandwidth());
 
@@ -589,7 +606,7 @@ public class SdlSession implements  IProtocolListener, TransportManager.Transpor
 		if(config.getPrimaryTransports().contains(TransportType.BLUETOOTH)
 				&& !config.requiresHighBandwidth()){
 			Log.d(TAG, "Entering legacy mode; creating new protocol instance");
-			wiProProtocol = new WiProProtocol(this);
+			wiProProtocol = new WiProProtocol(this, this.applicationName, this.appId);
 			wiProProtocol.setPrimaryTransports(((MultiplexTransportConfig)transportConfig).getPrimaryTransports());
 			return true;
 		}else{

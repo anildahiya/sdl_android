@@ -1,6 +1,8 @@
 package com.smartdevicelink.protocol;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.smartdevicelink.SdlConnection.SdlConnection;
@@ -32,6 +34,10 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+import static com.smartdevicelink.util.AndroidTools.createBroadcastIntent;
+import static com.smartdevicelink.util.AndroidTools.sendBroadcastIntent;
+import static com.smartdevicelink.util.AndroidTools.updateBroadcastIntent;
 
 public class WiProProtocol extends AbstractProtocol {
 	private static final String TAG ="SdlProtocol";
@@ -83,13 +89,15 @@ public class WiProProtocol extends AbstractProtocol {
 	Map<TransportType, Bundle> secondaryTransportParams;
 	TransportType connectedPrimaryTransport;
 	Map<TransportType, List<ISecondaryTransportListener>> secondaryTransportListeners = new HashMap<>();
+	private String applicationName = null;
+	private String appId = null;
 
 	// Hide no-arg ctor
 	private WiProProtocol() {
 		super(null);
 	} // end-ctor
 
-	public WiProProtocol(IProtocolListener protocolListener) {
+	public WiProProtocol(IProtocolListener protocolListener, String applicationName, String appId) {
 		super(protocolListener);
 
 
@@ -100,6 +108,9 @@ public class WiProProtocol extends AbstractProtocol {
 		}
 
 		mtus.put(SessionType.RPC, new Long(V1_V2_MTU_SIZE  - HEADER_SIZE));
+
+		this.applicationName = applicationName;
+		this.appId = appId;
 	} // end-ctor
 	
 	/**
@@ -126,6 +137,10 @@ public class WiProProtocol extends AbstractProtocol {
 	 * For logging purposes, prints active services on each connected transport
 	 */
 	public void printActiveTransports(){
+		Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+		updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "WiproProtocol printActiveTransports" +
+				"()");
+
 		StringBuilder activeTransportString = new StringBuilder();
 		for(Map.Entry entry : activeTransports.entrySet()){
 			String sessionString = null;
@@ -141,10 +156,17 @@ public class WiProProtocol extends AbstractProtocol {
 						+ " Transport: " + entry.getValue().toString() + "\n");
 			}
 		}
+		String sDetailedInfo = "Active transports value: " + activeTransportString.toString() + "\n";
+		updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+		sendBroadcastIntent(sendIntent);
 		Log.d(TAG, "Active transports --- \n" + activeTransportString.toString());
 	}
 
 	private void printSecondaryTransportDetails(List<String> secondary, List<Integer> audio, List<Integer> video){
+		Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+		updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "WiproProtocol printSecondaryTransportDetails" +
+				"()");
+
 		StringBuilder secondaryDetailsBldr = new StringBuilder();
 		secondaryDetailsBldr.append("Checking secondary transport details \n");
 
@@ -172,6 +194,9 @@ public class WiProProtocol extends AbstractProtocol {
 			secondaryDetailsBldr.append("\n");
 		}
 
+		String sDetailedInfo = "secondary transports value: " + secondaryDetailsBldr.toString() + "\n";
+		updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+		sendBroadcastIntent(sendIntent);
 		Log.d(TAG, secondaryDetailsBldr.toString());
 	}
 
@@ -188,6 +213,25 @@ public class WiProProtocol extends AbstractProtocol {
 			transportPriorityForServiceMap = new HashMap<>();
 		}
 		this.transportPriorityForServiceMap.put(serviceType, order);
+
+		Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+		updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "WiproProtocol setTransortPriorityForService" +
+				"()");
+
+		String serviceTypeVal = "";
+
+		if(serviceType == SessionType.NAV){
+			serviceTypeVal = "NAV";
+		} else if (serviceType == SessionType.PCM){
+			serviceTypeVal = "PCM";
+		} else if (serviceType == SessionType.RPC){
+			serviceTypeVal = "RPC";
+		}
+
+		String sDetailedInfo = "service Type: " + serviceTypeVal + " and order: " + TextUtils.join
+				(", ", order) +"\n";
+		updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+		sendBroadcastIntent(sendIntent);
 		for(SessionType service : HIGH_BANDWIDTH_SERVICES){
 			if (transportPriorityForServiceMap.get(service) != null
 					&& transportPriorityForServiceMap.get(service).contains(PRIMARY_TRANSPORT_ID)) {
@@ -250,9 +294,19 @@ public class WiProProtocol extends AbstractProtocol {
 		for(TransportType t : transportTypes) {
 			Log.d(TAG, t.toString());
 		}
+
+		Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+		updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "WiproProtocol onTransportsConnectedUpdate" +
+				"()");
+
 		List<TransportType> connectedTransports = Arrays.asList(transportTypes);
+
+		String sDetailedInfo = "connectedTransports: " + TextUtils.join(", ", connectedTransports) +"\n";
 		if(!connectedTransports.contains(connectedPrimaryTransport)){
+			sDetailedInfo += "connectedPrimaryTransport is null.";
 			connectedPrimaryTransport = null;
+			updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+			sendBroadcastIntent(sendIntent);
 			return;
 		}
 		if(activeTransports.get(SessionType.RPC) == null){
@@ -261,6 +315,7 @@ public class WiProProtocol extends AbstractProtocol {
 			startService(SessionType.RPC,(byte)0x00,false);
 			return;
 		}else if(requiresHighBandwidth){
+			sDetailedInfo += "requiresHighBandwidth." + "\n";
 			for(TransportType transportType : transportTypes){
 				if(supportedSecondaryTransports.contains(transportType)){
 					SdlSession session = null;
@@ -269,16 +324,21 @@ public class WiProProtocol extends AbstractProtocol {
 					}
 					if(session != null) {
 						Log.d(TAG, "Registering secondary transport!");
+						sDetailedInfo += "Registering secondary transport: " + transportType + "\n";
 						registerSecondaryTransport(session.getSessionId(), transportType);
 					}else{
+						sDetailedInfo += "Session was null"+ "\n";
 						Log.d(TAG, "Session was null");
 					}
 					return; // For now, only support registering one secondary transport
 				}else{
+					sDetailedInfo += "not supported as secondary transport"+ "\n";
 					Log.d(TAG, transportType.toString() + " not supported as secondary transport");
 				}
 			}
 		}
+		updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+		sendBroadcastIntent(sendIntent);
 	}
 
 	/**
@@ -287,14 +347,21 @@ public class WiProProtocol extends AbstractProtocol {
 	 * @return The first connected TransportType requested by app
 	 */
 	public void setConnectedPrimaryTransport(TransportType[] connectedTransports){
+		Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+		updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "WiproProtocol setConnectedPrimaryTransport" +
+				"()");
+		String sDetailedInfo = "";
 		connectedPrimaryTransport = null;
 		List<TransportType> transportList = Arrays.asList(connectedTransports);
 		for(TransportType transportType: requestedPrimaryTransports) {
 			if (transportList.contains(transportType)) {
+				sDetailedInfo = "first connected PrimaryTransport: " + transportType.toString() +"\n";
 				connectedPrimaryTransport = transportType;
 				break;
 			}
 		}
+		updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+		sendBroadcastIntent(sendIntent);
 	}
 
 	public TransportType getConnectedPrimaryTransport(){
@@ -1001,6 +1068,10 @@ public class WiProProtocol extends AbstractProtocol {
 
 	public void startService(SessionType serviceType, byte sessionID, boolean isEncrypted) {
 		Log.d(TAG, "startService");
+		Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+		updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "WiproProtocol startService()");
+		final String[] sDetailedInfo = {""};
+
 		final SdlPacket header = SdlPacketFactory.createStartSession(serviceType, 0x00, getMajorVersionByte(), sessionID, isEncrypted);
 		if(SessionType.RPC.equals(serviceType)){
 			if(connectedPrimaryTransport != null) {
@@ -1036,24 +1107,33 @@ public class WiProProtocol extends AbstractProtocol {
 			//If there is no transport priority for this service it can be assumed it's primary
 			header.setTransportType(connectedPrimaryTransport);
 			handlePacketToSend(header);
+			sDetailedInfo[0] += "If there is no transport priority for this service it can be assumed it's primary." + "\n";
+			updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+			sendBroadcastIntent(sendIntent);
 			return;
 		}
+
 		int transportPriority = transportPriorityForServiceMap.get(serviceType).get(0);
 		if(transportPriority == PRIMARY_TRANSPORT_ID){
 			// Primary is favored, and we're already connected...
 			Log.d(TAG, "Starting service over primary.");
+			sDetailedInfo[0] += "Starting service over primary." + "\n";
 			header.setTransportType(connectedPrimaryTransport);
 			handlePacketToSend(header);
 		}else if(transportPriority == SECONDARY_TRANSPORT_ID) {
 			for(TransportType secondaryTransportType : supportedSecondaryTransports) {
 				// Secondary is favored
 				Log.d(TAG, "Starting service over secondary.");
+
 				if(activeTransports.get(serviceType).equals(secondaryTransportType)){
+					sDetailedInfo[0] += "Starting service over active secondary Transports." + "\n";
 					// Transport is already active
 					header.setTransportType(secondaryTransportType);
 					handlePacketToSend(header);
 					return;
 				}
+
+				sDetailedInfo[0] += "If the secondary transport isn't connected yet that will have to be performed first." + "\n";
 
 				//If the secondary transport isn't connected yet that will have to be performed first
 
@@ -1074,11 +1154,14 @@ public class WiProProtocol extends AbstractProtocol {
 
 					@Override
 					public void onConnectionFailure() {
+
 						if(primaryTransportBackup) {
+							sDetailedInfo[0] += "onConnectionFailure: Primary is also supported as backup" + "\n";
 							// Primary is also supported as backup
 							header.setTransportType(connectedPrimaryTransport);
 							handlePacketToSend(header);
 						}else{
+							sDetailedInfo[0] += "onConnectionFailure: Failed to connect secondary transport, threw away StartService" + "\n";
 							Log.d(TAG, "Failed to connect secondary transport, threw away StartService");
 						}
 					}
@@ -1086,11 +1169,15 @@ public class WiProProtocol extends AbstractProtocol {
 
 				if(secondaryTransportParams.containsKey(secondaryTransportType)) {
 					header.setTransportType(secondaryTransportType);
+					sDetailedInfo[0] += "connectSecondaryTransport with secondaryTransportType: "
+							+ secondaryTransportType.toString() + "\n";
 					connectSecondaryTransport(sessionID, secondaryTransportType, secondaryTransportParams.get(secondaryTransportType));
 				}
 
 			}
 		}
+		updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+		sendBroadcastIntent(sendIntent);
 	}
 
 	@Override
@@ -1121,18 +1208,28 @@ public class WiProProtocol extends AbstractProtocol {
 
 	@Override
 	public void EndProtocolService(SessionType serviceType, byte sessionID) {
+		Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+		updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "WiproProtocol EndProtocolService()");
+		final String[] sDetailedInfo = {""};
+
 		if(serviceType.equals(SessionType.RPC)){ //RPC session will close all other sessions so we want to make sure we use the correct EndProtocolSession method
 			EndProtocolSession(serviceType,sessionID,hashID);
 		}else {
 			SdlPacket header = SdlPacketFactory.createEndSession(serviceType, sessionID, hashID, getMajorVersionByte(), new byte[0]);
 			TransportType transportType = activeTransports.get(sessionID);
 			if(transportType != null){
+				sDetailedInfo[0] += "ending activeTransports TransportType: "
+						+ transportType.toString() + "\n";
 				header.setTransportType(transportType);
 				handlePacketToSend(header);
 			}else{
+				sDetailedInfo[0] += "Not sending end session packet because there is no session " +
+						"on that transport" + "\n";
 				Log.w(TAG, "Not sending end session packet because there is no session on that transport");
 			}
 		}
+		updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+		sendBroadcastIntent(sendIntent);
 	}
 
 } // end-class

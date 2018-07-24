@@ -1,5 +1,6 @@
 package com.smartdevicelink.protocol;
 
+import android.os.Bundle;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
@@ -11,6 +12,7 @@ import com.smartdevicelink.test.SdlUnitTestContants;
 import com.smartdevicelink.transport.BaseTransportConfig;
 import com.smartdevicelink.transport.MultiplexTransportConfig;
 import com.smartdevicelink.transport.RouterServiceValidator;
+import com.smartdevicelink.transport.enums.TransportType;
 
 import junit.framework.Assert;
 
@@ -59,9 +61,10 @@ public class WiProProtocolTests extends AndroidTestCase {
 		public void onProtocolError(String info, Exception e) {}
 
 		@Override
-		public void onTransportEventUpdate(byte sessionID, Map<String, Object> params) {
+		public void connectSecondaryTransport(byte sessionID, TransportType transportType, Bundle params) {
 
 		}
+
 	};
 	public static class DidReceiveListener implements IProtocolListener{
 		boolean didReceive = false;
@@ -101,51 +104,54 @@ public class WiProProtocolTests extends AndroidTestCase {
 		public void onResetIncomingHeartbeat(SessionType sessionType,byte sessionID) {}
 		@Override
 		public void onProtocolError(String info, Exception e) {}
+
 		@Override
-		public void onTransportEventUpdate(byte sessionID, Map<String, Object> params) {}
+		public void connectSecondaryTransport(byte sessionID, TransportType transportType, Bundle params) {
+
+		}
 	};
 	DidReceiveListener onProtocolMessageReceivedListener = new DidReceiveListener();
 	
 	public void testBase(){
-		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener);
+		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		
 	}
 	
 	public void testVersion(){
-		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener);
+		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		
 		wiProProtocol.setVersion((byte)0x01);
 		assertEquals((byte)0x01,wiProProtocol.getVersion());
 		
-		wiProProtocol = new WiProProtocol(defaultListener);
+		wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		wiProProtocol.setVersion((byte)0x02);
 		assertEquals((byte)0x02,wiProProtocol.getVersion());
 		
-		wiProProtocol = new WiProProtocol(defaultListener);
+		wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		wiProProtocol.setVersion((byte)0x03);
 		assertEquals((byte)0x03,wiProProtocol.getVersion());
 		
-		wiProProtocol = new WiProProtocol(defaultListener);
+		wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		wiProProtocol.setVersion((byte)0x04);
 		assertEquals((byte)0x04,wiProProtocol.getVersion());
 
-		wiProProtocol = new WiProProtocol(defaultListener);
+		wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		wiProProtocol.setVersion((byte)0x05);
 		assertEquals((byte)0x05,wiProProtocol.getVersion());
 
 		//If we get newer than 5, it should fall back to 5
-		wiProProtocol = new WiProProtocol(defaultListener);
+		wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		wiProProtocol.setVersion((byte)0x06);
 		assertEquals((byte)0x05,wiProProtocol.getVersion());
 		
 		//Is this right?
-		wiProProtocol = new WiProProtocol(defaultListener);
+		wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		wiProProtocol.setVersion((byte)0x00);
 		assertEquals((byte)0x01,wiProProtocol.getVersion());
 	}
 	
 	public void testMtu(){
-		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener);
+		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		
 		wiProProtocol.setVersion((byte)0x01);
 		 
@@ -180,7 +186,7 @@ public class WiProProtocolTests extends AndroidTestCase {
 	
 	public void testHandleFrame(){
 		SampleRpc sampleRpc = new SampleRpc(4);
-		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener);
+		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		MessageFrameAssembler assembler = wiProProtocol.new MessageFrameAssembler();
 		try{
 			assembler.handleFrame(sampleRpc.toSdlPacket());
@@ -193,7 +199,7 @@ public class WiProProtocolTests extends AndroidTestCase {
 		BinaryFrameHeader header = sampleRpc.getBinaryFrameHeader(true);
 		header.setJsonSize(Integer.MAX_VALUE);
 		sampleRpc.setBinaryFrameHeader(header);
-		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener);
+		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		MessageFrameAssembler assembler = wiProProtocol.new MessageFrameAssembler();
 		try{
 			assembler.handleFrame(sampleRpc.toSdlPacket());
@@ -204,7 +210,7 @@ public class WiProProtocolTests extends AndroidTestCase {
 	
 	public void testHandleSingleFrameMessageFrame(){
 		SampleRpc sampleRpc = new SampleRpc(4);
-		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener);
+		WiProProtocol wiProProtocol = new WiProProtocol(defaultListener, null, null);
 		MessageFrameAssembler assembler = wiProProtocol.new MessageFrameAssembler();
 
 		
@@ -232,7 +238,8 @@ public class WiProProtocolTests extends AndroidTestCase {
 		BinaryFrameHeader binFrameHeader = BinaryFrameHeader.parseBinaryHeader(packet.payload);
 		assertNull(binFrameHeader);
 		
-		WiProProtocol wiProProtocol = new WiProProtocol(onProtocolMessageReceivedListener);
+		WiProProtocol wiProProtocol = new WiProProtocol(onProtocolMessageReceivedListener, null,
+				null);
 		
 		
 		wiProProtocol.handlePacketReceived(packet);
@@ -258,7 +265,7 @@ public class WiProProtocolTests extends AndroidTestCase {
 	public void setUp(){
 		config = new MultiplexTransportConfig(this.mContext,SdlUnitTestContants.TEST_APP_ID);
 		connection = new SdlConnectionTestClass(config, null);
-		protocol = new WiProProtocol(connection);
+		protocol = new WiProProtocol(connection, null, null);
 	}
 	
 	public void testNormalCase(){

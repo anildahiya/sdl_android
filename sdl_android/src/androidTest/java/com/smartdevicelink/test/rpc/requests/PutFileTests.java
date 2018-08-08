@@ -1,11 +1,5 @@
 package com.smartdevicelink.test.rpc.requests;
 
-import java.util.Hashtable;
-import java.util.zip.CRC32;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.smartdevicelink.marshal.JsonRPCMarshaller;
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCMessage;
@@ -15,6 +9,12 @@ import com.smartdevicelink.test.BaseRpcTests;
 import com.smartdevicelink.test.JsonUtils;
 import com.smartdevicelink.test.Test;
 import com.smartdevicelink.test.json.rpc.JsonFileReader;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Hashtable;
+import java.util.zip.CRC32;
 
 /**
  * This is a unit test class for the SmartDeviceLink library project class : 
@@ -32,6 +32,7 @@ public class PutFileTests extends BaseRpcTests {
 		msg.setOffset(Test.GENERAL_LONG);
 		msg.setLength(Test.GENERAL_LONG);
 		msg.setCRC(Test.GENERAL_BYTE_ARRAY);
+		msg.setCRC(Test.GENERAL_BYTE_ARRAY,Test.GENERAL_OFFSET,Test.GENERAL_INT);
 		msg.setCRC(Test.GENERAL_LONG);
 
 		return msg;
@@ -114,7 +115,21 @@ public class PutFileTests extends BaseRpcTests {
 		assertEquals(Test.MATCH, crcValue, testCRCByteArray);
 	}
 
+	/**
+	 * Tests the expected values of the CRC checksum.
+	 */
+	public void testByteArrayOffsetLengthCheckSum() {
+		// Test Values
+		PutFile msgCRC = new PutFile();
+		msgCRC.setCRC(Test.GENERAL_BYTE_ARRAY, Test.GENERAL_OFFSET, Test.GENERAL_INT);
+		Long testCRCByteArrayOffsetLength = msgCRC.getCRC();
 
+		CRC32 crc = new CRC32();
+		crc.update(Test.GENERAL_BYTE_ARRAY, Test.GENERAL_OFFSET, Test.GENERAL_INT);
+		Long crcValue = crc.getValue();
+
+		assertEquals(Test.MATCH, crcValue, testCRCByteArrayOffsetLength);
+	}
 
     /**
      * Tests a valid JSON construction of this RPC message.

@@ -322,6 +322,24 @@ public class PutFile extends RPCRequest {
 	}
 
 	/**
+	 * This takes the file data as an array of bytes, starting offset, length to be used and
+	 * calculates the CRC32 for it.
+	 * @param fileData - the file as a byte array
+	 * @param offset - the start offset of the data
+	 * @param length - the number of bytes to use for the update
+	 * @throws ArrayIndexOutOfBoundsException if offset is negative, or length is negative, or offset+length is greater than the length of the array fileData
+	 */
+	public void setCRC(byte[] fileData, int offset, int length) throws ArrayIndexOutOfBoundsException {
+		if (fileData != null) {
+			CRC32 crc = new CRC32();
+			crc.update(fileData, offset, length);
+			parameters.put(KEY_CRC, crc.getValue());
+		} else {
+			parameters.remove(KEY_CRC);
+		}
+	}
+
+	/**
 	 * This assumes you have created your own CRC32 and are setting it with the file
 	 * <STRONG>Please avoid using your own calculations for this, and use the method
 	 * included in java.util</STRONG>

@@ -7,7 +7,8 @@ public class OnStreamRPC extends RPCNotification {
 	public static final String KEY_FILENAME = "fileName";
 	public static final String KEY_BYTESCOMPLETE = "bytesComplete";
 	public static final String KEY_FILESIZE = "fileSize";
-	
+	public static final String KEY_CRC = "crc";
+
 	public OnStreamRPC() {
 		super(FunctionID.ON_STREAM_RPC.toString());
 	}
@@ -31,5 +32,13 @@ public class OnStreamRPC extends RPCNotification {
 	}
 	public Long getFileSize() {
 		return getLong(KEY_FILESIZE);
+	}
+
+	public void setCRC(Long crc) {
+		setParameters(KEY_CRC, crc);
+	}
+
+	public Long getCRC() {
+		return getLong(KEY_CRC);
 	}
 }

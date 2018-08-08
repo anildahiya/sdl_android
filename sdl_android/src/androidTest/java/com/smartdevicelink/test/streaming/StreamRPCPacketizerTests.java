@@ -45,7 +45,9 @@ public class StreamRPCPacketizerTests extends TestCase {
 		SdlSession testSdlSession = SdlSession.createSession(testWiproVersion,_interfaceBroker, _transportConfig);
 		try {
 			testInputStream = new BufferedInputStream(new ByteArrayInputStream("sdl streaming test".getBytes()));
-			StreamRPCPacketizer testStreamRpcPacketizer = new StreamRPCPacketizer(null, testListener, testInputStream, testRequest, testSessionType, testSessionId, testWV, testWV, testSdlSession);
+			StreamRPCPacketizer testStreamRpcPacketizer = new StreamRPCPacketizer(null,
+					testListener, testInputStream, testRequest, testSessionType, testSessionId,
+					testWV, testWV, testSdlSession, false);
 			assertNotNull(Test.NOT_NULL, testStreamRpcPacketizer);
 			
 			// NOTE: Cannot test thread handling methods currently.

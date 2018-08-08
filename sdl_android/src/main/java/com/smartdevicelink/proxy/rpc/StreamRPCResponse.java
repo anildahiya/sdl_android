@@ -8,7 +8,8 @@ import java.util.Hashtable;
 public class StreamRPCResponse extends RPCResponse {
 	public static final String KEY_FILENAME = "fileName";
 	public static final String KEY_FILESIZE = "fileSize";
-	
+	public static final String KEY_CRC = "crc";
+
     public StreamRPCResponse() {
         super(FunctionID.STREAM_RPC.toString());
     }
@@ -28,6 +29,13 @@ public class StreamRPCResponse extends RPCResponse {
 	}
 	public Long getFileSize() {
 		return getLong(KEY_FILESIZE);
-	}		
-	
+	}
+
+	public void setCRC(Long crc) {
+		setParameters(KEY_CRC, crc);
+	}
+
+	public Long getCRC() {
+		return getLong(KEY_CRC);
+	}
 }

@@ -25,7 +25,6 @@ import com.smartdevicelink.proxy.rpc.EmergencyEvent;
 import com.smartdevicelink.proxy.rpc.EqualizerSettings;
 import com.smartdevicelink.proxy.rpc.FuelRange;
 import com.smartdevicelink.proxy.rpc.GPSData;
-import com.smartdevicelink.proxy.rpc.GPSLocation;
 import com.smartdevicelink.proxy.rpc.HMICapabilities;
 import com.smartdevicelink.proxy.rpc.HMIPermissions;
 import com.smartdevicelink.proxy.rpc.HMISettingsControlCapabilities;
@@ -57,7 +56,6 @@ import com.smartdevicelink.proxy.rpc.RadioControlData;
 import com.smartdevicelink.proxy.rpc.RdsData;
 import com.smartdevicelink.proxy.rpc.Rectangle;
 import com.smartdevicelink.proxy.rpc.RemoteControlCapabilities;
-import com.smartdevicelink.proxy.rpc.SRGBColor;
 import com.smartdevicelink.proxy.rpc.ScreenParams;
 import com.smartdevicelink.proxy.rpc.SdlMsgVersion;
 import com.smartdevicelink.proxy.rpc.SeatControlCapabilities;
@@ -940,34 +938,11 @@ public class Validator{
             return false;
         }
 
-        if(!( validateGPSLocation(sisData1.getStationLocation(), sisData2.getStationLocation()) )){
+        if(!( validateGpsData(sisData1.getStationLocation(), sisData2.getStationLocation()) )){
             return false;
         }
 
         if(sisData1.getStationMessage() != sisData2.getStationMessage()){
-            return false;
-        }
-
-        return true;
-    }
-
-    public static boolean validateGPSLocation(GPSLocation gpsLocation1, GPSLocation gpsLocation2){
-        if(gpsLocation1 == null){
-            return ( gpsLocation2 == null );
-        }
-        if(gpsLocation2 == null){
-            return ( gpsLocation1 == null );
-        }
-
-        if(gpsLocation1.getLongitudeDegrees() != gpsLocation2.getLongitudeDegrees()){
-            return false;
-        }
-
-        if(gpsLocation1.getLatitudeDegrees() != gpsLocation2.getLatitudeDegrees()){
-            return false;
-        }
-
-        if(gpsLocation1.getAltitudeMeters() != gpsLocation2.getAltitudeMeters()){
             return false;
         }
 
@@ -987,29 +962,6 @@ public class Validator{
         }
 
         if(stationIDNumber1.getFccFacilityId() != stationIDNumber2.getFccFacilityId()){
-            return false;
-        }
-
-        return true;
-    }
-
-    public static boolean validateSRGBColor(SRGBColor srgbColor1, SRGBColor srgbColor2){
-        if(srgbColor1 == null){
-            return ( srgbColor2 == null );
-        }
-        if(srgbColor2 == null){
-            return ( srgbColor1 == null );
-        }
-
-        if(srgbColor1.getRed() != srgbColor2.getRed()){
-            return false;
-        }
-
-        if(srgbColor1.getGreen() != srgbColor2.getGreen()){
-            return false;
-        }
-
-        if(srgbColor1.getBlue() != srgbColor2.getBlue()){
             return false;
         }
 
@@ -2478,7 +2430,7 @@ public class Validator{
 			return false;
 		}
 
-		if (!(validateSRGBColor(item1.getSRGBColor(), item2.getSRGBColor()))) {
+		if (!(validateRGBColor(item1.getColor(), item2.getColor()))) {
 			return false;
 		}
 
@@ -2522,7 +2474,7 @@ public class Validator{
 			return false;
 		}
 
-		if (item1.getSRGBColorSpaceAvailable() != item2.getSRGBColorSpaceAvailable()) {
+		if (item1.getRGBColorSpaceAvailable() != item2.getRGBColorSpaceAvailable()) {
 			return false;
 		}
 

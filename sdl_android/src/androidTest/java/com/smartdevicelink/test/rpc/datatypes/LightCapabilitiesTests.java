@@ -26,7 +26,7 @@ public class LightCapabilitiesTests extends TestCase{
 
         msg.setName(Test.GENERAL_LIGHTNAME);
         msg.setDensityAvailable(Test.GENERAL_BOOLEAN);
-        msg.setSRGBColorSpaceAvailable(Test.GENERAL_BOOLEAN);
+        msg.setRGBColorSpaceAvailable(Test.GENERAL_BOOLEAN);
     }
 
     /**
@@ -36,12 +36,12 @@ public class LightCapabilitiesTests extends TestCase{
         // Test Values
         LightName name = msg.getName();
         Boolean densityAvailable = msg.getDensityAvailable();
-        Boolean srgbColorSpaceAvailable = msg.getSRGBColorSpaceAvailable();
+        Boolean rgbColorSpaceAvailable = msg.getRGBColorSpaceAvailable();
 
         // Valid Tests
         assertEquals(Test.MATCH, Test.GENERAL_LIGHTNAME, name);
         assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, (boolean)densityAvailable);
-        assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, (boolean)srgbColorSpaceAvailable);
+        assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, (boolean)rgbColorSpaceAvailable);
 
         // Invalid/Null Tests
         LightCapabilities msg = new LightCapabilities();
@@ -49,7 +49,7 @@ public class LightCapabilitiesTests extends TestCase{
 
         assertNull(Test.NULL, msg.getName());
         assertNull(Test.NULL, msg.getDensityAvailable());
-        assertNull(Test.NULL, msg.getSRGBColorSpaceAvailable());
+        assertNull(Test.NULL, msg.getRGBColorSpaceAvailable());
     }
 
     public void testJson(){
@@ -58,7 +58,7 @@ public class LightCapabilitiesTests extends TestCase{
         try{
             reference.put(LightCapabilities.KEY_NAME, Test.GENERAL_LIGHTNAME);
             reference.put(LightCapabilities.KEY_DENSITY_AVAILABLE, Test.GENERAL_BOOLEAN);
-            reference.put(LightCapabilities.KEY_SRGB_COLOR_SPACE_AVAILABLE, Test.GENERAL_BOOLEAN);
+            reference.put(LightCapabilities.KEY_RGB_COLOR_SPACE_AVAILABLE, Test.GENERAL_BOOLEAN);
 
             JSONObject underTest = msg.serializeJSON();
             assertEquals(Test.MATCH, reference.length(), underTest.length());

@@ -1,6 +1,7 @@
 package com.smartdevicelink.SdlConnection;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
@@ -42,6 +43,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.smartdevicelink.util.AndroidTools.createBroadcastIntent;
+import static com.smartdevicelink.util.AndroidTools.sendBroadcastIntent;
+import static com.smartdevicelink.util.AndroidTools.updateBroadcastIntent;
+
 @Deprecated
 public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorListener, IStreamListener, ISecurityInitializedListener {
 
@@ -76,13 +81,19 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
     StreamPacketizer mAudioPacketizer = null;
     SdlEncoder mSdlEncoder = null;
     VirtualDisplayEncoder virtualDisplayEncoder = null;
+    private String applicationName = null;
+    private String appId = null;
 
-    public static SdlSession createSession(byte wiproVersion, ISdlConnectionListener listener, BaseTransportConfig btConfig) {
+    public static SdlSession createSession(byte wiproVersion, ISdlConnectionListener listener, BaseTransportConfig btConfig, String applicationName, String appId) {
 
         SdlSession session =  new SdlSession();
         session.wiproProcolVer = wiproVersion;
         session.sessionListener = listener;
         session.transportConfig = btConfig;
+
+
+        session.applicationName = applicationName;
+        session.appId = appId;
 
         return session;
     }
@@ -161,6 +172,19 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
     }
 
     public void startStream(InputStream is, SessionType sType, byte rpcSessionID) throws IOException {
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        String sDetailedInfo = "using sdlConnection" + "\n";
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlSession.startStream()");
+
+        if(sType == SessionType.NAV){
+            sDetailedInfo += "SessionType is NAV" + "\n";
+        } else {
+            sDetailedInfo += "SessionType is PCM" + "\n";
+        }
+
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
+
         if (sType.equals(SessionType.NAV))
         {
             // protocol is fixed to RAW
@@ -179,6 +203,20 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
 
     @SuppressLint("NewApi")
     public OutputStream startStream(SessionType sType, byte rpcSessionID) throws IOException {
+
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        String sDetailedInfo = "using sdlConnection" + "\n";
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlSession.OutputStream startStream()");
+
+        if(sType == SessionType.NAV){
+            sDetailedInfo += "SessionType is NAV" + "\n";
+        } else {
+            sDetailedInfo += "SessionType is PCM" + "\n";
+        }
+
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
+
         OutputStream os = new PipedOutputStream();
         InputStream is = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
@@ -212,6 +250,13 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
     public IVideoStreamListener startVideoStream() {
         byte rpcSessionID = getSessionId();
         VideoStreamingProtocol protocol = getAcceptedProtocol();
+
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        String sDetailedInfo = "using sdlConnection" + "\n";
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlSession.startVideoStream()");
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
+
         try {
             switch (protocol) {
                 case RAW: {
@@ -237,6 +282,12 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
     }
 
     public IAudioStreamListener startAudioStream() {
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        String sDetailedInfo = "using sdlConnection" + "\n";
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlSession.startAudioStream()");
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
+
         byte rpcSessionID = getSessionId();
         try {
             StreamPacketizer packetizer = new StreamPacketizer(this, null, SessionType.PCM, rpcSessionID, this);
@@ -419,6 +470,13 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
             }
             return;
         }
+
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlSession.startService()");
+        String sDetailedInfo = "sdlConnection startService" + "\n";
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
+
         _sdlConnection.startService(serviceType, sessionID, isEncrypted);
     }
 
@@ -531,6 +589,12 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
 
     @Override
     public void onTransportError(String info, Exception e) {
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        String sDetailedInfo = "onTransportError" + "\n";
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlSession.onTransportError()");
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
+
         this.sessionListener.onTransportError(info, e);
     }
 

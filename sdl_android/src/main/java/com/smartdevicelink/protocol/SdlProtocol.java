@@ -32,8 +32,10 @@
 
 package com.smartdevicelink.protocol;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.smartdevicelink.exception.SdlException;
@@ -65,6 +67,10 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+import static com.smartdevicelink.util.AndroidTools.createBroadcastIntent;
+import static com.smartdevicelink.util.AndroidTools.sendBroadcastIntent;
+import static com.smartdevicelink.util.AndroidTools.updateBroadcastIntent;
 
 @SuppressWarnings("WeakerAccess")
 public class SdlProtocol {
@@ -130,10 +136,11 @@ public class SdlProtocol {
     boolean requiresHighBandwidth;
     Map<TransportType, Bundle> secondaryTransportParams;
     TransportRecord connectedPrimaryTransport;
-
+    private String applicationName = null;
+    private String appId = null;
 
     @SuppressWarnings("ConstantConditions")
-    public SdlProtocol(@NonNull ISdlProtocol iSdlProtocol, @NonNull MultiplexTransportConfig config) {
+    public SdlProtocol(@NonNull ISdlProtocol iSdlProtocol, @NonNull MultiplexTransportConfig config, String applicationName, String appId) {
         if (iSdlProtocol == null ) {
             throw new IllegalArgumentException("Provided protocol listener interface reference is null");
         } // end-if
@@ -144,7 +151,8 @@ public class SdlProtocol {
         this.requestedSecondaryTransports = this.transportConfig.getSecondaryTransports();
         this.requiresHighBandwidth = this.transportConfig.requiresHighBandwidth();
         this.transportManager = new TransportManager(transportConfig, transportEventListener);
-
+        this.applicationName = applicationName;
+        this.appId = appId;
 
         mtus.put(SessionType.RPC, (long) (V1_V2_MTU_SIZE - headerSize));
     } // end-ctor
@@ -194,6 +202,9 @@ public class SdlProtocol {
      * For logging purposes, prints active services on each connected transport
      */
     protected void printActiveTransports(){
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol printActiveTransports" +
+                "()");
         StringBuilder activeTransportString = new StringBuilder();
         activeTransportString.append("Active transports --- \n");
 
@@ -215,10 +226,16 @@ public class SdlProtocol {
                 activeTransportString.append("\n");
             }
         }
+        String sDetailedInfo = "Active transports value: " + activeTransportString.toString() + "\n";
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
         Log.d(TAG, activeTransportString.toString());
     }
 
     protected void printSecondaryTransportDetails(List<String> secondary, List<Integer> audio, List<Integer> video){
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol printSecondaryTransportDetails" +
+                "()");
         StringBuilder secondaryDetailsBldr = new StringBuilder();
         secondaryDetailsBldr.append("Checking secondary transport details \n");
 
@@ -246,6 +263,9 @@ public class SdlProtocol {
             secondaryDetailsBldr.append("\n");
         }
 
+        String sDetailedInfo = "secondary transports value: " + secondaryDetailsBldr.toString() + "\n";
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
         Log.d(TAG, secondaryDetailsBldr.toString());
     }
 
@@ -259,6 +279,24 @@ public class SdlProtocol {
             transportPriorityForServiceMap = new HashMap<>();
         }
         this.transportPriorityForServiceMap.put(serviceType, order);
+
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol setTransortPriorityForService" +
+                "()");
+
+        String serviceTypeVal = "";
+        if(serviceType == SessionType.NAV){
+            serviceTypeVal = "NAV";
+        } else if (serviceType == SessionType.PCM){
+            serviceTypeVal = "PCM";
+        } else if (serviceType == SessionType.RPC){
+            serviceTypeVal = "RPC";
+        }
+        String sDetailedInfo = "service Type: " + serviceTypeVal + " and order: " + TextUtils.join
+                (", ", order) +"\n";
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
+
         for(SessionType service : HIGH_BANDWIDTH_SERVICES){
             if (transportPriorityForServiceMap.get(service) != null
                     && transportPriorityForServiceMap.get(service).contains(PRIMARY_TRANSPORT_ID)) {
@@ -321,6 +359,9 @@ public class SdlProtocol {
 
     private void onTransportsConnectedUpdate(List<TransportRecord> transports){
         //Log.d(TAG, "Connected transport update");
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol onTransportsConnectedUpdate" +
+                "()");
 
         //Temporary: this logic should all be changed to handle multiple transports of the same type
         ArrayList<TransportType> connectedTransports = new ArrayList<>();
@@ -330,11 +371,16 @@ public class SdlProtocol {
             }
         }
 
+        String sDetailedInfo = "connectedTransports: " + TextUtils.join(", ", connectedTransports) +"\n";
+
         if(connectedPrimaryTransport != null && !connectedTransports.contains(connectedPrimaryTransport.getType())){
             //The primary transport being used is no longer part of the connected transports
             //The transport manager callbacks should handle the disconnect code
+            sDetailedInfo += "connectedPrimaryTransport is null.";
             connectedPrimaryTransport = null;
             notifyDevTransportListener();
+            updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+            sendBroadcastIntent(sendIntent);
             return;
         }
 
@@ -354,15 +400,21 @@ public class SdlProtocol {
         }else if(secondaryTransportListeners != null
                 && transports != null
                 && iSdlProtocol!= null){
+            sDetailedInfo += "secondaryTransportListeners not null." + "\n";
             // Check to see if there is a listener for a given transport.
             // If a listener exists, it can be assumed that the transport should be registered on
             for(TransportRecord record: transports){
                 if(secondaryTransportListeners.get(record.getType()) != null
                         && !secondaryTransportListeners.get(record.getType()).isEmpty()){
+                    sDetailedInfo += "Registering secondary transport: " + record.getType().toString() + "\n";
                     registerSecondaryTransport(iSdlProtocol.getSessionId(), record);
                 }
             }
         }
+
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo);
+        sendBroadcastIntent(sendIntent);
+
         //Update the developer that a new transport has become available
         notifyDevTransportListener();
     }
@@ -682,6 +734,10 @@ public class SdlProtocol {
     }
 
     public void startService(SessionType serviceType, byte sessionID, boolean isEncrypted) {
+        final Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol startService()");
+
+        final String[] sDetailedInfo = {""};
         final SdlPacket header = SdlPacketFactory.createStartSession(serviceType, 0x00, (byte)protocolVersion.getMajor(), sessionID, isEncrypted);
         if(SessionType.RPC.equals(serviceType)){
             if(connectedPrimaryTransport != null) {
@@ -714,11 +770,15 @@ public class SdlProtocol {
             //If there is no transport priority for this service it can be assumed it's primary
             header.setTransportRecord(connectedPrimaryTransport);
             handlePacketToSend(header);
+            sDetailedInfo[0] += "If there is no transport priority for this service it can be assumed it's primary." + "\n";
+            updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+            sendBroadcastIntent(sendIntent);
             return;
         }
         int transportPriority = transportPriorityForServiceMap.get(serviceType).get(0);
         if(transportPriority == PRIMARY_TRANSPORT_ID){
             // Primary is favored, and we're already connected...
+            sDetailedInfo[0] += "Primary is favored, and we're already connected." + "\n";
             header.setTransportRecord(connectedPrimaryTransport);
             handlePacketToSend(header);
         }else if(transportPriority == SECONDARY_TRANSPORT_ID) {
@@ -734,6 +794,9 @@ public class SdlProtocol {
                         && activeTransports.get(serviceType).getType() !=null
                         && activeTransports.get(serviceType).getType().equals(secondaryTransportType)){
                     // Transport is already active and accepted
+                    sDetailedInfo[0] += "Transport is already active and accepted." + "\n";
+                    updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+                    sendBroadcastIntent(sendIntent);
                     header.setTransportRecord(activeTransports.get(serviceType));
                     handlePacketToSend(header);
                     return;
@@ -742,6 +805,7 @@ public class SdlProtocol {
 
 
                 //If the secondary transport isn't connected yet that will have to be performed first
+                sDetailedInfo[0] += "If the secondary transport isn't connected yet that will have to be performed first." + "\n";
 
                 List<ISecondaryTransportListener> listenerList = secondaryTransportListeners.get(secondaryTransportType);
                 if(listenerList == null){
@@ -755,6 +819,9 @@ public class SdlProtocol {
                 ISecondaryTransportListener secondaryListener = new ISecondaryTransportListener() {
                     @Override
                     public void onConnectionSuccess(TransportRecord transportRecord) {
+                        sDetailedInfo[0] += "onConnectionSuccess: ISecondaryTransportListener onConnectionSuccess" + "\n";
+                        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+                        sendBroadcastIntent(sendIntent);
                         header.setTransportRecord(transportRecord);
                         handlePacketToSend(header);
                     }
@@ -763,9 +830,11 @@ public class SdlProtocol {
                     public void onConnectionFailure() {
                         if(primaryTransportBackup) {
                             // Primary is also supported as backup
+                            sDetailedInfo[0] += "onConnectionFailure: Primary is also supported as backup" + "\n";
                             header.setTransportRecord(connectedPrimaryTransport);
                             handlePacketToSend(header);
                         }else{
+                            sDetailedInfo[0] += "onConnectionFailure: Failed to connect secondary transport, threw away StartService" + "\n";
                             Log.d(TAG, "Failed to connect secondary transport, threw away StartService");
                         }
                     }
@@ -773,15 +842,18 @@ public class SdlProtocol {
 
                 if(transportManager.isConnected(secondaryTransportType,null)){
                     //The transport is actually connected, however no service has been registered
+                    sDetailedInfo[0] += "The transport is actually connected, however no service has been registered" + "\n";
                     listenerList.add(secondaryListener);
                     registerSecondaryTransport(sessionID,transportManager.getTransportRecord(secondaryTransportType,null));
                 }else if(secondaryTransportParams != null && secondaryTransportParams.containsKey(secondaryTransportType)) {
                     //No acceptable secondary transport is connected, so first one must be connected
+                    sDetailedInfo[0] += "No acceptable secondary transport is connected, so first one must be connected" + "\n";
                     header.setTransportRecord(new TransportRecord(secondaryTransportType,""));
                     listenerList.add(secondaryListener);
                     transportManager.requestSecondaryTransportConnection(sessionID,secondaryTransportParams.get(secondaryTransportType));
                 }else{
                     Log.w(TAG, "No params to connect to secondary transport");
+                    sDetailedInfo[0] += "No params to connect to secondary transport" + "\n";
                     //Unable to register or start a secondary connection. Use the callback in case
                     //there is a chance to use the primary transport for this service.
                     secondaryListener.onConnectionFailure();
@@ -789,6 +861,8 @@ public class SdlProtocol {
 
             }
         }
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+        sendBroadcastIntent(sendIntent);
     }
 
     private void sendHeartBeatACK(SessionType sessionType, byte sessionID) {
@@ -798,16 +872,25 @@ public class SdlProtocol {
     }
 
     public void endService(SessionType serviceType, byte sessionID) {
+        Intent sendIntent = createBroadcastIntent(this.applicationName, this.appId);
+        updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol endService()");
+        final String[] sDetailedInfo = {""};
+
         if(serviceType.equals(SessionType.RPC)){ //RPC session will close all other sessions so we want to make sure we use the correct EndProtocolSession method
             endSession(sessionID,hashID);
         }else {
             SdlPacket header = SdlPacketFactory.createEndSession(serviceType, sessionID, hashID, (byte)protocolVersion.getMajor(), new byte[0]);
             TransportRecord transportRecord = activeTransports.get(serviceType);
             if(transportRecord != null){
+                sDetailedInfo[0] += "ending transportRecord.transType: "
+                        + transportRecord.getType().toString() + "\n";
                 header.setTransportRecord(transportRecord);
                 handlePacketToSend(header);
             }
         }
+
+        updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+        sendBroadcastIntent(sendIntent);
     }
 
     /* --------------------------------------------------------------------------------------------

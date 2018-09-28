@@ -32,6 +32,7 @@
 
 package com.smartdevicelink.util;
 
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -41,6 +42,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 
+import com.smartdevicelink.proxy.interfaces.IProxyListenerBase;
 import com.smartdevicelink.transport.TransportConstants;
 
 import java.util.ArrayList;
@@ -50,6 +52,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AndroidTools {
+
+	public static Context applicationContext = null;
 	/**
 	 * Check to see if a component is exported
 	 * @param context object used to retrieve the package manager
@@ -158,4 +162,57 @@ public class AndroidTools {
 		}
 	}
 
+	public static Intent createBroadcastIntent(String applicationName, String appID)
+	{
+		Intent sendIntent = new Intent();
+		sendIntent.setAction("com.smartdevicelink.broadcast");
+		sendIntent.putExtra("APP_NAME", applicationName);
+		sendIntent.putExtra("APP_ID", appID);
+		sendIntent.putExtra("RPC_NAME", "");
+		sendIntent.putExtra("TYPE", "");
+		sendIntent.putExtra("SUCCESS", true);
+		sendIntent.putExtra("CORRID", 0);
+		sendIntent.putExtra("FUNCTION_NAME", "");
+		sendIntent.putExtra("COMMENT1", "");
+		sendIntent.putExtra("COMMENT2", "");
+		sendIntent.putExtra("COMMENT3", "");
+		sendIntent.putExtra("COMMENT4", "");
+		sendIntent.putExtra("COMMENT5", "");
+		sendIntent.putExtra("COMMENT6", "");
+		sendIntent.putExtra("COMMENT7", "");
+		sendIntent.putExtra("COMMENT8", "");
+		sendIntent.putExtra("COMMENT9", "");
+		sendIntent.putExtra("COMMENT10", "");
+		sendIntent.putExtra("DATA", "");
+		sendIntent.putExtra("SHOW_ON_UI", true);
+		return sendIntent;
+	}
+
+	public static void updateBroadcastIntent(Intent sendIntent, String sKey, String sValue)
+	{
+		if (sValue == null) sValue = "";
+		sendIntent.putExtra(sKey, sValue);
+	}
+	public static void updateBroadcastIntent(Intent sendIntent, String sKey, boolean bValue)
+	{
+		sendIntent.putExtra(sKey, bValue);
+	}
+	public static void updateBroadcastIntent(Intent sendIntent, String sKey, int iValue)
+	{
+		sendIntent.putExtra(sKey, iValue);
+	}
+
+	public static void sendBroadcastIntent(Intent sendIntent)
+	{
+		if(applicationContext == null) return;
+
+		try
+		{
+			applicationContext.sendBroadcast(sendIntent);
+		}
+		catch(Exception ex)
+		{
+			//If the service or context has become unavailable unexpectedly, catch the exception and move on -- no broadcast log will occur.
+		}
+	}
 }

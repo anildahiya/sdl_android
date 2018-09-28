@@ -56,6 +56,8 @@ public class SdlSession2 extends SdlSession implements ISdlProtocol{
 
 
     final protected SdlProtocol sdlProtocol;
+    private String applicationName = null;
+    private String appId = null;
 
     @SuppressWarnings("SameReturnValue")
     @Deprecated
@@ -63,11 +65,12 @@ public class SdlSession2 extends SdlSession implements ISdlProtocol{
         return null;
     }
 
-    public SdlSession2(ISdlConnectionListener listener, MultiplexTransportConfig config){
+    public SdlSession2(ISdlConnectionListener listener, MultiplexTransportConfig config, String applicationName, String appId){
         this.transportConfig = config;
         this.sessionListener = listener;
-        this.sdlProtocol = new SdlProtocol(this,config);
-
+        this.applicationName = applicationName;
+        this.appId = appId;
+        this.sdlProtocol = new SdlProtocol(this,config, applicationName, appId);
     }
 
     @Deprecated

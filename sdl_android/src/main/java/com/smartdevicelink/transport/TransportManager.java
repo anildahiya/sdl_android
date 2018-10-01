@@ -83,6 +83,7 @@ public class TransportManager {
         }
 
         RouterServiceValidator validator = new RouterServiceValidator(config.context,config.service);
+        validator.setSecurityLevel(config.getSecurityLevel());
         if(validator.validate()){
             transport = new TransportBrokerImpl(config.context, config.appId,config.service);
         }else{

@@ -7260,7 +7260,7 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 						ImageResolution resolution = null;
 						if(getWiProVersion()>=5){ //At this point we should already have the capability
 							VideoStreamingCapability capability = (VideoStreamingCapability)_systemCapabilityManager.getCapability(SystemCapabilityType.VIDEO_STREAMING);
-							resolution = capability.getPreferredResolution();
+							if(capability != null) resolution = capability.getPreferredResolution();
 						}else {
 							DisplayCapabilities dispCap = (DisplayCapabilities) _systemCapabilityManager.getCapability(SystemCapabilityType.DISPLAY);
 							if (dispCap != null) {

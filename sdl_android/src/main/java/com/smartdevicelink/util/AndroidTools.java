@@ -205,14 +205,6 @@ public class AndroidTools {
 	public static void sendBroadcastIntent(Intent sendIntent)
 	{
 		if(applicationContext == null) return;
-
-		try
-		{
-			applicationContext.sendBroadcast(sendIntent);
-		}
-		catch(Exception ex)
-		{
-			//If the service or context has become unavailable unexpectedly, catch the exception and move on -- no broadcast log will occur.
-		}
+		sendExplicitBroadcast(applicationContext,sendIntent,null);
 	}
 }

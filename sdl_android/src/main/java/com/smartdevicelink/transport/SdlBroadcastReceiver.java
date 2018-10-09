@@ -160,7 +160,7 @@ public abstract class SdlBroadcastReceiver extends BroadcastReceiver{
 						RouterServiceValidator.createTrustedListRequest(context, false, new TrustedListCallback(){
 							@Override
 							public void onListObtained(boolean successful) {
-								//Log.v(TAG, "SDL enabled by router service from " + packageName + " compnent package " + componentName.getPackageName()  + " - " + componentName.getClassName());
+//								Log.v(TAG, "SDL enabled by router service from " + packageName + " compnent package " + componentName.getPackageName()  + " - " + componentName.getClassName());
 								//List obtained. Let's start our service
 								queuedService = componentName;
 								finalIntent.setAction("com.sdl.noaction"); //Replace what's there so we do go into some unintended loop

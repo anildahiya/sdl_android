@@ -32,6 +32,7 @@ import com.smartdevicelink.transport.BaseTransportConfig;
 import com.smartdevicelink.transport.MultiplexTransport;
 import com.smartdevicelink.transport.MultiplexTransportConfig;
 import com.smartdevicelink.transport.enums.TransportType;
+import com.smartdevicelink.util.Version;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -620,6 +621,10 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
                                          byte sessionID, byte version, String correlationID, int hashID, boolean isEncrypted) {
         this.sessionId = sessionID;
         lockScreenMan.setSessionID(sessionID);
+        if (sessionType.eq(SessionType.RPC)){
+            sessionHashId = hashID;
+            wiproProcolVer = version;
+        }
         if (isEncrypted)
             encryptedServices.addIfAbsent(sessionType);
         this.sessionListener.onProtocolSessionStarted(sessionType, sessionID, version, correlationID, hashID, isEncrypted);
@@ -631,9 +636,7 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
         }
         //if (version == 3)
         initialiseSession();
-        if (sessionType.eq(SessionType.RPC)){
-            sessionHashId = hashID;
-        }
+
     }
 
     @Override
@@ -822,6 +825,11 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
         }
 
         return protocol;
+    }
+
+    public Version getProtocolVersion(){
+        //Since this session version never supported a minor protocol version this should be fine
+        return new Version(wiproProcolVer,0,0);
     }
 
     /**

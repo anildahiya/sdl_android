@@ -147,7 +147,6 @@ public class AndroidTools {
 
 		if (apps == null) {
 			apps = context.getPackageManager().queryBroadcastReceivers(intent, 0);
-			context.sendBroadcast(intent);
 		}
 
 		if (apps != null && apps.size()>0) {
@@ -159,6 +158,9 @@ public class AndroidTools {
 					//In case there is missing info in the app reference we want to keep moving
 				}
 			}
+		} else {
+			// fallback to implicit broadcast if we cannot resolve apps info.
+			context.sendBroadcast(intent);
 		}
 	}
 

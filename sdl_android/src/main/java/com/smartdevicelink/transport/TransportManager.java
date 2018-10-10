@@ -82,8 +82,8 @@ public class TransportManager {
             config.service = SdlBroadcastReceiver.consumeQueuedRouterService();
         }
 
-        RouterServiceValidator validator = new RouterServiceValidator(config.context,config.service);
-        validator.setSecurityLevel(config.getSecurityLevel());
+        RouterServiceValidator validator = new RouterServiceValidator(config);
+
         if(validator.validate()){
             transport = new TransportBrokerImpl(config.context, config.appId,config.service);
         }else{

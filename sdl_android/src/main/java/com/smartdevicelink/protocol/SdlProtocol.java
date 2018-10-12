@@ -1451,6 +1451,12 @@ public class SdlProtocol {
                 String ipAddr = (String) packet.getTag(ControlFrameTags.RPC.TransportEventUpdate.TCP_IP_ADDRESS);
                 Integer port = (Integer) packet.getTag(ControlFrameTags.RPC.TransportEventUpdate.TCP_PORT);
 
+                Intent sendIntent = createBroadcastIntent(applicationName, appId);
+                updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol handleControlFrame" +
+                        "()");
+
+                final String[] sDetailedInfo = {""};
+
                 if(secondaryTransportParams == null){
                     secondaryTransportParams = new HashMap<>();
                 }
@@ -1463,9 +1469,31 @@ public class SdlProtocol {
                     secondaryTransportParams.put(TransportType.TCP, bundle);
 
                     //A new secondary transport just became available. Notify the developer.
+                    sDetailedInfo[0] += "Secondary transport just became available with TCP_IP_ADDRESS: " + ipAddr + " & port: "+  port + "\n";
                     notifyDevTransportListener();
                 }
 
+                for(TransportType secondaryTransportType : supportedSecondaryTransports) {
+
+                    if(!requestedSecondaryTransports.contains(secondaryTransportType)){
+                        // Secondary transport is not accepted by the client
+                        continue;
+                    }
+
+                    if (!transportManager.isConnected(secondaryTransportType, null)) {
+                        if (secondaryTransportParams != null && secondaryTransportParams.containsKey(secondaryTransportType)){
+                            sDetailedInfo[0] += "Requesting Secondary Connection: " + secondaryTransportType.toString() + "\n";
+                            transportManager.requestSecondaryTransportConnection((byte) packet.getSessionId(), secondaryTransportParams.get(secondaryTransportType));
+                        } else {
+                            sDetailedInfo[0] += "Secondary Connection: " + secondaryTransportType.toString() + " required Transport Param missing." + "\n";
+                        }
+                    } else {
+                        sDetailedInfo[0] += "Secondary Transport already connected." + "\n";
+                    }
+                }
+
+                updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+                sendBroadcastIntent(sendIntent);
             }
 
             _assemblerForMessageID.remove(packet.getMessageId());

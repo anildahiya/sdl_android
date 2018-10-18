@@ -113,6 +113,7 @@ public class SdlSession2 extends SdlSession implements ISdlProtocol{
     @SuppressWarnings("ConstantConditions")
     @Override
     public void startService (SessionType serviceType, byte sessionID, boolean isEncrypted) {
+        Log.i(TAG, "<TRACE> SdlSession2 startService() called");
         if (isEncrypted){
             if (sdlSecurity != null){
                 List<SessionType> serviceList = sdlSecurity.getServiceList();

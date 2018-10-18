@@ -738,6 +738,9 @@ public class SdlProtocol {
         updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol startService()");
 
         final String[] sDetailedInfo = {""};
+
+        Log.i(TAG, "<TRACE> SdlProtocol startService() called with type = " + serviceType.getName());
+
         final SdlPacket header = SdlPacketFactory.createStartSession(serviceType, 0x00, (byte)protocolVersion.getMajor(), sessionID, isEncrypted);
         if(SessionType.RPC.equals(serviceType)){
             if(connectedPrimaryTransport != null) {
@@ -843,11 +846,13 @@ public class SdlProtocol {
                 if(transportManager.isConnected(secondaryTransportType,null)){
                     //The transport is actually connected, however no service has been registered
                     sDetailedInfo[0] += "The transport is actually connected, however no service has been registered" + "\n";
+                    Log.i(TAG, "<TRACE> SdlProtocol startService() - secondary transport is already connected");
                     listenerList.add(secondaryListener);
                     registerSecondaryTransport(sessionID,transportManager.getTransportRecord(secondaryTransportType,null));
                 }else if(secondaryTransportParams != null && secondaryTransportParams.containsKey(secondaryTransportType)) {
                     //No acceptable secondary transport is connected, so first one must be connected
                     sDetailedInfo[0] += "No acceptable secondary transport is connected, so first one must be connected" + "\n";
+                    Log.i(TAG, "<TRACE> SdlProtocol startService() - requesting secondary transport connection");
                     header.setTransportRecord(new TransportRecord(secondaryTransportType,""));
                     listenerList.add(secondaryListener);
                     transportManager.requestSecondaryTransportConnection(sessionID,secondaryTransportParams.get(secondaryTransportType));
@@ -1446,10 +1451,16 @@ public class SdlProtocol {
                 handleSecondaryTransportRegistration(packet.getTransportRecord(),false);
 
             } else if (frameInfo == FrameDataControlFrameType.TransportEventUpdate.getValue()) {
+                Log.i(TAG, "<TRACE> SdlProtocol handleControlFrame() - TransportEventUpdate frame received");
 
                 // Get TCP params
                 String ipAddr = (String) packet.getTag(ControlFrameTags.RPC.TransportEventUpdate.TCP_IP_ADDRESS);
                 Integer port = (Integer) packet.getTag(ControlFrameTags.RPC.TransportEventUpdate.TCP_PORT);
+
+                Intent sendIntent = createBroadcastIntent(applicationName, appId);
+                updateBroadcastIntent(sendIntent, "FUNCTION_NAME", "SdlProtocol handleControlFrame" +
+                        "()");
+                final String[] sDetailedInfo = {""};
 
                 if(secondaryTransportParams == null){
                     secondaryTransportParams = new HashMap<>();
@@ -1457,15 +1468,22 @@ public class SdlProtocol {
 
                 if(ipAddr != null && port != null) {
                     Bundle bundle = new Bundle();
+                    Log.i(TAG, "<TRACE> SdlProtocol handleControlFrame() - keeping {IP address, port} = {" + ipAddr + ", " + port + "}");
                     bundle.putString(ControlFrameTags.RPC.TransportEventUpdate.TCP_IP_ADDRESS, ipAddr);
                     bundle.putInt(ControlFrameTags.RPC.TransportEventUpdate.TCP_PORT, port);
                     bundle.putString(TransportConstants.TRANSPORT_TYPE, TransportType.TCP.name());
                     secondaryTransportParams.put(TransportType.TCP, bundle);
 
+                    sDetailedInfo[0] += "Secondary transport just became available with TCP_IP_ADDRESS: " + ipAddr + " & port: "+  port + "\n";
+                    sDetailedInfo[0] += "Initiating TCP secondary transport" + "\n";
+                    Log.i(TAG, "Initiating TCP secondary transport after receiving IP address and port number");
+                    transportManager.requestSecondaryTransportConnection((byte)-1, bundle);
+
                     //A new secondary transport just became available. Notify the developer.
                     notifyDevTransportListener();
                 }
-
+                updateBroadcastIntent(sendIntent, "COMMENT1", sDetailedInfo[0]);
+                sendBroadcastIntent(sendIntent);
             }
 
             _assemblerForMessageID.remove(packet.getMessageId());

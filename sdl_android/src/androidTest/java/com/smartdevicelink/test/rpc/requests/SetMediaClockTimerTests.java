@@ -32,6 +32,7 @@ public class SetMediaClockTimerTests extends BaseRpcTests {
 		msg.setEndTime(Test.GENERAL_STARTTIME);
 		msg.setUpdateMode(Test.GENERAL_UPDATEMODE);
 		msg.setAudioStreamingIndicator(Test.GENERAL_AUDIO_STREAMING_INDICATOR);
+		msg.setEnableSeek(Test.GENERAL_BOOLEAN);
 
 		return msg;
 	}
@@ -55,6 +56,7 @@ public class SetMediaClockTimerTests extends BaseRpcTests {
 			result.put(SetMediaClockTimer.KEY_END_TIME, Test.JSON_STARTTIME);
 			result.put(SetMediaClockTimer.KEY_UPDATE_MODE, Test.GENERAL_UPDATEMODE);
 			result.put(SetMediaClockTimer.KEY_AUDIO_STREAMING_INDICATOR, Test.GENERAL_AUDIO_STREAMING_INDICATOR);
+			result.put(SetMediaClockTimer.KEY_ENABLE_SEEK, Test.GENERAL_BOOLEAN);
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -71,10 +73,12 @@ public class SetMediaClockTimerTests extends BaseRpcTests {
 		StartTime  testEndTime    = ( (SetMediaClockTimer) msg ).getEndTime();
 		UpdateMode testUpdateMode = ( (SetMediaClockTimer) msg ).getUpdateMode();
 		AudioStreamingIndicator testAudioStreamingIndicator = ( (SetMediaClockTimer) msg ).getAudioStreamingIndicator();
+		boolean  testEnableSeek = ( (SetMediaClockTimer) msg ).getEnableSeek();
 		
 		// Valid Tests
 		assertEquals(Test.MATCH, Test.GENERAL_UPDATEMODE, testUpdateMode);
 		assertEquals(Test.MATCH, Test.GENERAL_AUDIO_STREAMING_INDICATOR, testAudioStreamingIndicator);
+		assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, testEnableSeek);
 		assertTrue(Test.TRUE, Validator.validateStartTime(Test.GENERAL_STARTTIME, testStartTime));
 		assertTrue(Test.TRUE, Validator.validateStartTime(Test.GENERAL_STARTTIME, testEndTime));
 		
@@ -87,6 +91,7 @@ public class SetMediaClockTimerTests extends BaseRpcTests {
 		assertNull(Test.NULL, msg.getEndTime());
 		assertNull(Test.NULL, msg.getUpdateMode());
 		assertNull(Test.NULL, msg.getAudioStreamingIndicator());
+		assertNull(Test.NULL, msg.getEnableSeek());
 	}
 	
 	/**
@@ -117,6 +122,7 @@ public class SetMediaClockTimerTests extends BaseRpcTests {
 			assertTrue(Test.TRUE, Validator.validateStartTime(referenceEndTime, cmd.getEndTime()));
 			assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, SetMediaClockTimer.KEY_UPDATE_MODE), cmd.getUpdateMode().toString());
 			assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, SetMediaClockTimer.KEY_AUDIO_STREAMING_INDICATOR), cmd.getAudioStreamingIndicator().toString());
+			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, SetMediaClockTimer.KEY_ENABLE_SEEK), cmd.getEnableSeek());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}    	

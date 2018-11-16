@@ -3737,6 +3737,22 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 					onRPCNotificationReceived(msg);
 				}
 			}
+			else if (functionName.equals(FunctionID.ON_SEEK_MEDIA_CLOCK_TIMER.toString())) {
+				final OnSeekMediaClockTimer msg = new OnSeekMediaClockTimer(hash);
+				if (_callbackToUIThread) {
+					// Run in UI thread
+					_mainUIHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							_proxyListener.onOnSeekMediaClockTimer((OnSeekMediaClockTimer)msg);
+							onRPCNotificationReceived(msg);
+						}
+					});
+				} else {
+					_proxyListener.onOnSeekMediaClockTimer((OnSeekMediaClockTimer)msg);
+					onRPCNotificationReceived(msg);
+				}
+			}
 			else if (functionName.equals(FunctionID.ON_WAY_POINT_CHANGE.toString())) {
 				final OnWayPointChange msg = new OnWayPointChange(hash);
 				msg.format(rpcSpecVersion, true);

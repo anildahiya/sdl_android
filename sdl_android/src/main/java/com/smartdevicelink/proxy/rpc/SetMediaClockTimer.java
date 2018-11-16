@@ -84,6 +84,7 @@ public class SetMediaClockTimer extends RPCRequest {
 	public static final String KEY_START_TIME = "startTime";
 	public static final String KEY_END_TIME = "endTime";
 	public static final String KEY_UPDATE_MODE = "updateMode";
+	public static final String KEY_ENABLE_SEEK = "enableSeek";
 	public static final String KEY_AUDIO_STREAMING_INDICATOR = "audioStreamingIndicator";
 	/**
 	 * Constructs a new SetMediaClockTimer object
@@ -176,6 +177,24 @@ public class SetMediaClockTimer extends RPCRequest {
 	 */    
     public void setUpdateMode( @NonNull UpdateMode updateMode ) {
 		setParameters(KEY_UPDATE_MODE, updateMode);
+    }
+
+	/**
+	 * Gets the enableSeek parameter of SetMediaClockTimer.
+	 *
+	 * @return Boolean - a Boolean value representing if seek media clock timer functionality is available or not.
+	 */
+    public Boolean getEnableSeek() {
+		return getBoolean(KEY_ENABLE_SEEK);
+    }
+
+	/**
+	 * Sets the enableSeek parameter for SetMediaClockTimer.
+	 * Defines if seek media clock timer functionality will be available.
+	 * If omitted, the value is set to false. The value is retained until the next SetMediaClockTimer is sent.
+	 */
+    public void setEnableSeek(Boolean enableSeek) {
+		setParameters(KEY_ENABLE_SEEK, enableSeek);
     }
 
 	/**

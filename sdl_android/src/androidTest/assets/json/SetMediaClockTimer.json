@@ -14,7 +14,8 @@
         "hours":12
       },
       "updateMode":"COUNTDOWN",
-      "audioStreamingIndicator":"PLAY"
+      "audioStreamingIndicator":"PLAY",
+      "enableSeek":true
     }
   },
   "response":{

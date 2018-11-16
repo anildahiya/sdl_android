@@ -84,6 +84,7 @@ public enum FunctionID{
     ON_WAY_POINT_CHANGE(32784, "OnWayPointChange"),
     ON_RC_STATUS(32785, "OnRCStatus"),
 
+    ON_SEEK_MEDIA_CLOCK_TIMER(32786, "OnSeekMediaClockTimer"),
     // MOCKED FUNCTIONS (NOT SENT FROM HEAD-UNIT)
     ON_LOCK_SCREEN_STATUS(-1, "OnLockScreenStatus"),
     ON_SDL_CHOICE_CHOSEN(-1, "OnSdlChoiceChosen"),

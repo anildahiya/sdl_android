@@ -50,6 +50,7 @@ import com.smartdevicelink.proxy.rpc.OnLanguageChange;
 import com.smartdevicelink.proxy.rpc.OnLockScreenStatus;
 import com.smartdevicelink.proxy.rpc.OnPermissionsChange;
 import com.smartdevicelink.proxy.rpc.OnRCStatus;
+import com.smartdevicelink.proxy.rpc.OnSeekMediaClockTimer;
 import com.smartdevicelink.proxy.rpc.OnStreamRPC;
 import com.smartdevicelink.proxy.rpc.OnSystemRequest;
 import com.smartdevicelink.proxy.rpc.OnTBTClientState;
@@ -601,6 +602,11 @@ public class SdlProxyBaseTests extends AndroidTestCase2 {
         @Override
         public void onOnWayPointChange(OnWayPointChange notification) {
             Log.i(TAG, "OnWayPointChange notification from SDL: " + notification);
+        }
+
+        @Override
+        public void onOnSeekMediaClockTimer(OnSeekMediaClockTimer notification) {
+            Log.i(TAG, "OnSeekMediaClockTimer notification from SDL: " + notification);
         }
 
         @Override

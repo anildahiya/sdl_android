@@ -55,6 +55,7 @@ import com.smartdevicelink.proxy.rpc.SetDisplayLayoutResponse;
 import com.smartdevicelink.proxy.rpc.SetGlobalPropertiesResponse;
 import com.smartdevicelink.proxy.rpc.SetInteriorVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.SetMediaClockTimerResponse;
+import com.smartdevicelink.proxy.rpc.ShowAppMenuResponse;
 import com.smartdevicelink.proxy.rpc.ShowConstantTbtResponse;
 import com.smartdevicelink.proxy.rpc.ShowResponse;
 import com.smartdevicelink.proxy.rpc.SliderResponse;
@@ -356,4 +357,6 @@ public interface IProxyListenerBase  {
 	public void onSendHapticDataResponse(SendHapticDataResponse response);
 
 	public void onOnRCStatus(OnRCStatus notification);
+
+	public void onShowAppMenuResponse(ShowAppMenuResponse response);
 }

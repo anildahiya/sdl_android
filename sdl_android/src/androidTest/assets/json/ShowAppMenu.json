@@ -1,0 +1,13 @@
+{
+  "request":{
+    "name":"ShowAppMenu",
+    "correlationID":106,
+    "parameters":{
+      "menuID":10
+    }
+  },
+  "response":{
+    "name":"ShowAppMenuResponse",
+    "correlationID":107
+  }
+}

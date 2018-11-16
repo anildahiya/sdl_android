@@ -70,6 +70,7 @@ import com.smartdevicelink.proxy.rpc.SetGlobalPropertiesResponse;
 import com.smartdevicelink.proxy.rpc.SetInteriorVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.SetMediaClockTimerResponse;
 import com.smartdevicelink.proxy.rpc.Show;
+import com.smartdevicelink.proxy.rpc.ShowAppMenuResponse;
 import com.smartdevicelink.proxy.rpc.ShowConstantTbtResponse;
 import com.smartdevicelink.proxy.rpc.ShowResponse;
 import com.smartdevicelink.proxy.rpc.SliderResponse;
@@ -649,6 +650,11 @@ public class SdlProxyBaseTests extends AndroidTestCase2 {
 
 		@Override
 		public void onOnRCStatus(OnRCStatus notification) {
+		}
+
+		@Override
+		public void onShowAppMenuResponse(ShowAppMenuResponse response) {
+			Log.i(TAG, "ShowAppMenuResponse response from SDL: " + response);
 		}
 	}
 }

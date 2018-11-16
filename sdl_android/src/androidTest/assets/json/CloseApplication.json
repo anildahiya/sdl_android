@@ -1,0 +1,10 @@
+{
+  "request":{
+    "name":"CloseApplication",
+    "correlationID":168
+  },
+  "response":{
+    "name":"CloseApplicationResponse",
+    "correlationID":169
+  }
+}

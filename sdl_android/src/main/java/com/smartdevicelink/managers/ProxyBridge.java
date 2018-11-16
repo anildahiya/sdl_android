@@ -13,6 +13,7 @@ import com.smartdevicelink.proxy.rpc.AlertManeuverResponse;
 import com.smartdevicelink.proxy.rpc.AlertResponse;
 import com.smartdevicelink.proxy.rpc.ButtonPressResponse;
 import com.smartdevicelink.proxy.rpc.ChangeRegistrationResponse;
+import com.smartdevicelink.proxy.rpc.CloseApplicationResponse;
 import com.smartdevicelink.proxy.rpc.CreateInteractionChoiceSetResponse;
 import com.smartdevicelink.proxy.rpc.DeleteCommandResponse;
 import com.smartdevicelink.proxy.rpc.DeleteFileResponse;
@@ -556,5 +557,10 @@ public class ProxyBridge implements IProxyListener{
 	@Override
 	public void onOnRCStatus(OnRCStatus notification) {
 		onRPCReceived(notification);
+	}
+
+	@Override
+	public void onCloseApplicationResponse(CloseApplicationResponse response) {
+		onRPCReceived(response);
 	}
 }

@@ -8,6 +8,7 @@ import com.smartdevicelink.proxy.rpc.AlertManeuverResponse;
 import com.smartdevicelink.proxy.rpc.AlertResponse;
 import com.smartdevicelink.proxy.rpc.ButtonPressResponse;
 import com.smartdevicelink.proxy.rpc.ChangeRegistrationResponse;
+import com.smartdevicelink.proxy.rpc.CloseApplicationResponse;
 import com.smartdevicelink.proxy.rpc.CreateInteractionChoiceSetResponse;
 import com.smartdevicelink.proxy.rpc.DeleteCommandResponse;
 import com.smartdevicelink.proxy.rpc.DeleteFileResponse;
@@ -356,4 +357,6 @@ public interface IProxyListenerBase  {
 	public void onSendHapticDataResponse(SendHapticDataResponse response);
 
 	public void onOnRCStatus(OnRCStatus notification);
+
+	public void onCloseApplicationResponse(CloseApplicationResponse response);
 }

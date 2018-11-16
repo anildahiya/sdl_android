@@ -2557,6 +2557,23 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 					_proxyListener.onDeleteCommandResponse(msg);
 					onRPCResponseReceived(msg);
 				}
+			} else if (functionName.equals(FunctionID.CLOSE_APPLICATION.toString())) {
+				// CloseApplicationResponse
+
+				final CloseApplicationResponse msg = new CloseApplicationResponse(hash);
+				if (_callbackToUIThread) {
+					// Run in UI thread
+					_mainUIHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							_proxyListener.onCloseApplicationResponse(msg);
+							onRPCResponseReceived(msg);
+						}
+					});
+				} else {
+					_proxyListener.onCloseApplicationResponse(msg);
+					onRPCResponseReceived(msg);
+				}
 			} else if (functionName.equals(FunctionID.ADD_SUB_MENU.toString())) {
 				// AddSubMenu
 				

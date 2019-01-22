@@ -4,6 +4,7 @@ import com.smartdevicelink.proxy.RPCStruct;
 import com.smartdevicelink.proxy.rpc.enums.RadioBand;
 import com.smartdevicelink.proxy.rpc.enums.RadioState;
 import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Include information (both read-only and changeable data) about a
@@ -22,6 +23,7 @@ public class RadioControlData extends RPCStruct{
     public static final String KEY_STATE= "state";
     public static final String KEY_HD_RADIO_ENABLE = "hdRadioEnable";
     public static final String KEY_SIS_DATA = "sisData";
+    public static final String KEY_AVAILABLE_HD_CHANNELS = "availableHdChannels";
 
     public RadioControlData() {
     }
@@ -112,6 +114,7 @@ public class RadioControlData extends RPCStruct{
      * @param availableHDs
      * Number of HD sub-channels if available.
      */
+    @Deprecated
     public void setAvailableHDs(Integer availableHDs) {
         setValue(KEY_AVAILABLE_HDS, availableHDs);
     }
@@ -121,6 +124,7 @@ public class RadioControlData extends RPCStruct{
      *
      * @return Integer - Number of HD sub-channels if available.
      */
+    @Deprecated
     public Integer getAvailableHDs() {
         return getInteger(KEY_AVAILABLE_HDS);
     }
@@ -257,5 +261,25 @@ public class RadioControlData extends RPCStruct{
      */
     public SisData getSisData() {
         return (SisData) getObject(SisData.class, KEY_SIS_DATA);
+    }
+
+    /**
+     * Gets the availableHdChannels portion of the RadioControlData class
+     *
+     * @return Integer - List of available hd sub-channel indexes, empty list means no Hd channel is available, read-only.
+     */
+    @SuppressWarnings("unchecked")
+    public List<Integer> getAvailableHdChannels() {
+        return (List<Integer>) getObject(Integer.class, KEY_AVAILABLE_HD_CHANNELS);
+    }
+
+    /**
+     * Sets the availableHdChannels portion of the RadioControlData class
+     *
+     * @param availableHdChannels
+     * List of available hd sub-channel indexes, empty list means no Hd channel is available, read-only.
+     */
+    public void setAvailableHdChannels(List<Integer> availableHdChannels) {
+        setValue(KEY_AVAILABLE_HD_CHANNELS, availableHdChannels);
     }
 }

@@ -1,17 +1,9 @@
 package com.smartdevicelink.proxy.rpc;
 
-import java.util.Hashtable;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCRequest;
 
-import static android.provider.Contacts.SettingsColumns.KEY;
-import static com.smartdevicelink.proxy.constants.Names.choiceSet;
-import static com.smartdevicelink.proxy.constants.Names.externalTemperature;
-import static com.smartdevicelink.proxy.constants.Names.instantFuelConsumption;
-import static com.smartdevicelink.proxy.constants.Names.prndl;
-import static com.smartdevicelink.proxy.constants.Names.vin;
-import static com.smartdevicelink.proxy.rpc.CreateInteractionChoiceSet.KEY_CHOICE_SET;
+import java.util.Hashtable;
 
 /**
  * Non periodic vehicle data read request.
@@ -202,7 +194,15 @@ import static com.smartdevicelink.proxy.rpc.CreateInteractionChoiceSet.KEY_CHOIC
  * 			<td>Subscribable</td>
  * 			<td>SmartDeviceLink 5.0</td>
  * 		</tr>
- *  </table>
+ * 	     <tr>
+ * 			<td>cloudAppVehicleID</td>
+ * 			<td>Boolean</td>
+ * 			<td>ID for the vehicle when connecting to cloud applications</td>
+ *				<td>N</td>
+ *				<td>Subscribable</td>
+ * 			<td>SmartDeviceLink 5.1 </td>
+ * 		</tr>
+ * 		</table>
  *  
  *  
  *  <p><b>Response</b></p>
@@ -255,6 +255,7 @@ public class GetVehicleData extends RPCRequest {
 	public static final String KEY_FUEL_RANGE = "fuelRange";
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
+    public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
 
 	/**
 	 * Constructs a new GetVehicleData object
@@ -491,5 +492,21 @@ public class GetVehicleData extends RPCRequest {
      */
     public Boolean getElectronicParkBrakeStatus(){
         return getBoolean(KEY_ELECTRONIC_PARK_BRAKE_STATUS);
+    }
+
+    /**
+     * Sets a boolean value. If true, gets the cloudAppVehicleID data
+     * @param cloudAppVehicleID a boolean value
+     */
+    public void setCloudAppVehicleID(boolean cloudAppVehicleID){
+        setParameters(KEY_CLOUD_APP_VEHICLE_ID, cloudAppVehicleID);
+    }
+
+    /**
+     * Gets a boolean value. If true, means the cloudAppVehicleDataID data has been set to retrieve.
+     * @return a Boolean value.
+     */
+    public Boolean getCloudAppVehicleID(){
+        return getBoolean(KEY_CLOUD_APP_VEHICLE_ID);
     }
 }

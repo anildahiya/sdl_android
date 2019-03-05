@@ -29,6 +29,7 @@ public class ScreenManagerTests extends AndroidTestCase2 {
 		ISdl internalInterface = mock(ISdl.class);
 		FileManager fileManager = mock(FileManager.class);
 		screenManager = new ScreenManager(internalInterface, fileManager);
+		screenManager.start(null);
 
 
 		testArtwork = new SdlArtwork("testFile", FileType.GRAPHIC_PNG, 1, false);
@@ -80,9 +81,21 @@ public class ScreenManagerTests extends AndroidTestCase2 {
 		assertEquals(screenManager.getPrimaryGraphic(), testArtwork);
 	}
 
+	public void testSetPrimaryGraphicWithBlankImage() {
+		screenManager.setPrimaryGraphic(null);
+		assertNotNull(screenManager.getPrimaryGraphic());
+		assertEquals(screenManager.getPrimaryGraphic().getName(), "blankArtwork");
+	}
+
 	public void testSetSecondaryGraphic() {
 		screenManager.setSecondaryGraphic(testArtwork);
 		assertEquals(screenManager.getSecondaryGraphic(), testArtwork);
+	}
+
+	public void testSetSecondaryGraphicWithBlankImage() {
+		screenManager.setSecondaryGraphic(null);
+		assertNotNull(screenManager.getSecondaryGraphic());
+		assertEquals(screenManager.getSecondaryGraphic().getName(), "blankArtwork");
 	}
 
 	public void testAlignment() {

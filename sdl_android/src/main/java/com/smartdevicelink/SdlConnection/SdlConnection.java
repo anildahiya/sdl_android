@@ -1,12 +1,7 @@
 package com.smartdevicelink.SdlConnection;
 
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import android.content.ComponentName;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.smartdevicelink.exception.SdlException;
@@ -31,6 +26,9 @@ import com.smartdevicelink.transport.USBTransport;
 import com.smartdevicelink.transport.USBTransportConfig;
 import com.smartdevicelink.transport.enums.TransportType;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 @Deprecated
 public class SdlConnection implements IProtocolListener, ITransportListener {
 
@@ -39,7 +37,7 @@ public class SdlConnection implements IProtocolListener, ITransportListener {
 	SdlTransport _transport = null;
 	AbstractProtocol _protocol = null;
 	ISdlConnectionListener _connectionListener = null;
-	
+
 
 
 	// Thread safety locks
@@ -343,7 +341,13 @@ public class SdlConnection implements IProtocolListener, ITransportListener {
 				}
 			}
 		return null;
-	}	
+	}
+
+	public void onAuthTokenReceived(String authToken, byte sessionID) {
+		if(this._connectionListener != null){
+			this._connectionListener.onAuthTokenReceived(authToken,sessionID);
+		}
+	}
 	
 	private class InternalMsgDispatcher implements ISdlConnectionListener {
 
@@ -473,6 +477,14 @@ public class SdlConnection implements IProtocolListener, ITransportListener {
 			SdlSession session = findSessionById(sessionID);
 			if (session != null) {
 				session.onProtocolServiceDataACK(serviceType, dataSize, sessionID);
+			}
+		}
+
+		@Override
+		public void onAuthTokenReceived(String authToken, byte sessionID) {
+			SdlSession session = findSessionById(sessionID);
+			if (session != null) {
+				session.onAuthTokenReceived(authToken,sessionID);
 			}
 		}
 	}

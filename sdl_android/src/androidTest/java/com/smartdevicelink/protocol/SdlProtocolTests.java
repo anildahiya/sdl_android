@@ -99,6 +99,8 @@ public class SdlProtocolTests  extends AndroidTestCase2 {
         public void setAcceptedVideoParams(VideoStreamingParameters acceptedVideoParams) {}
         @Override
         public void stopStream(SessionType serviceType) {}
+        @Override
+        public void onAuthTokenReceived(String token){}
     };
 
     DidReceiveListener onProtocolMessageReceivedListener = new DidReceiveListener();

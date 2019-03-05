@@ -106,6 +106,10 @@ public class SdlSession2 extends SdlSession implements ISdlProtocol{
         }
     }
 
+    @Override
+    public void resetSession (){
+        sdlProtocol.resetSession();
+    }
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -229,6 +233,8 @@ public class SdlSession2 extends SdlSession implements ISdlProtocol{
     public void onResetOutgoingHeartbeat(SessionType sessionType, byte sessionID) {/* Not supported */}
     @Override
     public void onResetIncomingHeartbeat(SessionType sessionType, byte sessionID) {/* Not supported */}
+    @Override
+    public void onAuthTokenReceived(String authToken, byte sessionID){/* Do nothing */ }
 
     /* ***********************************************************************************************************************************************************************
      * *****************************************************************  Security Listener  *********************************************************************************
@@ -264,6 +270,11 @@ public class SdlSession2 extends SdlSession implements ISdlProtocol{
             stopAudioStream();
         }
 
+    }
+
+    @Override
+    public void onAuthTokenReceived(String authToken) {
+        sessionListener.onAuthTokenReceived(authToken,sessionId);
     }
 
     /**

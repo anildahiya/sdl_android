@@ -157,12 +157,7 @@ public class WiProProtocol extends AbstractProtocol {
 	public void EndProtocolSession(SessionType sessionType, byte sessionID, int hashId) {
 		SdlPacket header;
 		if (sessionType.equals(SessionType.RPC)) { // check for RPC session
-			if(_version < 5){
-				header = SdlPacketFactory.createEndSession(sessionType, sessionID, hashID, getMajorVersionByte(), BitConverter.intToByteArray(hashID));
-			}else{
-				header = SdlPacketFactory.createEndSession(sessionType, sessionID, hashID, getMajorVersionByte(), new byte[0]);
-				header.putTag(ControlFrameTags.RPC.EndService.HASH_ID, hashID);
-			}
+			header = SdlPacketFactory.createEndSession(sessionType, sessionID, hashID, getMajorVersionByte(), hashID);
 		}else{ //Any other service type we don't include the hash id
 			header = SdlPacketFactory.createEndSession(sessionType, sessionID, hashID, getMajorVersionByte(), new byte[0]);
 		}
@@ -171,7 +166,6 @@ public class WiProProtocol extends AbstractProtocol {
 	} // end-method
 
 	public void SendMessage(ProtocolMessage protocolMsg) {
-		protocolMsg.setRPCType((byte) 0x00); //always sending a request
 		SessionType sessionType = protocolMsg.getSessionType();
 		byte sessionID = protocolMsg.getSessionID();
 
@@ -508,6 +502,16 @@ public class WiProProtocol extends AbstractProtocol {
 					}
 				}
 				handleProtocolSessionStarted(serviceType,(byte) packet.getSessionId(), getMajorVersionByte(), "", hashID, packet.isEncrypted());
+
+				if(serviceType.equals(SessionType.RPC)
+						&& protocolVersion.isNewerThan(new Version(5,2,0)) >= 0){
+					// This has to be done after the session has been established because
+					// SdlConnection is just setup that way
+					String authToken = (String)packet.getTag(ControlFrameTags.RPC.StartServiceACK.AUTH_TOKEN);
+					if(authToken != null){
+						sdlconn.onAuthTokenReceived(authToken, (byte)packet.getSessionId());
+					}
+				}
 			} else if (frameInfo == FrameDataControlFrameType.StartSessionNACK.getValue()) {
 				List<String> rejectedParams = null;
 				if(packet.version >= 5){

@@ -22,13 +22,17 @@ import com.smartdevicelink.proxy.rpc.DiagnosticMessageResponse;
 import com.smartdevicelink.proxy.rpc.DialNumberResponse;
 import com.smartdevicelink.proxy.rpc.EndAudioPassThruResponse;
 import com.smartdevicelink.proxy.rpc.GenericResponse;
+import com.smartdevicelink.proxy.rpc.GetAppServiceDataResponse;
+import com.smartdevicelink.proxy.rpc.GetCloudAppPropertiesResponse;
 import com.smartdevicelink.proxy.rpc.GetDTCsResponse;
+import com.smartdevicelink.proxy.rpc.GetFileResponse;
 import com.smartdevicelink.proxy.rpc.GetInteriorVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.GetSystemCapabilityResponse;
 import com.smartdevicelink.proxy.rpc.GetVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.GetWayPointsResponse;
 import com.smartdevicelink.proxy.rpc.ListFilesResponse;
 import com.smartdevicelink.proxy.rpc.OnAppInterfaceUnregistered;
+import com.smartdevicelink.proxy.rpc.OnAppServiceData;
 import com.smartdevicelink.proxy.rpc.OnAudioPassThru;
 import com.smartdevicelink.proxy.rpc.OnButtonEvent;
 import com.smartdevicelink.proxy.rpc.OnButtonPress;
@@ -43,13 +47,16 @@ import com.smartdevicelink.proxy.rpc.OnLockScreenStatus;
 import com.smartdevicelink.proxy.rpc.OnPermissionsChange;
 import com.smartdevicelink.proxy.rpc.OnRCStatus;
 import com.smartdevicelink.proxy.rpc.OnStreamRPC;
+import com.smartdevicelink.proxy.rpc.OnSystemCapabilityUpdated;
 import com.smartdevicelink.proxy.rpc.OnSystemRequest;
 import com.smartdevicelink.proxy.rpc.OnTBTClientState;
 import com.smartdevicelink.proxy.rpc.OnTouchEvent;
 import com.smartdevicelink.proxy.rpc.OnVehicleData;
 import com.smartdevicelink.proxy.rpc.OnWayPointChange;
+import com.smartdevicelink.proxy.rpc.PerformAppServiceInteractionResponse;
 import com.smartdevicelink.proxy.rpc.PerformAudioPassThruResponse;
 import com.smartdevicelink.proxy.rpc.PerformInteractionResponse;
+import com.smartdevicelink.proxy.rpc.PublishAppServiceResponse;
 import com.smartdevicelink.proxy.rpc.PutFileResponse;
 import com.smartdevicelink.proxy.rpc.ReadDIDResponse;
 import com.smartdevicelink.proxy.rpc.RegisterAppInterfaceResponse;
@@ -58,6 +65,7 @@ import com.smartdevicelink.proxy.rpc.ScrollableMessageResponse;
 import com.smartdevicelink.proxy.rpc.SendHapticDataResponse;
 import com.smartdevicelink.proxy.rpc.SendLocationResponse;
 import com.smartdevicelink.proxy.rpc.SetAppIconResponse;
+import com.smartdevicelink.proxy.rpc.SetCloudAppPropertiesResponse;
 import com.smartdevicelink.proxy.rpc.SetDisplayLayoutResponse;
 import com.smartdevicelink.proxy.rpc.SetGlobalPropertiesResponse;
 import com.smartdevicelink.proxy.rpc.SetInteriorVehicleDataResponse;
@@ -555,6 +563,45 @@ public class ProxyBridge implements IProxyListener{
 
 	@Override
 	public void onOnRCStatus(OnRCStatus notification) {
+		onRPCReceived(notification);
+	}
+
+	@Override
+	public void onSetCloudAppProperties(SetCloudAppPropertiesResponse response) {
+		onRPCReceived(response);
+	}
+
+	@Override
+	public void onGetCloudAppProperties(GetCloudAppPropertiesResponse response) {
+		onRPCReceived(response);
+	}
+@Override
+	public void onPublishAppServiceResponse(PublishAppServiceResponse response){
+		onRPCReceived(response);
+	}
+
+	@Override
+	public void onGetAppServiceDataResponse(GetAppServiceDataResponse response){
+		onRPCReceived(response);
+	}
+
+	@Override
+	public void onGetFileResponse(GetFileResponse response){
+		onRPCReceived(response);
+	}
+
+	@Override
+	public void onPerformAppServiceInteractionResponse(PerformAppServiceInteractionResponse response){
+		onRPCReceived(response);
+	}
+
+	@Override
+	public void onOnAppServiceData(OnAppServiceData notification){
+		onRPCReceived(notification);
+	}
+
+	@Override
+	public void onOnSystemCapabilityUpdated(OnSystemCapabilityUpdated notification){
 		onRPCReceived(notification);
 	}
 }

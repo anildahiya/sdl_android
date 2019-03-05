@@ -2,14 +2,11 @@ package com.smartdevicelink.proxy.rpc;
 
 import android.support.annotation.NonNull;
 
-import java.util.Hashtable;
-
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCResponse;
 import com.smartdevicelink.proxy.rpc.enums.Result;
-import com.smartdevicelink.util.DebugTool;
 
-import static android.provider.Contacts.SettingsColumns.KEY;
+import java.util.Hashtable;
 
 /**
  * Unsubscribe Vehicle Data Response is sent, when UnsubscribeVehicleData has been called.
@@ -45,6 +42,7 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_FUEL_RANGE = "fuelRange";
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
+    public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
 
 	/**
 	 * Constructs a new UnsubscribeVehicleDataResponse object
@@ -470,5 +468,21 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
      */
     public VehicleDataResult getElectronicParkBrakeStatus(){
         return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_ELECTRONIC_PARK_BRAKE_STATUS);
+    }
+
+    /**
+     * Sets cloudAppVehicleID
+     * @param cloudAppVehicleID a boolean value
+     */
+    public void setCloudAppVehicleID(VehicleDataResult cloudAppVehicleID){
+        setParameters(KEY_CLOUD_APP_VEHICLE_ID, cloudAppVehicleID);
+    }
+
+    /**
+     * Gets a boolean value. If true, means the cloudAppVehicleDataID data has been unsubscribed.
+     * @return a Boolean value.
+     */
+    public VehicleDataResult getCloudAppVehicleID(){
+        return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_CLOUD_APP_VEHICLE_ID);
     }
 }

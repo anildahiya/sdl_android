@@ -161,6 +161,10 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
         }
     }
 
+    public void resetSession(){
+
+    }
+
     public void startStream(InputStream is, SessionType sType, byte rpcSessionID) throws IOException {
         if (sType.equals(SessionType.NAV))
         {
@@ -651,6 +655,11 @@ public class SdlSession implements ISdlConnectionListener, IHeartbeatMonitorList
     @Override
     public void onProtocolServiceDataACK(SessionType sessionType, int dataSize, byte sessionID) {
         this.sessionListener.onProtocolServiceDataACK(sessionType, dataSize, sessionID);
+    }
+
+    @Override
+    public void onAuthTokenReceived(String authToken, byte sessionId) {
+        this.sessionListener.onAuthTokenReceived(authToken, sessionId);
     }
 
     @Override

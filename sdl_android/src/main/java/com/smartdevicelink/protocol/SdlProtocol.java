@@ -170,6 +170,10 @@ public class SdlProtocol {
         return mtu;
     }
 
+    public void resetSession (){
+        transportManager.resetSession();
+    }
+
     public boolean isConnected(){
         return transportManager != null && transportManager.isConnected(null,null);
     }
@@ -511,14 +515,7 @@ public class SdlProtocol {
     }
 
     public void endSession(byte sessionID, int hashId) {
-        SdlPacket header;
-        if(protocolVersion.getMajor() < 5){
-            header = SdlPacketFactory.createEndSession(SessionType.RPC, sessionID, hashId, (byte)protocolVersion.getMajor(), BitConverter.intToByteArray(hashId));
-        }else{
-            header = SdlPacketFactory.createEndSession(SessionType.RPC, sessionID, hashId, (byte)protocolVersion.getMajor(), new byte[0]);
-            header.putTag(ControlFrameTags.RPC.EndService.HASH_ID, hashId);
-        }
-
+        SdlPacket header = SdlPacketFactory.createEndSession(SessionType.RPC, sessionID, hashId, (byte)protocolVersion.getMajor(), hashId);
         handlePacketToSend(header);
 
     } // end-method
@@ -530,7 +527,6 @@ public class SdlProtocol {
     }
 
     public void sendMessage(ProtocolMessage protocolMsg) {
-        protocolMsg.setRPCType((byte) 0x00); //always sending a request
         SessionType sessionType = protocolMsg.getSessionType();
         byte sessionID = protocolMsg.getSessionID();
 
@@ -981,6 +977,13 @@ public class SdlProtocol {
                         Log.w(TAG, "Received a start service ack for RPC service while already active on a different transport.");
                         return;
                     }
+
+                    if(protocolVersion.isNewerThan(new Version(5,2,0)) >= 0){
+                        String authToken = (String)packet.getTag(ControlFrameTags.RPC.StartServiceACK.AUTH_TOKEN);
+                        if(authToken != null){
+                            iSdlProtocol.onAuthTokenReceived(authToken);
+                        }
+                    }
                 }else {
 
                     //Version is either not included or lower than 5.1.0
@@ -1150,7 +1153,7 @@ public class SdlProtocol {
                 activeTransports.remove(SessionType.PCM);
             }
 
-            if(disconnectedTransport.equals(getTransportForSession(SessionType.RPC))){
+            if(disconnectedTransport.equals(getTransportForSession(SessionType.RPC)) || disconnectedTransport.equals(connectedPrimaryTransport)){
                 //transportTypes.remove(type);
                 boolean primaryTransportAvailable = false;
                 if(requestedPrimaryTransports != null && requestedPrimaryTransports.size() > 1){
@@ -1164,6 +1167,7 @@ public class SdlProtocol {
                         }
                     }
                 }
+                connectedPrimaryTransport = null;
                 transportManager.close(iSdlProtocol.getSessionId());
                 transportManager = null;
                 requestedSession = false;

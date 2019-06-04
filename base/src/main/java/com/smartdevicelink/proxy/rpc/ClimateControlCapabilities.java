@@ -61,6 +61,7 @@ public class ClimateControlCapabilities extends RPCStruct{
     public static final String KEY_HEATED_WIND_SHIELD_AVAILABLE = "heatedWindshieldAvailable";
     public static final String KEY_HEATED_REAR_WINDOW_AVAILABLE = "heatedRearWindowAvailable";
     public static final String KEY_HEATED_MIRRORS_AVAILABLE = "heatedMirrorsAvailable";
+    public static final String KEY_MODULE_INFO = "moduleInfo";
 
     public ClimateControlCapabilities() {
     }
@@ -402,5 +403,23 @@ public class ClimateControlCapabilities extends RPCStruct{
      */
     public Boolean getHeatedMirrorsAvailable() {
 	    return getBoolean(KEY_HEATED_MIRRORS_AVAILABLE);
+    }
+
+    /**
+     * Sets the moduleInfo portion of the ClimateControlCapabilities class
+     *
+     * @param moduleInfo - Information about a RC module, including its id.
+     */
+    public void setModuleInfo(ModuleInfo moduleInfo) {
+        setValue(KEY_MODULE_INFO, moduleInfo);
+    }
+
+    /**
+     * Gets the moduleInfo portion of the ClimateControlCapabilities class
+     *
+     * @return ModuleInfo - Information about a RC module, including its id.
+     */
+    public ModuleInfo getModuleInfo() {
+        return (ModuleInfo) getObject(ModuleInfo.class, KEY_MODULE_INFO);
     }
 }

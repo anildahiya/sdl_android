@@ -1,14 +1,18 @@
 package com.smartdevicelink.test.rpc.datatypes;
 
+import com.smartdevicelink.marshal.JsonRPCMarshaller;
+import com.smartdevicelink.proxy.rpc.ModuleInfo;
 import com.smartdevicelink.proxy.rpc.SeatControlCapabilities;
 import com.smartdevicelink.test.JsonUtils;
 import com.smartdevicelink.test.Test;
+import com.smartdevicelink.test.Validator;
 
 import junit.framework.TestCase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Hashtable;
 import java.util.Iterator;
 
 /**
@@ -38,6 +42,7 @@ public class SeatControlCapabilitiesTest extends TestCase {
 		msg.setMassageModeAvailable(Test.GENERAL_BOOLEAN);
 		msg.setMassageCushionFirmnessAvailable(Test.GENERAL_BOOLEAN);
 		msg.setMemoryAvailable(Test.GENERAL_BOOLEAN);
+		msg.setModuleInfo(Test.GENERAL_MODULE_INFO);
 	}
 
 	/**
@@ -62,6 +67,7 @@ public class SeatControlCapabilitiesTest extends TestCase {
 		Boolean massageCushionFirmnessAvailable = msg.getMassageCushionFirmnessAvailable();
 
 		Boolean memoryAvailable = msg.getMemoryAvailable();
+		ModuleInfo moduleInfo = msg.getModuleInfo();
 
 		// Valid Tests
 		assertEquals(Test.MATCH, Test.GENERAL_STRING, moduleName);
@@ -80,6 +86,7 @@ public class SeatControlCapabilitiesTest extends TestCase {
 		assertEquals(Test.MATCH, (Boolean) Test.GENERAL_BOOLEAN, massageModeAvailable);
 		assertEquals(Test.MATCH, (Boolean) Test.GENERAL_BOOLEAN, massageCushionFirmnessAvailable);
 		assertEquals(Test.MATCH, (Boolean) Test.GENERAL_BOOLEAN, memoryAvailable);
+		assertTrue(Test.TRUE, Validator.validateModuleInfo(Test.GENERAL_MODULE_INFO, moduleInfo));
 
 		// Invalid/Null Tests
 		SeatControlCapabilities msg = new SeatControlCapabilities();
@@ -101,6 +108,7 @@ public class SeatControlCapabilitiesTest extends TestCase {
 		assertNull(Test.NULL, msg.getMassageModeAvailable());
 		assertNull(Test.NULL, msg.getMassageCushionFirmnessAvailable());
 		assertNull(Test.NULL, msg.getMemoryAvailable());
+		assertNull(Test.NULL, msg.getModuleInfo());
 	}
 
 	public void testJson() {
@@ -125,6 +133,7 @@ public class SeatControlCapabilitiesTest extends TestCase {
 			reference.put(SeatControlCapabilities.KEY_MASSAGE_CUSHION_FIRMNESS_AVAILABLE, Test.GENERAL_BOOLEAN);
 
 			reference.put(SeatControlCapabilities.KEY_MEMORY_AVAILABLE, Test.GENERAL_BOOLEAN);
+			reference.put(SeatControlCapabilities.KEY_MODULE_INFO, JsonRPCMarshaller.serializeHashtable(Test.GENERAL_MODULE_INFO.getStore()));
 
 			JSONObject underTest = msg.serializeJSON();
 			assertEquals(Test.MATCH, reference.length(), underTest.length());
@@ -132,7 +141,17 @@ public class SeatControlCapabilitiesTest extends TestCase {
 			Iterator<?> iterator = reference.keys();
 			while (iterator.hasNext()) {
 				String key = (String) iterator.next();
-				assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(reference, key), JsonUtils.readObjectFromJsonObject(underTest, key));
+
+				if (key.equals(SeatControlCapabilities.KEY_MODULE_INFO)) {
+					JSONObject referenceArray = JsonUtils.readJsonObjectFromJsonObject(reference, key);
+					JSONObject underTestArray = JsonUtils.readJsonObjectFromJsonObject(underTest, key);
+					Hashtable<String, Object> hashReference = JsonRPCMarshaller.deserializeJSONObject(referenceArray);
+					Hashtable<String, Object> hashTest = JsonRPCMarshaller.deserializeJSONObject(underTestArray);
+
+					assertTrue(Test.TRUE, Validator.validateModuleInfo(new ModuleInfo(hashReference), new ModuleInfo(hashTest)));
+				} else{
+					assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(reference, key), JsonUtils.readObjectFromJsonObject(underTest, key));
+				}
 			}
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);

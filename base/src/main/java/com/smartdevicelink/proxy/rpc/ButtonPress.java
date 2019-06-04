@@ -49,6 +49,7 @@ public class ButtonPress extends RPCRequest {
 	public static final String KEY_MODULE_TYPE = "moduleType";
     public static final String KEY_BUTTON_NAME = "buttonName";
     public static final String KEY_BUTTON_PRESS_MODE = "buttonPressMode";
+    public static final String KEY_MODULE_ID = "moduleId";
 
     /**
      * Constructs a new ButtonPress object
@@ -135,5 +136,23 @@ public class ButtonPress extends RPCRequest {
      */
     public void setButtonPressMode(@NonNull ButtonPressMode buttonPressMode) {
         setParameters(KEY_BUTTON_PRESS_MODE, buttonPressMode);
+    }
+
+    /**
+     * Sets the moduleId
+     *
+     * @param moduleId - Id of a module, published by System Capability.
+     */
+    public void setModuleId(String moduleId){
+        setParameters(KEY_MODULE_ID, moduleId);
+    }
+
+    /**
+     * Gets the moduleId
+     *
+     * @return String - Id of a module, published by System Capability.
+     */
+    public String getModuleId(){
+        return getString(KEY_MODULE_ID);
     }
 }

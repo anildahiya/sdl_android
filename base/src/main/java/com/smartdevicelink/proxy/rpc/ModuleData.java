@@ -46,6 +46,7 @@ public class ModuleData extends RPCStruct {
 	public static final String KEY_AUDIO_CONTROL_DATA = "audioControlData";
 	public static final String KEY_LIGHT_CONTROL_DATA = "lightControlData";
 	public static final String KEY_HMI_SETTINGS_CONTROL_DATA = "hmiSettingsControlData";
+	public static final String KEY_MODULE_ID = "moduleId";
 
 	public ModuleData() {
 	}
@@ -185,5 +186,23 @@ public class ModuleData extends RPCStruct {
 	 */
 	public HMISettingsControlData getHmiSettingsControlData() {
 		return (HMISettingsControlData) getObject(HMISettingsControlData.class, KEY_HMI_SETTINGS_CONTROL_DATA);
+	}
+
+	/**
+	 * Sets the moduleId portion of the ModuleData class
+	 *
+	 * @param moduleId Id of a module, published by System Capability.
+	 */
+	public void setModuleId(String moduleId) {
+		setValue(KEY_MODULE_ID, moduleId);
+	}
+
+	/**
+	 * Gets the moduleId portion of the ModuleData class
+	 *
+	 * @return String - Id of a module, published by System Capability.
+	 */
+	public String getModuleId() {
+		return getString(KEY_MODULE_ID);
 	}
 }

@@ -49,6 +49,7 @@ import java.util.Hashtable;
 public class GetInteriorVehicleData extends RPCRequest {
 	public static final String KEY_MODULE_TYPE = "moduleType";
     public static final String KEY_SUBSCRIBE = "subscribe";
+    public static final String KEY_MODULE_ID = "moduleId";
 
     /**
      * Constructs a new GetInteriorVehicleData object
@@ -102,8 +103,9 @@ public class GetInteriorVehicleData extends RPCRequest {
      * Sets subscribe parameter
      *
      * @param subscribe
-     * If subscribe is true, the head unit will register onInteriorVehicleData notifications for the requested moduelType.
-     * If subscribe is false, the head unit will unregister onInteriorVehicleData notifications for the requested moduelType.
+     * If subscribe is true, the head unit will register OnInteriorVehicleData notifications for the requested module (moduleId and moduleType).
+     * If subscribe is false, the head unit will unregister OnInteriorVehicleData notifications for the requested module (moduleId and moduleType).
+     * If subscribe is not included, the subscription status of the app for the requested module (moduleId and moduleType) will remain unchanged.
      */
     public void setSubscribe(Boolean subscribe) {
         setParameters(KEY_SUBSCRIBE, subscribe);
@@ -112,10 +114,27 @@ public class GetInteriorVehicleData extends RPCRequest {
     /**
      * Gets subscribe parameter
      *
-     * @return Boolean - If subscribe is true, the head unit will register onInteriorVehicleData notifications for the requested moduelType.
-     * If subscribe is false, the head unit will unregister onInteriorVehicleData notifications for the requested moduelType.
+     * @return Boolean - If subscribe is true, the head unit will register OnInteriorVehicleData notifications for the requested module (moduleId and moduleType).
+     * If subscribe is false, the head unit will unregister OnInteriorVehicleData notifications for the requested module (moduleId and moduleType).
+     * If subscribe is not included, the subscription status of the app for the requested module (moduleId and moduleType) will remain unchanged.
      */
     public Boolean getSubscribe() {
         return getBoolean(KEY_SUBSCRIBE);
+    }
+
+    /**
+     * Sets moduleId parameter
+     * @param moduleId - Id of a module, published by System Capability.
+     */
+    public void setModuleId(String moduleId){
+        setParameters(KEY_MODULE_ID, moduleId);
+    }
+
+    /**
+     * Gets moduleId parameter
+     * @return String
+     */
+    public String getModuleId(){
+        return getString(KEY_MODULE_ID);
     }
 }

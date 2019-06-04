@@ -4,7 +4,8 @@
     "correlationID":101,
     "parameters":{
       "subscribe":true,
-      "moduleType":"CLIMATE"
+      "moduleType":"CLIMATE",
+      "moduleId":"moduleId"
     }
   },
   "response":{

@@ -29,6 +29,7 @@ import com.smartdevicelink.proxy.rpc.DateTime;
 import com.smartdevicelink.proxy.rpc.DeviceInfo;
 import com.smartdevicelink.proxy.rpc.DisplayCapabilities;
 import com.smartdevicelink.proxy.rpc.EqualizerSettings;
+import com.smartdevicelink.proxy.rpc.Grid;
 import com.smartdevicelink.proxy.rpc.HMICapabilities;
 import com.smartdevicelink.proxy.rpc.HMIPermissions;
 import com.smartdevicelink.proxy.rpc.HMISettingsControlCapabilities;
@@ -50,6 +51,7 @@ import com.smartdevicelink.proxy.rpc.MediaServiceManifest;
 import com.smartdevicelink.proxy.rpc.MenuParams;
 import com.smartdevicelink.proxy.rpc.MetadataTags;
 import com.smartdevicelink.proxy.rpc.ModuleData;
+import com.smartdevicelink.proxy.rpc.ModuleInfo;
 import com.smartdevicelink.proxy.rpc.NavigationCapability;
 import com.smartdevicelink.proxy.rpc.NavigationInstruction;
 import com.smartdevicelink.proxy.rpc.NavigationServiceData;
@@ -69,6 +71,8 @@ import com.smartdevicelink.proxy.rpc.ScreenParams;
 import com.smartdevicelink.proxy.rpc.SdlMsgVersion;
 import com.smartdevicelink.proxy.rpc.SeatControlCapabilities;
 import com.smartdevicelink.proxy.rpc.SeatControlData;
+import com.smartdevicelink.proxy.rpc.SeatLocation;
+import com.smartdevicelink.proxy.rpc.SeatLocationCapability;
 import com.smartdevicelink.proxy.rpc.SeatMemoryAction;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.SisData;
@@ -393,6 +397,10 @@ public class Test {
 	public static final AudioControlData               GENERAL_AUDIOCONTROLDATA               = new AudioControlData();
 	public static final LightControlData               GENERAL_LIGHTCONTROLDATA               = new LightControlData();
 	public static final HMISettingsControlData         GENERAL_HMISETTINGSCONTROLDATA         = new HMISettingsControlData();
+	public static final Grid                           GENERAL_GRID                           = new Grid();
+	public static final ModuleInfo                     GENERAL_MODULE_INFO                    = new ModuleInfo();
+	public static final SeatLocation                   GENERAL_SEAT_LOCATION                  = new SeatLocation();
+	public static final SeatLocationCapability         GENERAL_SEATLOCATIONCAPABILITY         = new SeatLocationCapability();
 
 	public static final HMICapabilities                GENERAL_HMICAPABILITIES                = new HMICapabilities();
 
@@ -449,7 +457,8 @@ public class Test {
 	public static final List<WeatherData>               GENERAL_WEATHERDATA_LIST               = Arrays.asList(GENERAL_WEATHERDATA);
 	public static final List<WeatherAlert>              GENERAL_WEATHERALERT_LIST              = Arrays.asList(GENERAL_WEATHERALERT);
 	public static final List<NavigationInstruction>     GENERAL_NAVIGATION_INSTRUCTION_LIST    = Arrays.asList(GENERAL_NAVIGATION_INSTRUCTION);
-
+	public static final List<SeatLocation>              GENERAL_SEAT_LOCATION_LIST             = Arrays.asList(GENERAL_SEAT_LOCATION);
+	public static final List<Boolean>                   GENERAL_BOOLEAN_LIST                   = Arrays.asList(GENERAL_BOOLEAN);
 
 	public static final JSONArray  JSON_TURNS                     = new JSONArray();
 	public static final JSONArray  JSON_CHOICES                   = new JSONArray();
@@ -469,6 +478,7 @@ public class Test {
 	public static final JSONArray JSON_RADIOCONTROLCAPABILITIES   = new JSONArray();
 	public static final JSONArray JSON_CLIMATECONTROLCAPABILITIES = new JSONArray();
 	public static final JSONArray  JSON_TEXTFIELDTYPES            = new JSONArray();
+	public static final JSONArray  JSON_SEATLOCATIONS             = new JSONArray();
 	public static final JSONObject JSON_TURN                      = new JSONObject();
 	public static final JSONObject JSON_IMAGE                     = new JSONObject();
 	public static final JSONObject JSON_CHOICE                    = new JSONObject();
@@ -496,6 +506,8 @@ public class Test {
 	public static final JSONObject JSON_RGBCOLOR                  = new JSONObject();
 	public static final JSONObject JSON_DAYCOLORSCHEME            = new JSONObject();
 	public static final JSONObject JSON_NIGHTCOLORSCHEME          = new JSONObject();
+	public static final JSONObject JSON_SEATLOCATION              = new JSONObject();
+	public static final JSONObject JSON_GRID                      = new JSONObject();
 
 	static {
 		GENERAL_TOUCHEVENTCAPABILITIES.setDoublePressAvailable(GENERAL_BOOLEAN);
@@ -548,6 +560,20 @@ public class Test {
 		GENERAL_HMISETTINGSCONTROLDATA.setDistanceUnit(GENERAL_DISTANCEUNIT);
 		GENERAL_HMISETTINGSCONTROLDATA.setTemperatureUnit(GENERAL_TEMPERATUREUNIT);
 		GENERAL_HMISETTINGSCONTROLDATA.setDisplayMode(GENERAL_DISPLAYMODE);
+
+		GENERAL_GRID.setCol(GENERAL_INT);
+		GENERAL_GRID.setRow(GENERAL_INT);
+		GENERAL_GRID.setLevel(GENERAL_INT);
+		GENERAL_GRID.setColSpan(GENERAL_INT);
+		GENERAL_GRID.setRowSpan(GENERAL_INT);
+		GENERAL_GRID.setLevelSpan(GENERAL_INT);
+
+		GENERAL_MODULE_INFO.setModuleId(GENERAL_STRING);
+		GENERAL_MODULE_INFO.setLocation(GENERAL_GRID);
+		GENERAL_MODULE_INFO.setServiceArea(GENERAL_GRID);
+		GENERAL_MODULE_INFO.setAllowMultipleAccess(GENERAL_BOOLEAN);
+
+		GENERAL_SEAT_LOCATION.setGrid(GENERAL_GRID);
 
 		GENERAL_LIGHTCONTROLDATA.setLightState(GENERAL_LIGHTSTATE_LIST);
 
@@ -777,6 +803,11 @@ public class Test {
 
 		GENERAL_NAVIGATIONCAPABILITY.setSendLocationEnabled(GENERAL_BOOLEAN);
 		GENERAL_NAVIGATIONCAPABILITY.setWayPointsEnabled(GENERAL_BOOLEAN);
+
+		GENERAL_SEATLOCATIONCAPABILITY.setRows(GENERAL_INT);
+		GENERAL_SEATLOCATIONCAPABILITY.setColumns(GENERAL_INT);
+		GENERAL_SEATLOCATIONCAPABILITY.setLevels(GENERAL_INT);
+		GENERAL_SEATLOCATIONCAPABILITY.setSeats(GENERAL_SEAT_LOCATION_LIST);
 
 		GENERAL_PHONECAPABILITY.setDialNumberEnabled(GENERAL_BOOLEAN);
 
@@ -1186,6 +1217,16 @@ public class Test {
 			JSON_IMAGEFIELD.put(ImageField.KEY_IMAGE_TYPE_SUPPORTED, JsonUtils.createJsonArray(Test.GENERAL_FILETYPE_LIST));
 			JSON_IMAGEFIELD.put(ImageField.KEY_NAME, ImageFieldName.graphic);
 			JSON_IMAGEFIELDS.put(JSON_IMAGEFIELD);
+
+			JSON_GRID.put(Grid.KEY_COL, GENERAL_INT);
+			JSON_GRID.put(Grid.KEY_ROW, GENERAL_INT);
+			JSON_GRID.put(Grid.KEY_LEVEL, GENERAL_INT);
+			JSON_GRID.put(Grid.KEY_COL_SPAN, GENERAL_INT);
+			JSON_GRID.put(Grid.KEY_ROW_SPAN, GENERAL_INT);
+			JSON_GRID.put(Grid.KEY_LEVEL_SPAN, GENERAL_INT);
+
+			JSON_SEATLOCATION.put(SeatLocation.KEY_GRID, JSON_GRID);
+			JSON_SEATLOCATIONS.put(JSON_SEATLOCATION);
 
 			JSONObject jsonTEC = new JSONObject();
 			jsonTEC.put(TouchEventCapabilities.KEY_DOUBLE_PRESS_AVAILABLE, GENERAL_BOOLEAN);

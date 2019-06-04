@@ -100,6 +100,8 @@ public enum FunctionID{
     GET_APP_SERVICE_DATA(53, "GetAppServiceData"),
     GET_FILE(54, "GetFile"),
     PERFORM_APP_SERVICES_INTERACTION(55, "PerformAppServiceInteraction"),
+    GET_INTERIOR_VEHICLE_DATA_CONSENT(58, "GetInteriorVehicleDataConsent"),
+    RELEASE_INTERIOR_VEHICLE_DATA_MODULE(59, "ReleaseInteriorVehicleDataModule"),
 
     // NOTIFICATIONS
     ON_HMI_STATUS(32768, "OnHMIStatus"),

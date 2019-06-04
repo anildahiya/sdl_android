@@ -5,7 +5,8 @@
     "parameters":{
       "buttonName":"OK",
       "buttonPressMode":"LONG",
-      "moduleType":"CLIMATE"
+      "moduleType":"CLIMATE",
+      "moduleId":"moduleId"
     }
   },
   "response":{

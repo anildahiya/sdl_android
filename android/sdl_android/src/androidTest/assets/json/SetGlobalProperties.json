@@ -56,7 +56,17 @@
             "imageType":"DYNAMIC"
           }
         }
-      ]
+      ],
+      "userLocation":{
+        "grid":{
+          "col":1,
+          "row":2,
+          "level":3,
+          "colspan":4,
+          "rowspan":5,
+          "levelspan":6
+        }
+      }
     }
   },
   "response":{

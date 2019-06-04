@@ -212,7 +212,10 @@ public enum Result {
 	 * The data sent failed to pass CRC check in receiver end
 	 */
 	CORRUPTED_DATA,
-
+	/**
+	 * SDL receives an un-encrypted PRC request that needs protection.
+	 */
+	ENCRYPTION_NEEDED,
 	;
 	 /**
      * Convert String to Result

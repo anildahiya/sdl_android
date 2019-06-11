@@ -32,6 +32,7 @@ import com.smartdevicelink.proxy.rpc.EmergencyEvent;
 import com.smartdevicelink.proxy.rpc.EqualizerSettings;
 import com.smartdevicelink.proxy.rpc.FuelRange;
 import com.smartdevicelink.proxy.rpc.GPSData;
+import com.smartdevicelink.proxy.rpc.Grid;
 import com.smartdevicelink.proxy.rpc.HMICapabilities;
 import com.smartdevicelink.proxy.rpc.HMIPermissions;
 import com.smartdevicelink.proxy.rpc.HMISettingsControlCapabilities;
@@ -53,6 +54,7 @@ import com.smartdevicelink.proxy.rpc.MediaServiceData;
 import com.smartdevicelink.proxy.rpc.MediaServiceManifest;
 import com.smartdevicelink.proxy.rpc.MenuParams;
 import com.smartdevicelink.proxy.rpc.ModuleData;
+import com.smartdevicelink.proxy.rpc.ModuleInfo;
 import com.smartdevicelink.proxy.rpc.MyKey;
 import com.smartdevicelink.proxy.rpc.NavigationCapability;
 import com.smartdevicelink.proxy.rpc.NavigationInstruction;
@@ -73,6 +75,8 @@ import com.smartdevicelink.proxy.rpc.ScreenParams;
 import com.smartdevicelink.proxy.rpc.SdlMsgVersion;
 import com.smartdevicelink.proxy.rpc.SeatControlCapabilities;
 import com.smartdevicelink.proxy.rpc.SeatControlData;
+import com.smartdevicelink.proxy.rpc.SeatLocation;
+import com.smartdevicelink.proxy.rpc.SeatLocationCapability;
 import com.smartdevicelink.proxy.rpc.SeatMemoryAction;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.SisData;
@@ -332,7 +336,28 @@ public class Validator{
 
         return true;
     }
-    
+
+    public static boolean validateBooleanList(List<Boolean> boolList1, List<Boolean> boolList2){
+        if(boolList1 == null){
+            return ( boolList2 == null );
+        }
+        if(boolList2 == null){
+            return ( boolList1 == null );
+        }
+
+        if (boolList1.size() != boolList2.size()) {
+            return false;
+        }
+
+        for(int i = 0; i < boolList1.size(); i++){
+            if(boolList1.get(i) != boolList2.get(i)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static boolean validateIntegerList(List<Integer> intList1, List<Integer> intList2){
         if(intList1 == null){
             return ( intList2 == null );
@@ -1408,6 +1433,39 @@ public class Validator{
         return true;
     }
 
+    public static boolean validateSeatLocationCapability(SeatLocationCapability seatLocationCapability1, SeatLocationCapability seatLocationCapability2){
+        if(seatLocationCapability1 == null){
+            return ( seatLocationCapability2 == null );
+        }
+        if(seatLocationCapability2 == null){
+            return ( seatLocationCapability1 == null );
+        }
+
+        if(seatLocationCapability1.getRows() != seatLocationCapability2.getRows()){
+            return false;
+        }
+
+        if(seatLocationCapability1.getColumns() != seatLocationCapability2.getColumns()){
+            return false;
+        }
+
+        if(seatLocationCapability1.getLevels() != seatLocationCapability2.getLevels()){
+            return false;
+        }
+
+        if (seatLocationCapability1.getSeats().size() != seatLocationCapability2.getSeats().size()) {
+            return false;
+        }
+
+        for (int i = 0; i < seatLocationCapability1.getSeats().size(); i++) {
+            if(!( validateSeatLocation(seatLocationCapability1.getSeats().get(i), seatLocationCapability2.getSeats().get(i)) )){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static boolean validatePhoneCapability(PhoneCapability phoneCapability1, PhoneCapability phoneCapability2){
         if(phoneCapability1 == null){
             return ( phoneCapability2 == null );
@@ -1549,7 +1607,21 @@ public class Validator{
 
         return true;
     }
-    
+    public static boolean validateSeatLocation(SeatLocation item1, SeatLocation item2){
+        if(item1 == null){
+            return ( item2 == null );
+        }
+        if(item2 == null){
+            return ( item1 == null );
+        }
+
+        if(!( validateGrid(item1.getGrid(), item2.getGrid()) )){
+            return false;
+        }
+
+        return true;
+    }
+
     public static boolean validateFileTypes (List<FileType> item1, List<FileType> item2) {
     	if (item1 == null) {
     		return ( item2 == null );
@@ -1989,6 +2061,70 @@ public class Validator{
 
 		return true;
 	}
+
+    public static boolean validateGrid(Grid item1, Grid item2) {
+        if (item1 == null) {
+            return (item2 == null);
+        }
+
+        if (item2 == null) {
+            return (item1 == null);
+        }
+
+        if(item1.getCol() != item2.getCol()){
+            return false;
+        }
+
+        if(item1.getRow() != item2.getRow()){
+            return false;
+        }
+
+        if(item1.getLevel() != item2.getLevel()){
+            return false;
+        }
+
+        if(item1.getColSpan() != item2.getColSpan()){
+            return false;
+        }
+
+        if(item1.getRowSpan() != item2.getRowSpan()){
+            return false;
+        }
+
+        if(item1.getLevelSpan() != item2.getLevelSpan()){
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean validateModuleInfo(ModuleInfo item1, ModuleInfo item2) {
+        if (item1 == null) {
+            return (item2 == null);
+        }
+
+        if (item2 == null) {
+            return (item1 == null);
+        }
+
+        if(item1.getModuleId() != item2.getModuleId()){
+            return false;
+        }
+
+        if(!validateGrid(item1.getLocation(), item2.getLocation())){
+            return false;
+        }
+
+        if(!validateGrid(item1.getServiceArea(), item2.getServiceArea())){
+            return false;
+        }
+
+        if(item1.getAllowMultipleAccess() != item2.getAllowMultipleAccess()){
+            return false;
+        }
+
+        return true;
+    }
 
     public static boolean validateGpsData(GPSData item1, GPSData item2){
         if(item1 == null){

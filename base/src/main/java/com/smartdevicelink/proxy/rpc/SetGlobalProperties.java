@@ -144,6 +144,7 @@ public class SetGlobalProperties extends RPCRequest {
 	public static final String KEY_HELP_PROMPT = "helpPrompt";
 	public static final String KEY_TIMEOUT_PROMPT = "timeoutPrompt";
 	public static final String KEY_VR_HELP = "vrHelp";
+	public static final String KEY_USER_LOCATION = "userLocation";
 	/**
 	 * Constructs a new SetGlobalProperties object
 	 */
@@ -305,6 +306,22 @@ public class SetGlobalProperties extends RPCRequest {
     @SuppressWarnings("unchecked")
     public KeyboardProperties getKeyboardProperties() {
 		return (KeyboardProperties) getObject(KeyboardProperties.class, KEY_KEYBOARD_PROPERTIES);
-    }    
-    
+    }
+
+    /**
+     * Sets userLocation parameter
+     * @param userLocation - Location of the user's seat. Default is driver's seat location if it is not set yet.
+     */
+    public void setUserLocation(SeatLocation userLocation) {
+        setParameters(KEY_USER_LOCATION, userLocation);
+    }
+
+    /**
+     * Gets userLocation parameter
+     * @return SeatLocation - Location of the user's seat. Default is driver's seat location if it is not set yet.
+     */
+    @SuppressWarnings("unchecked")
+    public SeatLocation getUserLocation() {
+        return (SeatLocation) getObject(SeatLocation.class, KEY_USER_LOCATION);
+    }
 }

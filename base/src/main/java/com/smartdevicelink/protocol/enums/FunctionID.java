@@ -102,6 +102,8 @@ public enum FunctionID{
     PERFORM_APP_SERVICES_INTERACTION(55, "PerformAppServiceInteraction"),
     CREATE_WINDOW(56, "CreateWindow"),
     DELETE_WINDOW(57, "DeleteWindow"),
+    GET_INTERIOR_VEHICLE_DATA_CONSENT(58, "GetInteriorVehicleDataConsent"),
+    RELEASE_INTERIOR_VEHICLE_DATA_MODULE(59, "ReleaseInteriorVehicleDataModule"),
 
     // NOTIFICATIONS
     ON_HMI_STATUS(32768, "OnHMIStatus"),

@@ -474,6 +474,7 @@ public enum SystemCapabilityType {
 	 * 	</table>
 	 */
 	APP_SERVICES (true),
+	SEAT_LOCATION (true),
 
 	;
 

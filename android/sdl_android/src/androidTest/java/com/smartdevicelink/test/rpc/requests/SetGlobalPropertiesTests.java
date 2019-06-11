@@ -5,6 +5,7 @@ import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCMessage;
 import com.smartdevicelink.proxy.rpc.Image;
 import com.smartdevicelink.proxy.rpc.KeyboardProperties;
+import com.smartdevicelink.proxy.rpc.SeatLocation;
 import com.smartdevicelink.proxy.rpc.SetGlobalProperties;
 import com.smartdevicelink.proxy.rpc.TTSChunk;
 import com.smartdevicelink.proxy.rpc.VrHelpItem;
@@ -39,6 +40,7 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 		msg.setHelpPrompt(Test.GENERAL_TTSCHUNK_LIST);
 		msg.setTimeoutPrompt(Test.GENERAL_TTSCHUNK_LIST);
 		msg.setKeyboardProperties(Test.GENERAL_KEYBOARDPROPERTIES);
+		msg.setUserLocation(Test.GENERAL_SEAT_LOCATION);
 
 		return msg;
 	}
@@ -64,7 +66,8 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 			result.put(SetGlobalProperties.KEY_TIMEOUT_PROMPT, Test.JSON_TTSCHUNKS);
 			result.put(SetGlobalProperties.KEY_MENU_TITLE, Test.GENERAL_STRING);
 			result.put(SetGlobalProperties.KEY_VR_HELP_TITLE, Test.GENERAL_STRING);							
-			result.put(SetGlobalProperties.KEY_KEYBOARD_PROPERTIES, Test.JSON_KEYBOARDPROPERTIES);			
+			result.put(SetGlobalProperties.KEY_KEYBOARD_PROPERTIES, Test.JSON_KEYBOARDPROPERTIES);
+			result.put(SetGlobalProperties.KEY_USER_LOCATION, Test.JSON_SEATLOCATION);
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -84,6 +87,7 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 		List<TTSChunk>     testTimeout     = ( (SetGlobalProperties) msg ).getTimeoutPrompt();
 		List<VrHelpItem>   testVrHelpItems = ( (SetGlobalProperties) msg ).getVrHelp();
 		KeyboardProperties testKeyboardProperties = ( (SetGlobalProperties) msg ).getKeyboardProperties();
+		SeatLocation       testUserLocation       = ( (SetGlobalProperties) msg ).getUserLocation();
 		
 		// Valid Tests		
 		assertEquals(Test.MATCH, Test.GENERAL_STRING, testMenuTitle);
@@ -93,6 +97,7 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 		assertTrue(Test.TRUE, Validator.validateTtsChunks(Test.GENERAL_TTSCHUNK_LIST, testHelpPrompt));
 		assertTrue(Test.TRUE, Validator.validateTtsChunks(Test.GENERAL_TTSCHUNK_LIST, testTimeout));
 		assertTrue(Test.TRUE, Validator.validateKeyboardProperties(Test.GENERAL_KEYBOARDPROPERTIES, testKeyboardProperties));
+		assertTrue(Test.TRUE, Validator.validateSeatLocation(Test.GENERAL_SEAT_LOCATION, testUserLocation));
 		
 		// Invalid/Null Tests
 		SetGlobalProperties msg = new SetGlobalProperties();
@@ -106,6 +111,7 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 		assertNull(Test.NULL, msg.getTimeoutPrompt());
 		assertNull(Test.NULL, msg.getKeyboardProperties());
 		assertNull(Test.NULL, msg.getVrHelpTitle());
+		assertNull(Test.NULL, msg.getUserLocation());
 	}
 	
 	/**
@@ -160,7 +166,11 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 				VrHelpItem chunk = new VrHelpItem(JsonRPCMarshaller.deserializeJSONObject( (JSONObject)vrHelpArray.get(index)) );
 				vrHelpList.add(chunk);
 			}
-			assertTrue(Test.TRUE, Validator.validateVrHelpItems(vrHelpList, cmd.getVrHelp()));			
+			assertTrue(Test.TRUE, Validator.validateVrHelpItems(vrHelpList, cmd.getVrHelp()));
+
+			JSONObject userLocation = JsonUtils.readJsonObjectFromJsonObject(parameters, SetGlobalProperties.KEY_USER_LOCATION);
+			SeatLocation referenceUserLocation = new SeatLocation(JsonRPCMarshaller.deserializeJSONObject(userLocation));
+			assertTrue(Test.TRUE, Validator.validateSeatLocation(referenceUserLocation, cmd.getUserLocation()));
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}    	

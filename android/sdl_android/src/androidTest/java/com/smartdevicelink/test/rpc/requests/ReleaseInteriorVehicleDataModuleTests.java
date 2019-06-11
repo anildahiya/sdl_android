@@ -3,7 +3,7 @@ package com.smartdevicelink.test.rpc.requests;
 import com.smartdevicelink.marshal.JsonRPCMarshaller;
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.RPCMessage;
-import com.smartdevicelink.proxy.rpc.GetInteriorVehicleData;
+import com.smartdevicelink.proxy.rpc.ReleaseInteriorVehicleDataModule;
 import com.smartdevicelink.proxy.rpc.enums.ModuleType;
 import com.smartdevicelink.test.BaseRpcTests;
 import com.smartdevicelink.test.JsonUtils;
@@ -17,40 +17,38 @@ import java.util.Hashtable;
 
 /**
  * This is a unit test class for the SmartDeviceLink library project class :
- * {@link com.smartdevicelink.rpc.GetInteriorVehicleData}
+ * {@link com.smartdevicelink.rpc.ReleaseInteriorVehicleDataModule}
  */
-public class GetInteriorVehicleDataTests extends BaseRpcTests {
+public class ReleaseInteriorVehicleDataModuleTests extends BaseRpcTests {
 
     @Override
-    protected RPCMessage createMessage(){
-        GetInteriorVehicleData msg = new GetInteriorVehicleData();
+    protected RPCMessage createMessage() {
+        ReleaseInteriorVehicleDataModule msg = new ReleaseInteriorVehicleDataModule();
 
         msg.setModuleType(Test.GENERAL_MODULETYPE);
-        msg.setSubscribe(Test.GENERAL_BOOLEAN);
         msg.setModuleId(Test.GENERAL_STRING);
 
         return msg;
     }
 
     @Override
-    protected String getMessageType(){
+    protected String getMessageType() {
         return RPCMessage.KEY_REQUEST;
     }
 
     @Override
-    protected String getCommandType(){
-        return FunctionID.GET_INTERIOR_VEHICLE_DATA.toString();
+    protected String getCommandType() {
+        return FunctionID.RELEASE_INTERIOR_VEHICLE_DATA_MODULE.toString();
     }
 
     @Override
-    protected JSONObject getExpectedParameters(int sdlVersion){
+    protected JSONObject getExpectedParameters(int sdlVersion) {
         JSONObject result = new JSONObject();
 
-        try{
-            result.put(GetInteriorVehicleData.KEY_MODULE_TYPE, Test.GENERAL_MODULETYPE);
-            result.put(GetInteriorVehicleData.KEY_SUBSCRIBE, Test.GENERAL_BOOLEAN);
-            result.put(GetInteriorVehicleData.KEY_MODULE_ID, Test.GENERAL_STRING);
-        }catch(JSONException e){
+        try {
+            result.put(ReleaseInteriorVehicleDataModule.KEY_MODULE_TYPE, Test.GENERAL_MODULETYPE);
+            result.put(ReleaseInteriorVehicleDataModule.KEY_MODULE_ID, Test.GENERAL_STRING);
+        } catch (JSONException e) {
             fail(Test.JSON_FAIL);
         }
 
@@ -60,37 +58,34 @@ public class GetInteriorVehicleDataTests extends BaseRpcTests {
     /**
      * Tests the expected values of the RPC message.
      */
-    public void testRpcValues () {
+    public void testRpcValues() {
         // Test Values
-        ModuleType testModuleType = ( (GetInteriorVehicleData) msg ).getModuleType();
-        boolean testSubscribed = ( (GetInteriorVehicleData) msg ).getSubscribe();
-        String moduleId = ( (GetInteriorVehicleData) msg ).getModuleId();
+        ModuleType testModuleType = ((ReleaseInteriorVehicleDataModule) msg).getModuleType();
+        String moduleId = ((ReleaseInteriorVehicleDataModule) msg).getModuleId();
 
         // Valid Tests
         assertEquals(Test.MATCH, Test.GENERAL_MODULETYPE, testModuleType);
-        assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, testSubscribed);
         assertEquals(Test.MATCH, Test.GENERAL_STRING, moduleId);
 
         // Invalid/Null Tests
-        GetInteriorVehicleData msg = new GetInteriorVehicleData();
+        ReleaseInteriorVehicleDataModule msg = new ReleaseInteriorVehicleDataModule();
         assertNotNull(Test.NOT_NULL, msg);
         testNullBase(msg);
 
         assertNull(Test.NULL, msg.getModuleType());
-        assertNull(Test.NULL, msg.getSubscribe());
         assertNull(Test.NULL, msg.getModuleId());
     }
 
     /**
      * Tests a valid JSON construction of this RPC message.
      */
-    public void testJsonConstructor () {
+    public void testJsonConstructor() {
         JSONObject commandJson = JsonFileReader.readId(this.mContext, getCommandType(), getMessageType());
         assertNotNull(Test.NOT_NULL, commandJson);
 
         try {
             Hashtable<String, Object> hash = JsonRPCMarshaller.deserializeJSONObject(commandJson);
-            GetInteriorVehicleData cmd = new GetInteriorVehicleData(hash);
+            ReleaseInteriorVehicleDataModule cmd = new ReleaseInteriorVehicleDataModule(hash);
 
             JSONObject body = JsonUtils.readJsonObjectFromJsonObject(commandJson, getMessageType());
             assertNotNull(Test.NOT_NULL, body);
@@ -101,10 +96,9 @@ public class GetInteriorVehicleDataTests extends BaseRpcTests {
 
             JSONObject parameters = JsonUtils.readJsonObjectFromJsonObject(body, RPCMessage.KEY_PARAMETERS);
 
-            assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(parameters, GetInteriorVehicleData.KEY_MODULE_TYPE).toString(), cmd.getModuleType().toString());
-            assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(parameters, GetInteriorVehicleData.KEY_SUBSCRIBE), cmd.getSubscribe());
-            assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, GetInteriorVehicleData.KEY_MODULE_ID), cmd.getModuleId());
-        }catch (JSONException e) {
+            assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(parameters, ReleaseInteriorVehicleDataModule.KEY_MODULE_TYPE).toString(), cmd.getModuleType().toString());
+            assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, ReleaseInteriorVehicleDataModule.KEY_MODULE_ID), cmd.getModuleId());
+        } catch (JSONException e) {
             fail(Test.JSON_FAIL);
         }
     }

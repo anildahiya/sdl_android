@@ -1,10 +1,13 @@
 package com.smartdevicelink.test.rpc.datatypes;
 
+import com.smartdevicelink.marshal.JsonRPCMarshaller;
 import com.smartdevicelink.proxy.rpc.ClimateControlCapabilities;
+import com.smartdevicelink.proxy.rpc.ModuleInfo;
 import com.smartdevicelink.proxy.rpc.enums.DefrostZone;
 import com.smartdevicelink.proxy.rpc.enums.VentilationMode;
 import com.smartdevicelink.test.JsonUtils;
 import com.smartdevicelink.test.Test;
+import com.smartdevicelink.test.Validator;
 
 import junit.framework.TestCase;
 
@@ -13,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,6 +48,7 @@ public class ClimateControlCapabilitiesTests extends TestCase{
         msg.setHeatedWindshieldAvailable(Test.GENERAL_BOOLEAN);
         msg.setHeatedRearWindowAvailable(Test.GENERAL_BOOLEAN);
         msg.setHeatedMirrorsAvailable(Test.GENERAL_BOOLEAN);
+        msg.setModuleInfo(Test.GENERAL_MODULE_INFO);
     }
 
     /**
@@ -67,6 +72,7 @@ public class ClimateControlCapabilitiesTests extends TestCase{
         boolean heatedWindshieldAvailable = msg.getHeatedWindshieldAvailable();
         boolean heatedRearWindowAvailable = msg.getHeatedRearWindowAvailable();
         boolean heatedMirrorsAvailable = msg.getHeatedMirrorsAvailable();
+        ModuleInfo moduleInfo = msg.getModuleInfo();
 
         // Valid Tests
         assertEquals(Test.MATCH, Test.GENERAL_STRING, moduleName);
@@ -79,6 +85,7 @@ public class ClimateControlCapabilitiesTests extends TestCase{
         assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, dualModeEnableAvailable);
         assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, defrostZoneAvailable);
         assertEquals(Test.MATCH, Test.GENERAL_BOOLEAN, ventilationModeAvailable);
+        assertTrue(Test.TRUE, Validator.validateModuleInfo(Test.GENERAL_MODULE_INFO, moduleInfo));
 
         assertEquals(Test.MATCH, Test.GENERAL_DEFROSTZONE_LIST.size(), defrostZone.size());
         assertEquals(Test.MATCH, Test.GENERAL_VENTILATIONMODE_LIST.size(), ventilationMode.size());
@@ -113,6 +120,7 @@ public class ClimateControlCapabilitiesTests extends TestCase{
         assertNull(Test.NULL, msg.getHeatedWindshieldAvailable());
         assertNull(Test.NULL, msg.getHeatedRearWindowAvailable());
         assertNull(Test.NULL, msg.getHeatedMirrorsAvailable());
+        assertNull(Test.NULL, msg.getModuleInfo());
     }
 
     public void testJson(){
@@ -135,6 +143,7 @@ public class ClimateControlCapabilitiesTests extends TestCase{
             reference.put(ClimateControlCapabilities.KEY_HEATED_WIND_SHIELD_AVAILABLE, Test.GENERAL_BOOLEAN);
             reference.put(ClimateControlCapabilities.KEY_HEATED_REAR_WINDOW_AVAILABLE, Test.GENERAL_BOOLEAN);
             reference.put(ClimateControlCapabilities.KEY_HEATED_MIRRORS_AVAILABLE, Test.GENERAL_BOOLEAN);
+            reference.put(ClimateControlCapabilities.KEY_MODULE_INFO, JsonRPCMarshaller.serializeHashtable(Test.GENERAL_MODULE_INFO.getStore()));
 
             JSONObject underTest = msg.serializeJSON();
             assertEquals(Test.MATCH, reference.length(), underTest.length());
@@ -169,6 +178,13 @@ public class ClimateControlCapabilitiesTests extends TestCase{
                         ventilationModeListTest.add( (VentilationMode)ventilationModeArrayTest.get(index) );
                     }
                     assertTrue(Test.TRUE, ventilationModeListReference.containsAll(ventilationModeListTest) && ventilationModeListTest.containsAll(ventilationModeListReference));
+                } else if (key.equals(ClimateControlCapabilities.KEY_MODULE_INFO)) {
+                    JSONObject referenceArray = JsonUtils.readJsonObjectFromJsonObject(reference, key);
+                    JSONObject underTestArray = JsonUtils.readJsonObjectFromJsonObject(underTest, key);
+                    Hashtable<String, Object> hashReference = JsonRPCMarshaller.deserializeJSONObject(referenceArray);
+                    Hashtable<String, Object> hashTest = JsonRPCMarshaller.deserializeJSONObject(underTestArray);
+
+                    assertTrue(Test.TRUE, Validator.validateModuleInfo(new ModuleInfo(hashReference), new ModuleInfo(hashTest)));
                 } else{
                     assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(reference, key), JsonUtils.readObjectFromJsonObject(underTest, key));
                 }

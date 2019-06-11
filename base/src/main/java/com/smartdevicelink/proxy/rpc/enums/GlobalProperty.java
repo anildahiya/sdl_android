@@ -68,7 +68,12 @@ public enum GlobalProperty{
      * The on-screen keyboard configuration of setGlobalProperties
      */
 
-    KEYBOARDPROPERTIES;
+    KEYBOARDPROPERTIES,
+    /**
+     * Location of the user's seat of setGlobalProperties
+     */
+    USER_LOCATION,
+    ;
 
     /**
      * Convert String to GlobalProperty

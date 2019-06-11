@@ -1,0 +1,14 @@
+{
+  "request":{
+    "name":"ReleaseInteriorVehicleDataModule",
+    "correlationID":101,
+    "parameters":{
+      "moduleType":"CLIMATE",
+      "moduleId":"moduleId"
+    }
+  },
+  "response":{
+    "name":"ReleaseInteriorVehicleDataModuleResponse",
+    "correlationID":102
+  }
+}

@@ -80,6 +80,7 @@ public class SeatControlData extends RPCStruct {
 	 * Constructs a newly allocated SeatControlData object
 	 * @param id type of SupportedSeat.
 	 */
+	@Deprecated
 	public SeatControlData(@NonNull SupportedSeat id) {
 		this();
 		setId(id);
@@ -90,6 +91,7 @@ public class SeatControlData extends RPCStruct {
 	 *
 	 * @param id
 	 */
+	@Deprecated
 	public void setId(@NonNull SupportedSeat id) {
 		setValue(KEY_ID, id);
 	}
@@ -99,6 +101,7 @@ public class SeatControlData extends RPCStruct {
 	 *
 	 * @return SupportedSeat.
 	 */
+	@Deprecated
 	public SupportedSeat getId() {
 		return (SupportedSeat) getObject(SupportedSeat.class, KEY_ID);
 	}

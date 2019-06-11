@@ -81,6 +81,8 @@ import com.smartdevicelink.proxy.rpc.OnTouchEvent;
 import com.smartdevicelink.proxy.rpc.OnVehicleData;
 import com.smartdevicelink.proxy.rpc.OnWayPointChange;
 import com.smartdevicelink.proxy.rpc.PerformAppServiceInteractionResponse;
+import com.smartdevicelink.proxy.rpc.GetInteriorVehicleDataConsentResponse;
+import com.smartdevicelink.proxy.rpc.ReleaseInteriorVehicleDataModuleResponse;
 import com.smartdevicelink.proxy.rpc.PerformAudioPassThruResponse;
 import com.smartdevicelink.proxy.rpc.PerformInteractionResponse;
 import com.smartdevicelink.proxy.rpc.PublishAppServiceResponse;
@@ -415,6 +417,10 @@ public interface IProxyListenerBase {
 	public void onGetFileResponse(GetFileResponse response);
 
 	public void onPerformAppServiceInteractionResponse(PerformAppServiceInteractionResponse response);
+
+	public void onGetInteriorVehicleDataConsentResponse(GetInteriorVehicleDataConsentResponse response);
+
+	public void onReleaseInteriorVehicleDataModuleResponse(ReleaseInteriorVehicleDataModuleResponse response);
 
 	public void onOnAppServiceData(OnAppServiceData notification);
 

@@ -45,6 +45,9 @@ public class VideoStreamingCapability extends RPCStruct {
 	public static final String KEY_MAX_BITRATE = "maxBitrate";
 	public static final String KEY_SUPPORTED_FORMATS = "supportedFormats";
 	public static final String KEY_HAPTIC_SPATIAL_DATA_SUPPORTED = "hapticSpatialDataSupported";
+	public static final String KEY_DIAGONAL_SCREEN_SIZE = "diagonalScreenSize";
+	public static final String KEY_PIXEL_PER_INCH = "pixelPerInch";
+	public static final String KEY_SCALE = "scale";
 
 	public VideoStreamingCapability(){}
 	public VideoStreamingCapability(Hashtable<String, Object> hash){super(hash);}
@@ -91,5 +94,59 @@ public class VideoStreamingCapability extends RPCStruct {
 
 	public void setIsHapticSpatialDataSupported(Boolean hapticSpatialDataSupported) {
 		setValue(KEY_HAPTIC_SPATIAL_DATA_SUPPORTED, hapticSpatialDataSupported);
+	}
+
+	/**
+	 * Sets the diagonalScreenSize portion of the VideoStreamingCapability class
+	 *
+	 * @param diagonalScreenSize - The diagonal screen size in inches.
+	 */
+	public void setDiagonalScreenSize(Float diagonalScreenSize) {
+		setValue(KEY_DIAGONAL_SCREEN_SIZE, diagonalScreenSize);
+	}
+
+	/**
+	 * Gets the diagonalScreenSize portion of the VideoStreamingCapability class
+	 *
+	 * @return Float - The diagonal screen size in inches.
+	 */
+	public Float getDiagonalScreenSize() {
+		return getFloat(KEY_DIAGONAL_SCREEN_SIZE);
+	}
+
+	/**
+	 * Sets the pixelPerInch portion of the VideoStreamingCapability class
+	 *
+	 * @param pixelPerInch - PPI is the diagonal resolution in pixels divided by the diagonal screen size in inches.
+	 */
+	public void setPixelPerInch(Float pixelPerInch) {
+		setValue(KEY_PIXEL_PER_INCH, pixelPerInch);
+	}
+
+	/**
+	 * Gets the pixelPerInch portion of the VideoStreamingCapability class
+	 *
+	 * @return Float - PPI is the diagonal resolution in pixels divided by the diagonal screen size in inches.
+	 */
+	public Float getPixelPerInch() {
+		return getFloat(KEY_PIXEL_PER_INCH);
+	}
+
+	/**
+	 * Sets the scale portion of the VideoStreamingCapability class
+	 *
+	 * @param scale - The scaling factor the app should use to change the size of the projecting view.
+	 */
+	public void setScale(Float scale) {
+		setValue(KEY_SCALE, scale);
+	}
+
+	/**
+	 * Gets the scale portion of the VideoStreamingCapability class
+	 *
+	 * @return Float - The scaling factor the app should use to change the size of the projecting view.
+	 */
+	public Float getScale() {
+		return getFloat(KEY_SCALE);
 	}
 }

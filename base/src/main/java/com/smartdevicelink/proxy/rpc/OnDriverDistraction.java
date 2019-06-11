@@ -73,6 +73,8 @@ import java.util.Hashtable;
  */
 public class OnDriverDistraction  extends RPCNotification {
 	public static final String KEY_STATE = "state";
+	public static final String KEY_LOCK_SCREEN_DISMISSAL_ENABLED = "lockScreenDismissalEnabled";
+
 	/**
 	*Constructs a newly allocated OnDriverDistraction object
 	*/ 
@@ -107,5 +109,23 @@ public class OnDriverDistraction  extends RPCNotification {
      */    
     public void setState( @NonNull DriverDistractionState state ) {
         setParameters(KEY_STATE, state);
-    }  
+    }
+
+    /**
+     * Gets the lockScreenDismissalEnabled for OnDriverDistraction.
+     * @return Boolean - Returns the lockScreenDismissalEnabled.
+     */
+    public Boolean getLockScreenDismissalEnabled() {
+        return getBoolean(KEY_LOCK_SCREEN_DISMISSAL_ENABLED);
+    }
+
+    /**
+     * Sets the lockScreenDismissalEnabled for OnDriverDistraction.
+     * @param lockScreenDismissalEnabled - If enabled, the lock screen will be able to be dismissed while connected to SDL, allowing users
+     *                                   the ability to interact with the app. Dismissals should include a warning to the user and ensure
+     *                                   that they are not the driver.
+     */
+    public void setLockScreenDismissalEnabled(Boolean lockScreenDismissalEnabled) {
+        setParameters(KEY_LOCK_SCREEN_DISMISSAL_ENABLED, lockScreenDismissalEnabled);
+    }
 }

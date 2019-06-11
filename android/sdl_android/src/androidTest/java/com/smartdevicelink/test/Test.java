@@ -484,6 +484,7 @@ public class Test {
 
 	public static final List<SeatLocation>              GENERAL_SEAT_LOCATION_LIST             = Arrays.asList(GENERAL_SEAT_LOCATION);
 	public static final List<Boolean>                   GENERAL_BOOLEAN_LIST                   = Arrays.asList(GENERAL_BOOLEAN);
+	public static final List<Integer>                   GENERAL_AVAILABLE_HD_CHANNELS_LIST     = Arrays.asList(new Integer[]{ 1, 2});
 
 	public static final int                             GENERAL_MENU_MAX_ID                    = 2000000000;
 	public static final MenuCell                        GENERAL_MENUCELL                       = new MenuCell(GENERAL_STRING,null, null, new MenuSelectionListener() {

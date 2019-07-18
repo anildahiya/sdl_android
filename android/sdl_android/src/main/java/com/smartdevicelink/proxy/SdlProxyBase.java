@@ -159,6 +159,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static com.smartdevicelink.util.AndroidTools.sendExplicitBroadcast;
 
 
 @SuppressWarnings({"WeakerAccess", "Convert2Diamond"})
@@ -1186,7 +1187,13 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		}
 		try
 		{
-			if (myContext != null) myContext.sendBroadcast(sendIntent);
+			if (myContext != null){
+				if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
+					myContext.sendBroadcast(sendIntent);
+				} else {
+					sendExplicitBroadcast(myContext, sendIntent, null);
+				}
+			}
 		}
 		catch(Exception ex)
 		{

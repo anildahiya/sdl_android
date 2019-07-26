@@ -9,6 +9,7 @@ import com.smartdevicelink.proxy.rpc.SeatLocation;
 import com.smartdevicelink.proxy.rpc.SetGlobalProperties;
 import com.smartdevicelink.proxy.rpc.TTSChunk;
 import com.smartdevicelink.proxy.rpc.VrHelpItem;
+import com.smartdevicelink.proxy.rpc.enums.MenuLayout;
 import com.smartdevicelink.test.BaseRpcTests;
 import com.smartdevicelink.test.JsonUtils;
 import com.smartdevicelink.test.Test;
@@ -25,7 +26,7 @@ import java.util.List;
 
 /**
  * This is a unit test class for the SmartDeviceLink library project class : 
- * {@link com.smartdevicelink.rpc.SetGlobalProperties}
+ * {@link com.smartdevicelink.proxy.rpc.SetGlobalProperties}
  */
 public class SetGlobalPropertiesTests extends BaseRpcTests {
 		
@@ -41,6 +42,7 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 		msg.setTimeoutPrompt(Test.GENERAL_TTSCHUNK_LIST);
 		msg.setKeyboardProperties(Test.GENERAL_KEYBOARDPROPERTIES);
 		msg.setUserLocation(Test.GENERAL_SEAT_LOCATION);
+		msg.setMenuLayout(Test.GENERAL_MENU_LAYOUT);
 
 		return msg;
 	}
@@ -68,6 +70,7 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 			result.put(SetGlobalProperties.KEY_VR_HELP_TITLE, Test.GENERAL_STRING);							
 			result.put(SetGlobalProperties.KEY_KEYBOARD_PROPERTIES, Test.JSON_KEYBOARDPROPERTIES);
 			result.put(SetGlobalProperties.KEY_USER_LOCATION, Test.JSON_SEATLOCATION);
+			result.put(SetGlobalProperties.KEY_MENU_LAYOUT, Test.GENERAL_MENU_LAYOUT);
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -88,7 +91,8 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 		List<VrHelpItem>   testVrHelpItems = ( (SetGlobalProperties) msg ).getVrHelp();
 		KeyboardProperties testKeyboardProperties = ( (SetGlobalProperties) msg ).getKeyboardProperties();
 		SeatLocation       testUserLocation       = ( (SetGlobalProperties) msg ).getUserLocation();
-		
+		MenuLayout testMenuLayout = ( (SetGlobalProperties) msg ).getMenuLayout();
+
 		// Valid Tests		
 		assertEquals(Test.MATCH, Test.GENERAL_STRING, testMenuTitle);
 		assertEquals(Test.MATCH, Test.GENERAL_STRING, testVrHelpTitle);
@@ -98,7 +102,8 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 		assertTrue(Test.TRUE, Validator.validateTtsChunks(Test.GENERAL_TTSCHUNK_LIST, testTimeout));
 		assertTrue(Test.TRUE, Validator.validateKeyboardProperties(Test.GENERAL_KEYBOARDPROPERTIES, testKeyboardProperties));
 		assertTrue(Test.TRUE, Validator.validateSeatLocation(Test.GENERAL_SEAT_LOCATION, testUserLocation));
-		
+		assertEquals(Test.MATCH, Test.GENERAL_MENU_LAYOUT, testMenuLayout);
+
 		// Invalid/Null Tests
 		SetGlobalProperties msg = new SetGlobalProperties();
 		assertNotNull(Test.NOT_NULL, msg);
@@ -112,6 +117,7 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 		assertNull(Test.NULL, msg.getKeyboardProperties());
 		assertNull(Test.NULL, msg.getVrHelpTitle());
 		assertNull(Test.NULL, msg.getUserLocation());
+		assertNull(Test.NULL, msg.getMenuLayout());
 	}
 	
 	/**
@@ -135,6 +141,8 @@ public class SetGlobalPropertiesTests extends BaseRpcTests {
 			JSONObject parameters = JsonUtils.readJsonObjectFromJsonObject(body, RPCMessage.KEY_PARAMETERS);
 			assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, SetGlobalProperties.KEY_VR_HELP_TITLE), cmd.getVrHelpTitle());
 			assertEquals(Test.MATCH, JsonUtils.readStringFromJsonObject(parameters, SetGlobalProperties.KEY_MENU_TITLE), cmd.getMenuTitle());
+
+			assertEquals(Test.MATCH, JsonUtils.readObjectFromJsonObject(parameters, SetGlobalProperties.KEY_MENU_LAYOUT), cmd.getMenuLayout());
 			
 			JSONObject menuIcon = JsonUtils.readJsonObjectFromJsonObject(parameters, SetGlobalProperties.KEY_MENU_ICON);
 			Image referenceMenuIcon = new Image(JsonRPCMarshaller.deserializeJSONObject(menuIcon));

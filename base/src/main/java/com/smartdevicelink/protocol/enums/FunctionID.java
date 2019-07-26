@@ -100,10 +100,14 @@ public enum FunctionID{
     GET_APP_SERVICE_DATA(53, "GetAppServiceData"),
     GET_FILE(54, "GetFile"),
     PERFORM_APP_SERVICES_INTERACTION(55, "PerformAppServiceInteraction"),
-    CREATE_WINDOW(56, "CreateWindow"),
-    DELETE_WINDOW(57, "DeleteWindow"),
-    GET_INTERIOR_VEHICLE_DATA_CONSENT(58, "GetInteriorVehicleDataConsent"),
-    RELEASE_INTERIOR_VEHICLE_DATA_MODULE(59, "ReleaseInteriorVehicleDataModule"),
+    UNPUBLISH_APP_SERVICE(56, "UnpublishAppService"),
+    CLOSE_APPLICATION(58, "CloseApplication"),
+
+    //FunctionId needs an updation because original functionId allocated are used by other RPC
+    CREATE_WINDOW(59, "CreateWindow"),
+    DELETE_WINDOW(60, "DeleteWindow"),
+    GET_INTERIOR_VEHICLE_DATA_CONSENT(61, "GetInteriorVehicleDataConsent"),
+    RELEASE_INTERIOR_VEHICLE_DATA_MODULE(62, "ReleaseInteriorVehicleDataModule"),
 
     // NOTIFICATIONS
     ON_HMI_STATUS(32768, "OnHMIStatus"),

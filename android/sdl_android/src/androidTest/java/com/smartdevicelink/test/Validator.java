@@ -110,6 +110,7 @@ import com.smartdevicelink.proxy.rpc.enums.DefrostZone;
 import com.smartdevicelink.proxy.rpc.enums.FileType;
 import com.smartdevicelink.proxy.rpc.enums.HMILevel;
 import com.smartdevicelink.proxy.rpc.enums.HmiZoneCapabilities;
+import com.smartdevicelink.proxy.rpc.enums.PrerecordedSpeech;
 import com.smartdevicelink.proxy.rpc.enums.SpeechCapabilities;
 import com.smartdevicelink.proxy.rpc.enums.VentilationMode;
 
@@ -144,8 +145,13 @@ public class Validator{
             return ( result1 == null );
         }
 
-        return ( result1.getDataType().equals(result2.getDataType())
-                && result1.getResultCode().equals(result2.getResultCode()) );
+        if(result1.getDataType() != null && result2.getDataType() != null){
+            return ( result1.getDataType().equals(result2.getDataType())
+                    && result1.getResultCode().equals(result2.getResultCode()) );
+        } else {
+            return ( result1.getOEMCustomVehicleDataType().equals(result2.getOEMCustomVehicleDataType())
+                    && result1.getResultCode().equals(result2.getResultCode()) );
+        }
     }
 
     public static boolean validateBulkData(byte[] array1, byte[] array2){
@@ -396,7 +402,7 @@ public class Validator{
         return validateImage(button1.getImage(), button2.getImage())
                 && validateText(button1.getText(), button2.getText())
                 && button1.getIsHighlighted() == button2.getIsHighlighted()
-                && button1.getSoftButtonID() == button2.getSoftButtonID()
+                && ( (button1 .getSoftButtonID() == null && button2.getSoftButtonID() == null) || button1.getSoftButtonID().equals(button2.getSoftButtonID()))
                 && button1.getSystemAction() == button2.getSystemAction()
                 && button1.getType() == button2.getType();
     }
@@ -3871,6 +3877,15 @@ public class Validator{
 	}
 
 	public static boolean validateSpeechCapabilities(List<SpeechCapabilities> spA, List<SpeechCapabilities> spB){
+		for(int i = 0; i < spA.size(); i++){
+			if(!spA.get(i).equals(spB.get(i))){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean validatePreRecordedSpeechCapabilities(List<PrerecordedSpeech> spA, List<PrerecordedSpeech> spB){
 		for(int i = 0; i < spA.size(); i++){
 			if(!spA.get(i).equals(spB.get(i))){
 				return false;

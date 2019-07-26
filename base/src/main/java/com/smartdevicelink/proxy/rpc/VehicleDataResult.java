@@ -74,6 +74,7 @@ import java.util.Hashtable;
 public class VehicleDataResult extends RPCStruct {
 	public static final String KEY_DATA_TYPE = "dataType";
 	public static final String KEY_RESULT_CODE = "resultCode";
+	public static final String KEY_OEM_CUSTOM_DATA_TYPE = "oemCustomDataType";
 
 	public VehicleDataResult() { }
 	  /**
@@ -99,16 +100,36 @@ public class VehicleDataResult extends RPCStruct {
     	setResultCode(resultCode);
 	}
 
-    public void setDataType(@NonNull VehicleDataType dataType) {
-    	setValue(KEY_DATA_TYPE, dataType);
-    }
-    public VehicleDataType getDataType() {
-        return (VehicleDataType) getObject(VehicleDataType.class, KEY_DATA_TYPE);
-    }
+	/**
+	 * Individual published data request result.
+	 * @param oemCustomDataType Custom published data element type.
+	 * @param resultCode Published data result code.
+	 */
+	public VehicleDataResult(@NonNull String oemCustomDataType, @NonNull VehicleDataResultCode resultCode){
+		this();
+		setOEMCustomVehicleDataType(oemCustomDataType);
+		setResultCode(resultCode);
+	}
+
+	public void setDataType(@NonNull VehicleDataType dataType) {
+		setValue(KEY_DATA_TYPE, dataType);
+	}
+
+	public VehicleDataType getDataType() {
+		return (VehicleDataType) getObject(VehicleDataType.class, KEY_DATA_TYPE);
+	}
     public void setResultCode(@NonNull VehicleDataResultCode resultCode) {
     	setValue(KEY_RESULT_CODE, resultCode);
     }
     public VehicleDataResultCode getResultCode() {
         return (VehicleDataResultCode) getObject(VehicleDataResultCode.class, KEY_RESULT_CODE);
     }
+
+	public void setOEMCustomVehicleDataType(@NonNull String oemCustomDataType) {
+		setValue(KEY_OEM_CUSTOM_DATA_TYPE, oemCustomDataType);
+	}
+
+	public String getOEMCustomVehicleDataType() {
+		return (String) getObject(String.class, KEY_OEM_CUSTOM_DATA_TYPE);
+	}
 }

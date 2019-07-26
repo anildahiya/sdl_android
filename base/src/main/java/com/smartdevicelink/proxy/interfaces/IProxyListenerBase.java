@@ -39,6 +39,7 @@ import com.smartdevicelink.proxy.rpc.AlertManeuverResponse;
 import com.smartdevicelink.proxy.rpc.AlertResponse;
 import com.smartdevicelink.proxy.rpc.ButtonPressResponse;
 import com.smartdevicelink.proxy.rpc.ChangeRegistrationResponse;
+import com.smartdevicelink.proxy.rpc.CloseApplicationResponse;
 import com.smartdevicelink.proxy.rpc.CreateInteractionChoiceSetResponse;
 import com.smartdevicelink.proxy.rpc.CreateWindowResponse;
 import com.smartdevicelink.proxy.rpc.DeleteCommandResponse;
@@ -107,6 +108,7 @@ import com.smartdevicelink.proxy.rpc.SubscribeButtonResponse;
 import com.smartdevicelink.proxy.rpc.SubscribeVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.SubscribeWayPointsResponse;
 import com.smartdevicelink.proxy.rpc.SystemRequestResponse;
+import com.smartdevicelink.proxy.rpc.UnpublishAppServiceResponse;
 import com.smartdevicelink.proxy.rpc.UnsubscribeButtonResponse;
 import com.smartdevicelink.proxy.rpc.UnsubscribeVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.UnsubscribeWayPointsResponse;
@@ -425,5 +427,19 @@ public interface IProxyListenerBase {
 	public void onOnAppServiceData(OnAppServiceData notification);
 
 	public void onOnSystemCapabilityUpdated(OnSystemCapabilityUpdated notification);
+	/**
+	 * onCloseApplicationResponse being called indicates that SDL has
+	 * responded to a request to close the application on the module.
+	 *
+	 * @param response - Contains information about the response sent from SDL.
+	 */
+	public void onCloseApplicationResponse(CloseApplicationResponse response);
 
+	/**
+	 * UnpublishAppServiceResponse being called indicates that SDL has
+	 * responded to a request to close the application on the module.
+	 *
+	 * @param response - Contains information about the response sent from SDL.
+	 */
+	public void onUnpublishAppServiceResponse(UnpublishAppServiceResponse response);
 }

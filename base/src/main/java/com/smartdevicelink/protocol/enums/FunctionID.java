@@ -101,15 +101,13 @@ public enum FunctionID{
     GET_FILE(54, "GetFile"),
     PERFORM_APP_SERVICES_INTERACTION(55, "PerformAppServiceInteraction"),
 
-    // Newly Added and we need updated below onces and make these to correct ones after that. Currently updated for testing easiness.
-    UNPUBLISH_APP_SERVICE(60, "UnpublishAppService"),
-    CLOSE_APPLICATION(61, "CloseApplication"),
+    UNPUBLISH_APP_SERVICE(56, "UnpublishAppService"),
+    CLOSE_APPLICATION(58, "CloseApplication"),
 
-    //FunctionId needs an updation because original functionId allocated are used by other RPC
-    CREATE_WINDOW(56, "CreateWindow"),
-    DELETE_WINDOW(57, "DeleteWindow"),
-    GET_INTERIOR_VEHICLE_DATA_CONSENT(58, "GetInteriorVehicleDataConsent"),
-    RELEASE_INTERIOR_VEHICLE_DATA_MODULE(59, "ReleaseInteriorVehicleDataModule"),
+    CREATE_WINDOW(59, "CreateWindow"),
+    DELETE_WINDOW(60, "DeleteWindow"),
+    GET_INTERIOR_VEHICLE_DATA_CONSENT(61, "GetInteriorVehicleDataConsent"),
+    RELEASE_INTERIOR_VEHICLE_DATA_MODULE(62, "ReleaseInteriorVehicleDataModule"),
 
     // NOTIFICATIONS
     ON_HMI_STATUS(32768, "OnHMIStatus"),

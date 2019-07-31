@@ -85,9 +85,9 @@ public class VehicleDataResult extends RPCStruct {
 		* 
 		* @param hash the Hashtable to use
 		*/
-    public VehicleDataResult(Hashtable<String, Object> hash) {
-        super(hash);
-    }
+	public VehicleDataResult(Hashtable<String, Object> hash) {
+		super(hash);
+	}
 
 	/**
 	 * Individual published data request result.
@@ -95,21 +95,18 @@ public class VehicleDataResult extends RPCStruct {
 	 * @param resultCode Published data result code.
 	 */
 	public VehicleDataResult(@NonNull VehicleDataType dataType, @NonNull VehicleDataResultCode resultCode){
-    	this();
-    	setDataType(dataType);
-    	setResultCode(resultCode);
-	}
-
-	/**
-	 * Individual published data request result.
-	 * @param oemCustomDataType Custom published data element type.
-	 * @param resultCode Published data result code.
-	 */
-	public VehicleDataResult(@NonNull String oemCustomDataType, @NonNull VehicleDataResultCode resultCode){
 		this();
-		setOEMCustomVehicleDataType(oemCustomDataType);
+		setDataType(dataType);
 		setResultCode(resultCode);
 	}
+	
+	public void setResultCode(@NonNull VehicleDataResultCode resultCode) {
+		setValue(KEY_RESULT_CODE, resultCode);
+	}
+	
+	public VehicleDataResultCode getResultCode() {
+		return (VehicleDataResultCode) getObject(VehicleDataResultCode.class, KEY_RESULT_CODE);
+	}	
 
 	public void setDataType(@NonNull VehicleDataType dataType) {
 		setValue(KEY_DATA_TYPE, dataType);
@@ -118,14 +115,8 @@ public class VehicleDataResult extends RPCStruct {
 	public VehicleDataType getDataType() {
 		return (VehicleDataType) getObject(VehicleDataType.class, KEY_DATA_TYPE);
 	}
-    public void setResultCode(@NonNull VehicleDataResultCode resultCode) {
-    	setValue(KEY_RESULT_CODE, resultCode);
-    }
-    public VehicleDataResultCode getResultCode() {
-        return (VehicleDataResultCode) getObject(VehicleDataResultCode.class, KEY_RESULT_CODE);
-    }
-
-	public void setOEMCustomVehicleDataType(@NonNull String oemCustomDataType) {
+	
+	public void setOEMCustomVehicleDataType(String oemCustomDataType) {
 		setValue(KEY_OEM_CUSTOM_DATA_TYPE, oemCustomDataType);
 	}
 

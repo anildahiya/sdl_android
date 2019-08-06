@@ -106,8 +106,8 @@ public enum FunctionID{
 
     CREATE_WINDOW(59, "CreateWindow"),
     DELETE_WINDOW(60, "DeleteWindow"),
-    GET_INTERIOR_VEHICLE_DATA_CONSENT(61, "GetInteriorVehicleDataConsent"),
-    RELEASE_INTERIOR_VEHICLE_DATA_MODULE(62, "ReleaseInteriorVehicleDataModule"),
+    GET_INTERIOR_VEHICLE_DATA_CONSENT(62, "GetInteriorVehicleDataConsent"),
+    RELEASE_INTERIOR_VEHICLE_DATA_MODULE(63, "ReleaseInteriorVehicleDataModule"),
 
     // NOTIFICATIONS
     ON_HMI_STATUS(32768, "OnHMIStatus"),

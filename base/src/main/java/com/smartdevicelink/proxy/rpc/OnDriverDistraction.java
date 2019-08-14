@@ -73,7 +73,8 @@ import java.util.Hashtable;
  */
 public class OnDriverDistraction  extends RPCNotification {
 	public static final String KEY_STATE = "state";
-	public static final String KEY_LOCK_SCREEN_DISMISSAL_ENABLED = "lockScreenDismissalEnabled";
+    public static final String KEY_LOCKSCREEN_DISMISSIBLE = "lockScreenDismissalEnabled";
+    public static final String KEY_LOCKSCREEN_DISMISSIBLE_MSG = "lockScreenDismissalWarning";
 
 	/**
 	*Constructs a newly allocated OnDriverDistraction object
@@ -112,20 +113,34 @@ public class OnDriverDistraction  extends RPCNotification {
     }
 
     /**
-     * Gets the lockScreenDismissalEnabled for OnDriverDistraction.
-     * @return Boolean - Returns the lockScreenDismissalEnabled.
+     * <p>Called to set dismissible state of Lockscreen</p>
+     * @param isDismissible the Lockscreen's dismissibility
      */
-    public Boolean getLockScreenDismissalEnabled() {
-        return getBoolean(KEY_LOCK_SCREEN_DISMISSAL_ENABLED);
+    public void setLockscreenDismissibility(boolean isDismissible) {
+        setParameters(KEY_LOCKSCREEN_DISMISSIBLE, isDismissible);
     }
 
     /**
-     * Sets the lockScreenDismissalEnabled for OnDriverDistraction.
-     * @param lockScreenDismissalEnabled - If enabled, the lock screen will be able to be dismissed while connected to SDL, allowing users
-     *                                   the ability to interact with the app. Dismissals should include a warning to the user and ensure
-     *                                   that they are not the driver.
+     * <p>Called to get the dismissible state of Lockscreen</p>
+     * @return true if the Lockscreen is dismissible, false otherwise
      */
-    public void setLockScreenDismissalEnabled(Boolean lockScreenDismissalEnabled) {
-        setParameters(KEY_LOCK_SCREEN_DISMISSAL_ENABLED, lockScreenDismissalEnabled);
+    public Boolean getLockscreenDismissibility() {
+        return (Boolean) getObject(Boolean.class, KEY_LOCKSCREEN_DISMISSIBLE);
+    }
+
+    /**
+     * Called to set a warning message for the lockscreen
+     * @param msg the message to be set
+     */
+    public void setLockscreenWarningMessage(String msg) {
+        setParameters(KEY_LOCKSCREEN_DISMISSIBLE_MSG, msg);
+    }
+
+    /**
+     * Called to get the lockscreen warning message
+     * @return warning message
+     */
+    public String getLockscreenWarningMessage() {
+        return (String) getObject(String.class, KEY_LOCKSCREEN_DISMISSIBLE_MSG);
     }
 }

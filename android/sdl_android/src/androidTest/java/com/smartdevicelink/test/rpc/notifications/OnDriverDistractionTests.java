@@ -23,7 +23,7 @@ public class OnDriverDistractionTests extends BaseRpcTests{
         OnDriverDistraction msg = new OnDriverDistraction();
 
         msg.setState(STATUS);
-        msg.setLockScreenDismissalEnabled(Test.GENERAL_BOOLEAN);
+        msg.setLockscreenDismissibility(Test.GENERAL_BOOLEAN);
 
         return msg;
     }
@@ -44,7 +44,7 @@ public class OnDriverDistractionTests extends BaseRpcTests{
 
         try{
             result.put(OnDriverDistraction.KEY_STATE, STATUS);
-            result.put(OnDriverDistraction.KEY_LOCK_SCREEN_DISMISSAL_ENABLED, Test.GENERAL_BOOLEAN);
+            result.put(OnDriverDistraction.KEY_LOCKSCREEN_DISMISSIBLE, Test.GENERAL_BOOLEAN);
         }catch(JSONException e){
         	fail(Test.JSON_FAIL);
         }
@@ -58,7 +58,7 @@ public class OnDriverDistractionTests extends BaseRpcTests{
     public void testRpcValues () {       	
     	// Test Values
         DriverDistractionState cmdId = ( (OnDriverDistraction) msg ).getState();
-        Boolean lockScreenDismissalEnabled = ( (OnDriverDistraction) msg ).getLockScreenDismissalEnabled();
+        Boolean lockScreenDismissalEnabled = ( (OnDriverDistraction) msg ).getLockscreenDismissibility();
         
         // Valid Tests
         assertEquals(Test.MATCH, STATUS, cmdId);
@@ -70,6 +70,6 @@ public class OnDriverDistractionTests extends BaseRpcTests{
         testNullBase(msg);
 
          assertNull(Test.NULL, msg.getState());
-         assertNull(Test.NULL, msg.getLockScreenDismissalEnabled());
+         assertNull(Test.NULL, msg.getLockscreenDismissibility());
     }
 }

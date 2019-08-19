@@ -283,6 +283,29 @@ public enum SystemCapabilityType {
 	 */
 	DISPLAY (false),
 
+
+	/**
+	 * @since 6.0
+	 * Returns: DisplayCapability
+	 * <table border="1" rules="all">
+	 * 		<tr>
+	 * 			<th>Enum Name</th>
+	 * 			<th>Return Type</th>
+	 * 			<th>Description</th>
+	 * 			<th>Requires Async?</th>
+	 * 			<th>Notes</th>
+	 * 		</tr>
+	 * 		<tr>
+	 * 			<td>DISPLAYS</td>
+	 * 			<td>DisplayCapability</td>
+	 * 			<td>Returns Display Capability</td>
+	 * 			<td align=center>N</td>
+	 * 			<td> <strong>Since 6.0</strong> Available Synchronously <strong>after</strong> first automatic system capability update.</td>
+	 * 		</tr>
+	 * 	</table>
+	 */
+	DISPLAYS (true),
+
 	/**
 	 * Available Synchronously after Register App Interface response <br>
 	 * Returns: List<PrerecordedSpeech>

@@ -6765,6 +6765,10 @@ public abstract class SdlProxyBase<proxyListenerType extends IProxyListenerBase>
 		}
 		msg.setVrSynonyms(vrSynonyms);
 
+		if (protocolVersion != null && protocolVersion.getMajor() < 5) {
+			appType.remove(AppHMIType.REMOTE_CONTROL);
+		}
+
 		msg.setAppHMIType(appType);
 
 		msg.setDayColorScheme(dayColorScheme);

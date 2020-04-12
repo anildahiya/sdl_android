@@ -44,7 +44,7 @@ public class RemoteControlCapabilities extends RPCStruct {
 	public static final String KEY_AUDIO_CONTROL_CAPABILITIES = "audioControlCapabilities";
 	public static final String KEY_HMI_SETTINGS_CONTROL_CAPABILITIES = "hmiSettingsControlCapabilities";
 	public static final String KEY_LIGHT_CONTROL_CAPABILITIES = "lightControlCapabilities";
-
+	public static final String KEY_PTTB_CONTROL_CAPABILITIES = "pttbControlCapabilities";
 	public RemoteControlCapabilities() {
 	}
 
@@ -186,4 +186,24 @@ public class RemoteControlCapabilities extends RPCStruct {
 	public LightControlCapabilities getLightControlCapabilities() {
 		return (LightControlCapabilities) getObject(LightControlCapabilities.class, KEY_LIGHT_CONTROL_CAPABILITIES);
 	}
+    /**
+     * Sets the pttbControlCapabilities.
+     *
+     * @param pttbControlCapabilities If included, the platform supports Pttb controls.
+     * @since SmartDeviceLink 5.0.0
+     */
+    public void setPttbControlCapabilities(List<PttbControlCapabilities> pttbControlCapabilities) {
+        setValue(KEY_PTTB_CONTROL_CAPABILITIES, pttbControlCapabilities);
+    }
+
+    /**
+     * Gets the pttbControlCapabilities.
+     *
+     * @return List<PttbControlCapabilities> If included, the platform supports Pttb controls.
+     * @since SmartDeviceLink 5.0.0
+     */
+    @SuppressWarnings("unchecked")
+    public List<PttbControlCapabilities> getPttbControlCapabilities() {
+        return (List<PttbControlCapabilities>) getObject(PttbControlCapabilities.class, KEY_PTTB_CONTROL_CAPABILITIES);
+    }
 }

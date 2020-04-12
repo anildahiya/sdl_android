@@ -84,7 +84,7 @@ public class GetVehicleDataResponse extends RPCResponse {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
 	/** 
 	 * Constructs a new GetVehicleDataResponse object
 	 */
@@ -389,5 +389,24 @@ public class GetVehicleDataResponse extends RPCResponse {
      */
     public Object getOEMCustomVehicleData(String vehicleDataName){
         return getParameters(vehicleDataName);
+    }
+    /**
+     * Sets the seatOccupancy.
+     *
+     * @param seatOccupancy See SeatOccupancy
+     * @since SmartDeviceLink 6.0
+     */
+    public void setSeatOccupancy(SeatOccupancy seatOccupancy) {
+        setParameters(KEY_SEAT_OCCUPANCY, seatOccupancy);
+    }
+
+    /**
+     * Gets the seatOccupancy.
+     *
+     * @return SeatOccupancy See SeatOccupancy
+     * @since SmartDeviceLink 6.0
+     */
+    public SeatOccupancy getSeatOccupancy() {
+        return (SeatOccupancy) getObject(SeatOccupancy.class, KEY_SEAT_OCCUPANCY);
     }
 }

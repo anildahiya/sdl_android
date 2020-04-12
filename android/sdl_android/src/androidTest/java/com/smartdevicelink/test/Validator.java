@@ -2300,6 +2300,25 @@ public class Validator{
         return true;
     }
 
+    public static boolean validateSeatOccupancy(SeatOccupancy item1, SeatOccupancy item2){
+        if(item1 == null){
+            return ( item2 == null );
+        }
+        if(item2 == null){
+            return ( item1 == null );
+        }
+
+        if(!( validateSeatStatusList(item1.getSeatsOccupied(), item2.getSeatsOccupied()) )){
+            return false;
+        }
+
+        if(!( validateSeatStatusList(item1.getSeatsBelted(), item2.getSeatsBelted()) )){
+            return false;
+        }
+
+        return true;
+    }
+
     public static boolean validateFuelRange (List<FuelRange> item1, List<FuelRange> item2) {
         if (item1 == null) {
             return ( item2 == null );
@@ -3283,6 +3302,49 @@ public class Validator{
 		}
 
 		if (!(validateRGBColor(item1.getColor(), item2.getColor()))) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public static boolean validateSeatStatusList(List<SeatStatus> item1, List<SeatStatus> item2) {
+		if (item1 == null) {
+			return (item2 == null);
+		}
+		if (item2 == null) {
+			return (item1 == null);
+		}
+
+		if (item1.size() != item2.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < item1.size(); i++) {
+			if (!validateSeatStatus(item1.get(i), item2.get(i))) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static boolean validateSeatStatus(SeatStatus item1, SeatStatus item2) {
+		if (item1 == null) {
+			return (item2 == null);
+		}
+		if (item2 == null) {
+			return (item1 == null);
+		}
+
+		if(item1.getConditionActive() != item2.getConditionActive()){
+			log("validateSeatStatus",
+					"conditionActive " + item1.getConditionActive() + " didn't match conditionActive " + item2.getConditionActive()
+							+ ".");
+			return false;
+		}
+
+		if(!( validateSeatLocation(item1.getSeatLocation(), item2.getSeatLocation()) )){
 			return false;
 		}
 

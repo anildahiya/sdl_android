@@ -58,6 +58,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 		msg.setTurnSignal(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_TURNSIGNAL.ordinal()));
 		msg.setElectronicParkBrakeStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_ELECTRONICPARKBRAKESTATUS.ordinal()));
 		msg.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA);
+		msg.setSeatOccupancy(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()));
 
 		return msg;
 	}
@@ -111,6 +112,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 	        result.put(SubscribeVehicleDataResponse.KEY_TURN_SIGNAL, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_TURNSIGNAL.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_ELECTRONIC_PARK_BRAKE_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_ELECTRONICPARKBRAKESTATUS.ordinal()).serializeJSON());
 	        result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA.serializeJSON());
+	        result.put(SubscribeVehicleDataResponse.KEY_SEAT_OCCUPANCY, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()).serializeJSON());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -152,6 +154,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 		VehicleDataResult testTurnSignal     = ( (SubscribeVehicleDataResponse) msg ).getTurnSignal();
 		VehicleDataResult testEBrakeStatus   = ( (SubscribeVehicleDataResponse) msg ).getElectronicParkBrakeStatus();
 		VehicleDataResult testOEMCustomVehicleData   = ( (SubscribeVehicleDataResponse) msg ).getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME);
+		VehicleDataResult testSeatOccupancy     = ( (SubscribeVehicleDataResponse) msg ).getSeatOccupancy();
 		
 		// Valid Tests
 		assertTrue(Test.TRUE, testGps.getDataType().equals(VehicleDataType.VEHICLEDATA_GPS));
@@ -183,6 +186,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 	    assertTrue(Test.TRUE, testTurnSignal.getDataType().equals(VehicleDataType.VEHICLEDATA_TURNSIGNAL));
 	    assertTrue(Test.TRUE, testEBrakeStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_ELECTRONICPARKBRAKESTATUS));
 	    assertTrue(Test.TRUE, testOEMCustomVehicleData.getOEMCustomVehicleDataType().equals(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
+	    assertTrue(Test.TRUE, testSeatOccupancy.getDataType().equals(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY));
    
         // Invalid/Null Tests
 		SubscribeVehicleDataResponse msg = new SubscribeVehicleDataResponse();
@@ -218,6 +222,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
         assertNull(Test.NULL, msg.getTurnSignal());
         assertNull(Test.NULL, msg.getElectronicParkBrakeStatus());
         assertNull(Test.NULL, msg.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
+        assertNull(Test.NULL, msg.getSeatOccupancy());
     }
 	
     /**
@@ -355,6 +360,10 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 			JSONObject oemCustomVehicleDataName = JsonUtils.readJsonObjectFromJsonObject(parameters, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME);
 			VehicleDataResult referenceOemCustomData = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(oemCustomVehicleDataName));
 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceOemCustomData, cmd.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME)));
+
+			JSONObject seatOccupancy = JsonUtils.readJsonObjectFromJsonObject(parameters, SubscribeVehicleDataResponse.KEY_SEAT_OCCUPANCY);
+			VehicleDataResult referenceSeatOccupancy = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(seatOccupancy));
+ 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceSeatOccupancy, cmd.getSeatOccupancy()));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}    	

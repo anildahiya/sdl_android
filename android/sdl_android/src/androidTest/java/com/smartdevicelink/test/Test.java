@@ -82,6 +82,7 @@ import com.smartdevicelink.proxy.rpc.SeatControlCapabilities;
 import com.smartdevicelink.proxy.rpc.SeatControlData;
 import com.smartdevicelink.proxy.rpc.SeatLocation;
 import com.smartdevicelink.proxy.rpc.SeatMemoryAction;
+import com.smartdevicelink.proxy.rpc.SeatStatus;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.SisData;
 import com.smartdevicelink.proxy.rpc.SoftButton;
@@ -331,6 +332,7 @@ public class Test {
 	public static final VehicleDataEventStatus         GENERAL_VEHICLEDATAEVENTSTATUS         = VehicleDataEventStatus.YES;
 	public static final TouchEventCapabilities         GENERAL_TOUCHEVENTCAPABILITIES         = new TouchEventCapabilities();
 	public static final SeatMemoryAction               GENERAL_SEATMEMORYACTION               = new SeatMemoryAction();
+	public static final SeatStatus                     GENERAL_SEATSTATUS                     = new SeatStatus();
 	public static final SoftButtonCapabilities         GENERAL_SOFTBUTTONCAPABILITIES         = new SoftButtonCapabilities();
 	public static final ECallConfirmationStatus        GENERAL_ECALLCONFIRMATIONSTATUS        = ECallConfirmationStatus.CALL_IN_PROGRESS;
 	public static final AudioPassThruCapabilities      GENERAL_AUDIOPASSTHRUCAPABILITIES      = new AudioPassThruCapabilities();
@@ -497,6 +499,7 @@ public class Test {
 			//
 		}
 	});
+	public static final List<SeatStatus>                GENERAL_SEATSTATUS_LIST                = new ArrayList<SeatStatus>(1);
 	public static final ChoiceCell                      GENERAL_CHOICECELL                     = new ChoiceCell(GENERAL_STRING);
 	public static final List<ChoiceCell>                GENERAL_CHOICECELL_LIST                = Arrays.asList(GENERAL_CHOICECELL);
 	public static final List<MenuCell>                  GENERAL_MENUCELL_LIST                  = Arrays.asList(GENERAL_MENUCELL);
@@ -569,6 +572,10 @@ public class Test {
 		GENERAL_TOUCHEVENTCAPABILITIES.setDoublePressAvailable(GENERAL_BOOLEAN);
 		GENERAL_TOUCHEVENTCAPABILITIES.setMultiTouchAvailable(GENERAL_BOOLEAN);
 		GENERAL_TOUCHEVENTCAPABILITIES.setPressAvailable(GENERAL_BOOLEAN);
+
+		GENERAL_SEATSTATUS.setSeatLocation(GENERAL_SEAT_LOCATION);
+		GENERAL_SEATSTATUS.setConditionActive(GENERAL_BOOLEAN);
+		GENERAL_SEATSTATUS_LIST.add(GENERAL_SEATSTATUS);
 
 		GENERAL_SEATMEMORYACTION.setAction(GENERAL_SEATMEMORYACTIONTYPE);
 		GENERAL_SEATMEMORYACTION.setLabel(GENERAL_STRING);

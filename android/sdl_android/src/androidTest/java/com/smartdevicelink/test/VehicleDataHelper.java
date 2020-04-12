@@ -13,6 +13,7 @@ import com.smartdevicelink.proxy.rpc.GetVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.HeadLampStatus;
 import com.smartdevicelink.proxy.rpc.MyKey;
 import com.smartdevicelink.proxy.rpc.OnVehicleData;
+import com.smartdevicelink.proxy.rpc.SeatOccupancy;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.TireStatus;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
@@ -78,6 +79,7 @@ public class VehicleDataHelper{
 	public static final TurnSignal TURN_SIGNAL = TurnSignal.OFF;
 	public static final ElectronicParkBrakeStatus ELECTRONIC_PARK_BRAKE_STATUS = ElectronicParkBrakeStatus.CLOSED;
 	public static final String OEM_CUSTOM_VEHICLE_DATA_STATE = "oemCustomVehicleDataState";
+	public static final SeatOccupancy SEAT_OCCUPANCY = new SeatOccupancy();
 
 	//other variables inside some of the above objects
     // tire status
@@ -315,6 +317,10 @@ public class VehicleDataHelper{
     	//MY_KEY set up
     	MY_KEY.setE911Override(MY_KEY_E_911_OVERRIDE);
 
+		//SEAT_OCCUPANCY set up
+		SEAT_OCCUPANCY.setSeatsOccupied(Test.GENERAL_SEATSTATUS_LIST);
+		SEAT_OCCUPANCY.setSeatsBelted(Test.GENERAL_SEATSTATUS_LIST);
+
 		// FUEL_RANGE and FUEL_RANGE_LIST set up
 		FUEL_RANGE.setType(FUEL_RANGE_TYPE);
 		FUEL_RANGE.setRange(FUEL_RANGE_RANGE);
@@ -358,6 +364,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setTurnSignal(TURN_SIGNAL);
 		VEHICLE_DATA.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 		VEHICLE_DATA.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, OEM_CUSTOM_VEHICLE_DATA_STATE);
+		VEHICLE_DATA.setSeatOccupancy(SEAT_OCCUPANCY);
 		
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
@@ -390,6 +397,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setTurnSignal(TURN_SIGNAL);
 		VEHICLE_DATA_RESPONSE.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 		VEHICLE_DATA_RESPONSE.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, OEM_CUSTOM_VEHICLE_DATA_STATE);
+		VEHICLE_DATA_RESPONSE.setSeatOccupancy(SEAT_OCCUPANCY);
 	}
 	
     private VehicleDataHelper(){}	

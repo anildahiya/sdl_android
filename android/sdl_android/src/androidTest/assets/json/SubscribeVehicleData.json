@@ -31,7 +31,8 @@
       "fuelRange":true,
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
-      "oemCustomVehicleDataName":true
+      "oemCustomVehicleDataName":true,
+      "stabilityControlsStatus":true
     }
   },
   "response":{
@@ -152,6 +153,10 @@
       },
       "oemCustomVehicleDataName":{
         "oemCustomDataType":"oemCustomVehicleDataName",
+        "resultCode":"SUCCESS"
+      },
+      "stabilityControlsStatus":{
+        "dataType":"VEHICLEDATA_STABILITYCONTROLSSTATUS",
         "resultCode":"SUCCESS"
       }
     }

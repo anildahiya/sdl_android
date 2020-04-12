@@ -324,7 +324,7 @@ public class OnVehicleData extends RPCNotification {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 
     public OnVehicleData() {
         super(FunctionID.ON_VEHICLE_DATA.toString());
@@ -598,5 +598,24 @@ public class OnVehicleData extends RPCNotification {
      */
     public Object getOEMCustomVehicleData(String vehicleDataName){
         return getParameters(vehicleDataName);
+    }
+    /**
+     * Sets the stabilityControlsStatus.
+     *
+     * @param stabilityControlsStatus See StabilityControlsStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public void setStabilityControlsStatus(StabilityControlsStatus stabilityControlsStatus) {
+        setParameters(KEY_STABILITY_CONTROLS_STATUS, stabilityControlsStatus);
+    }
+
+    /**
+     * Gets the stabilityControlsStatus.
+     *
+     * @return StabilityControlsStatus See StabilityControlsStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public StabilityControlsStatus getStabilityControlsStatus() {
+        return (StabilityControlsStatus) getObject(StabilityControlsStatus.class, KEY_STABILITY_CONTROLS_STATUS);
     }
 }

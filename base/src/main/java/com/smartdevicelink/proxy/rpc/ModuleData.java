@@ -47,7 +47,7 @@ public class ModuleData extends RPCStruct {
 	public static final String KEY_LIGHT_CONTROL_DATA = "lightControlData";
 	public static final String KEY_HMI_SETTINGS_CONTROL_DATA = "hmiSettingsControlData";
 	public static final String KEY_MODULE_ID = "moduleId";
-
+    public static final String KEY_TLC_CONTROL_DATA = "tlcControlData";
 	public ModuleData() {
 	}
 
@@ -203,4 +203,23 @@ public class ModuleData extends RPCStruct {
 	public String getModuleId() {
 		return getString(KEY_MODULE_ID);
 	}
+    /**
+     * Sets the tlcControlData.
+     *
+     * @param tlcControlData
+     * @since SmartDeviceLink 6.0.0
+     */
+    public void setTlcControlData(TlcControlData tlcControlData) {
+        setValue(KEY_TLC_CONTROL_DATA, tlcControlData);
+    }
+
+    /**
+     * Gets the tlcControlData.
+     *
+     * @return TlcControlData
+     * @since SmartDeviceLink 6.0.0
+     */
+    public TlcControlData getTlcControlData() {
+        return (TlcControlData) getObject(TlcControlData.class, KEY_TLC_CONTROL_DATA);
+    }
 }

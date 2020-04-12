@@ -44,7 +44,7 @@ public class RemoteControlCapabilities extends RPCStruct {
 	public static final String KEY_AUDIO_CONTROL_CAPABILITIES = "audioControlCapabilities";
 	public static final String KEY_HMI_SETTINGS_CONTROL_CAPABILITIES = "hmiSettingsControlCapabilities";
 	public static final String KEY_LIGHT_CONTROL_CAPABILITIES = "lightControlCapabilities";
-
+    public static final String KEY_TLC_CONTROL_CAPABILITIES = "tlcControlCapabilities";
 	public RemoteControlCapabilities() {
 	}
 
@@ -186,4 +186,24 @@ public class RemoteControlCapabilities extends RPCStruct {
 	public LightControlCapabilities getLightControlCapabilities() {
 		return (LightControlCapabilities) getObject(LightControlCapabilities.class, KEY_LIGHT_CONTROL_CAPABILITIES);
 	}
+    /**
+     * Sets the tlcControlCapabilities.
+     *
+     * @param tlcControlCapabilities If included, the platform supports trailer check controls.
+     * @since SmartDeviceLink 6.0.0
+     */
+    public void setTlcControlCapabilities(List<TlcControlCapabilities> tlcControlCapabilities) {
+        setValue(KEY_TLC_CONTROL_CAPABILITIES, tlcControlCapabilities);
+    }
+
+    /**
+     * Gets the tlcControlCapabilities.
+     *
+     * @return List<TlcControlCapabilities> If included, the platform supports trailer check controls.
+     * @since SmartDeviceLink 6.0.0
+     */
+    @SuppressWarnings("unchecked")
+    public List<TlcControlCapabilities> getTlcControlCapabilities() {
+        return (List<TlcControlCapabilities>) getObject(TlcControlCapabilities.class, KEY_TLC_CONTROL_CAPABILITIES);
+    }
 }

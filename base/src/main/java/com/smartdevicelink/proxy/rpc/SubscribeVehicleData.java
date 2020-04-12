@@ -322,7 +322,7 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 	public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 	/**
 	 * Constructs a new SubscribeVehicleData object
 	 */
@@ -880,5 +880,24 @@ public class SubscribeVehicleData extends RPCRequest {
 	 */
 	public Boolean getOEMCustomVehicleData(String vehicleDataName){
 		return getBoolean(vehicleDataName);
+	}
+	/**
+	 * Sets the stabilityControlsStatus.
+	 *
+	 * @param stabilityControlsStatus See StabilityControlsStatus
+	 * @since SmartDeviceLink 6.0
+	 */
+	public void setStabilityControlsStatus(Boolean stabilityControlsStatus) {
+		setParameters(KEY_STABILITY_CONTROLS_STATUS, stabilityControlsStatus);
+	}
+
+	/**
+	 * Gets the stabilityControlsStatus.
+	 *
+	 * @return Boolean See StabilityControlsStatus
+	 * @since SmartDeviceLink 6.0
+	 */
+	public Boolean getStabilityControlsStatus() {
+		return getBoolean(KEY_STABILITY_CONTROLS_STATUS);
 	}
 }

@@ -32,7 +32,8 @@
       "fuelRange":true,
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
-      "oemCustomVehicleDataName":true
+      "oemCustomVehicleDataName":true,
+      "stabilityControlsStatus":true
     }
   },
   "response":{
@@ -170,7 +171,11 @@
           "range":10.0
         }
       ],
-      "oemCustomVehicleDataName":"oemCustomVehicleDataState"
+      "oemCustomVehicleDataName":"oemCustomVehicleDataState",
+      "stabilityControlsStatus":{
+        "escSystem":"ON",
+        "trailerSwayControl":"ON"
+      }
     }
   }
 }

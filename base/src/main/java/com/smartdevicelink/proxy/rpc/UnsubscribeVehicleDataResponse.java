@@ -74,7 +74,7 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 	/**
 	 * Constructs a new UnsubscribeVehicleDataResponse object
 	 */
@@ -532,5 +532,24 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
      */
     public VehicleDataResult getOEMCustomVehicleData(String vehicleDataName){
         return (VehicleDataResult) getObject(VehicleDataResult.class, vehicleDataName);
+    }
+    /**
+     * Sets the stabilityControlsStatus.
+     *
+     * @param stabilityControlsStatus See StabilityControlsStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public void setStabilityControlsStatus(VehicleDataResult stabilityControlsStatus) {
+        setParameters(KEY_STABILITY_CONTROLS_STATUS, stabilityControlsStatus);
+    }
+
+    /**
+     * Gets the stabilityControlsStatus.
+     *
+     * @return VehicleDataResult See StabilityControlsStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public VehicleDataResult getStabilityControlsStatus() {
+        return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_STABILITY_CONTROLS_STATUS);
     }
 }

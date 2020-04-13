@@ -6,6 +6,7 @@ import com.smartdevicelink.proxy.RPCMessage;
 import com.smartdevicelink.proxy.rpc.AirbagStatus;
 import com.smartdevicelink.proxy.rpc.BeltStatus;
 import com.smartdevicelink.proxy.rpc.BodyInformation;
+import com.smartdevicelink.proxy.rpc.ClimateData;
 import com.smartdevicelink.proxy.rpc.ClusterModeStatus;
 import com.smartdevicelink.proxy.rpc.DeviceStatus;
 import com.smartdevicelink.proxy.rpc.ECallInfo;
@@ -91,6 +92,7 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
             result.put(GetVehicleDataResponse.KEY_TURN_SIGNAL, VehicleDataHelper.TURN_SIGNAL);
             result.put(GetVehicleDataResponse.KEY_ELECTRONIC_PARK_BRAKE_STATUS, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS);
             result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE);
+            result.put(GetVehicleDataResponse.KEY_CLIMATE_DATA, VehicleDataHelper.CLIMATE_DATA);
         } catch(JSONException e){
         	fail(Test.JSON_FAIL);
         }
@@ -115,6 +117,7 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 		JSONObject myKeyObj = new JSONObject();
 		JSONObject fuelRangeObj = new JSONObject();
 		JSONArray  fuelRangeArrayObj = new JSONArray();
+		JSONObject climateDataObj = new JSONObject();
 		
 		try {
 			//set up the JSONObject to represent GetVehicleDataResponse
@@ -235,6 +238,11 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 			//MY_KEY
 			myKeyObj.put(MyKey.KEY_E_911_OVERRIDE, VehicleDataHelper.MY_KEY_E_911_OVERRIDE);
 
+			//CLIMATE_DATA
+			climateDataObj.put(ClimateData.KEY_EXTERNAL_TEMPERATURE, VehicleDataHelper.CLIMATE_DATA.getExternalTemperature());
+			climateDataObj.put(ClimateData.KEY_CABIN_TEMPERATURE, VehicleDataHelper.CLIMATE_DATA.getCabinTemperature());
+			climateDataObj.put(ClimateData.KEY_ATMOSPHERIC_PRESSURE, VehicleDataHelper.CLIMATE_DATA.getAtmosphericPressure());
+
 			// FUEL_RANGE
 			fuelRangeObj.put(FuelRange.KEY_TYPE, VehicleDataHelper.FUEL_RANGE_TYPE);
 			fuelRangeObj.put(FuelRange.KEY_RANGE, VehicleDataHelper.FUEL_RANGE_RANGE);
@@ -270,6 +278,7 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 			reference.put(GetVehicleDataResponse.KEY_TURN_SIGNAL, TurnSignal.OFF);
 			reference.put(GetVehicleDataResponse.KEY_ELECTRONIC_PARK_BRAKE_STATUS, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS);
 			reference.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE);
+			reference.put(GetVehicleDataResponse.KEY_CLIMATE_DATA, climateDataObj);
 			
 			JSONObject underTest = msg.serializeJSON();
 			
@@ -382,6 +391,15 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 							Validator.validateMyKey(
 									new MyKey(JsonRPCMarshaller.deserializeJSONObject(myKeyObjReference)),
 									new MyKey(JsonRPCMarshaller.deserializeJSONObject(myKeyObjTest))));
+				}
+				else if (key.equals(GetVehicleDataResponse.KEY_CLIMATE_DATA)) {
+					JSONObject climateDataObjReference = JsonUtils.readJsonObjectFromJsonObject(reference, key);
+					JSONObject climateDataObjTest = JsonUtils.readJsonObjectFromJsonObject(underTest, key);
+
+					assertTrue("JSON value didn't match expected value for key \"" + key + "\".",
+							Validator.validateClimateData(
+									new ClimateData(JsonRPCMarshaller.deserializeJSONObject(climateDataObjReference)),
+									new ClimateData(JsonRPCMarshaller.deserializeJSONObject(climateDataObjTest))));
 				}
 				else if (key.equals(GetVehicleDataResponse.KEY_ENGINE_OIL_LIFE)) {
 					assertEquals("JSON value didn't match expected value for key \"" + key + "\".",

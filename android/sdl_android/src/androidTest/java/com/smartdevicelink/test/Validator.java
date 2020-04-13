@@ -2300,6 +2300,29 @@ public class Validator{
         return true;
     }
 
+    public static boolean validateClimateData(ClimateData item1, ClimateData item2){
+        if(item1 == null){
+            return ( item2 == null );
+        }
+        if(item2 == null){
+            return ( item1 == null );
+        }
+
+        if(!( validateTemperature(item1.getExternalTemperature(), item2.getExternalTemperature()) )){
+            return false;
+        }
+
+        if(!( validateTemperature(item1.getCabinTemperature(), item2.getCabinTemperature()) )){
+            return false;
+        }
+
+        if(item1.getAtmosphericPressure() != item2.getAtmosphericPressure()){
+            return false;
+        }
+
+        return true;
+    }
+
     public static boolean validateFuelRange (List<FuelRange> item1, List<FuelRange> item2) {
         if (item1 == null) {
             return ( item2 == null );

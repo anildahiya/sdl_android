@@ -6,6 +6,7 @@ import com.smartdevicelink.proxy.RPCMessage;
 import com.smartdevicelink.proxy.rpc.AirbagStatus;
 import com.smartdevicelink.proxy.rpc.BeltStatus;
 import com.smartdevicelink.proxy.rpc.BodyInformation;
+import com.smartdevicelink.proxy.rpc.ClimateData;
 import com.smartdevicelink.proxy.rpc.ClusterModeStatus;
 import com.smartdevicelink.proxy.rpc.DeviceStatus;
 import com.smartdevicelink.proxy.rpc.ECallInfo;
@@ -93,6 +94,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 			result.put(OnVehicleData.KEY_TURN_SIGNAL, VehicleDataHelper.TURN_SIGNAL);
 			result.put(OnVehicleData.KEY_ELECTRONIC_PARK_BRAKE_STATUS, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS);
 			result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE);
+			result.put(OnVehicleData.KEY_CLIMATE_DATA, VehicleDataHelper.CLIMATE_DATA.serializeJSON());
         } catch(JSONException e) {
         	fail(Test.JSON_FAIL);
         }
@@ -135,6 +137,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
     	TurnSignal turnSignal = ( (OnVehicleData) msg).getTurnSignal();
     	ElectronicParkBrakeStatus electronicParkBrakeStatus = ( (OnVehicleData) msg).getElectronicParkBrakeStatus();
     	Object oemCustomVehicleData = ( (OnVehicleData) msg).getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME);
+    	ClimateData climateData = ( (OnVehicleData) msg).getClimateData();
     	
     	// Valid Tests
     	assertEquals(Test.MATCH, VehicleDataHelper.SPEED, speed);
@@ -167,6 +170,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 	    assertEquals(Test.MATCH, VehicleDataHelper.TURN_SIGNAL, turnSignal);
 	    assertEquals(Test.MATCH, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS, electronicParkBrakeStatus);
 	    assertEquals(Test.MATCH, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE, oemCustomVehicleData);
+	    assertTrue(Test.TRUE, Validator.validateClimateData(VehicleDataHelper.CLIMATE_DATA, climateData));
     
 	    // Invalid/Null Tests
         OnVehicleData msg = new OnVehicleData();
@@ -203,6 +207,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
         assertNull(Test.NULL, msg.getTurnSignal());
         assertNull(Test.NULL, msg.getElectronicParkBrakeStatus());
         assertNull(Test.NULL, msg.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
+        assertNull(Test.NULL, msg.getClimateData());
 	}
     
     public void testJson() {
@@ -222,6 +227,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 		JSONObject myKeyObj = new JSONObject();
 		JSONObject fuelRangeObj = new JSONObject();
 		JSONArray fuelRangeArrayObj = new JSONArray();
+		JSONObject climateDataObj = new JSONObject();
 		
 		try {
 			//Set up the JSONObject to represent OnVehicleData:
@@ -343,6 +349,11 @@ public class OnVehicleDataTests extends BaseRpcTests{
 			//MY_KEY
 			myKeyObj.put(MyKey.KEY_E_911_OVERRIDE, VehicleDataHelper.MY_KEY_E_911_OVERRIDE);
 
+			//CLIMATE_DATA
+			climateDataObj.put(ClimateData.KEY_EXTERNAL_TEMPERATURE, VehicleDataHelper.CLIMATE_DATA.getExternalTemperature());
+			climateDataObj.put(ClimateData.KEY_CABIN_TEMPERATURE, VehicleDataHelper.CLIMATE_DATA.getCabinTemperature());
+			climateDataObj.put(ClimateData.KEY_ATMOSPHERIC_PRESSURE, VehicleDataHelper.CLIMATE_DATA.getAtmosphericPressure());
+
 			// FUEL_RANGE
 			fuelRangeObj.put(FuelRange.KEY_TYPE, VehicleDataHelper.FUEL_RANGE_TYPE);
 			fuelRangeObj.put(FuelRange.KEY_RANGE, VehicleDataHelper.FUEL_RANGE_RANGE);
@@ -378,6 +389,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 			reference.put(OnVehicleData.KEY_TURN_SIGNAL, VehicleDataHelper.TURN_SIGNAL);
 			reference.put(OnVehicleData.KEY_ELECTRONIC_PARK_BRAKE_STATUS, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS);
 			reference.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE);
+			reference.put(OnVehicleData.KEY_CLIMATE_DATA, climateDataObj);
 			
 			JSONObject underTest = msg.serializeJSON();
 			//go inside underTest and only return the JSONObject inside the parameters key inside the notification key
@@ -471,6 +483,14 @@ public class OnVehicleDataTests extends BaseRpcTests{
 					assertTrue(Test.TRUE, Validator.validateMyKey(
 						new MyKey(JsonRPCMarshaller.deserializeJSONObject(myKeyObjReference)),
 						new MyKey(JsonRPCMarshaller.deserializeJSONObject(myKeyObjTest))));
+				}
+				else if (key.equals(OnVehicleData.KEY_CLIMATE_DATA)) {
+					JSONObject climateDataObjReference = JsonUtils.readJsonObjectFromJsonObject(reference, key);
+					JSONObject climateDataObjTest = JsonUtils.readJsonObjectFromJsonObject(underTest, key);
+
+					assertTrue(Test.TRUE, Validator.validateClimateData(
+							new ClimateData(JsonRPCMarshaller.deserializeJSONObject(climateDataObjReference)),
+							new ClimateData(JsonRPCMarshaller.deserializeJSONObject(climateDataObjTest))));
 				}
 				else if (key.equals(OnVehicleData.KEY_ENGINE_OIL_LIFE)) {
 					assertEquals(JsonUtils.readDoubleFromJsonObject(reference, key), JsonUtils.readDoubleFromJsonObject(underTest, key));

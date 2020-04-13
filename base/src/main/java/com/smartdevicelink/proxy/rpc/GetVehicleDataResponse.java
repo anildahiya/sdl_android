@@ -56,6 +56,11 @@ import java.util.List;
 public class GetVehicleDataResponse extends RPCResponse {
 	public static final String KEY_SPEED = "speed";
 	public static final String KEY_RPM = "rpm";
+
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final String KEY_EXTERNAL_TEMPERATURE = "externalTemperature";
 	public static final String KEY_FUEL_LEVEL = "fuelLevel";
 	public static final String KEY_VIN = "vin";
@@ -84,7 +89,7 @@ public class GetVehicleDataResponse extends RPCResponse {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_CLIMATE_DATA = "climateData";
 	/** 
 	 * Constructs a new GetVehicleDataResponse object
 	 */
@@ -153,13 +158,29 @@ public class GetVehicleDataResponse extends RPCResponse {
     	Object object = getParameters(KEY_INSTANT_FUEL_CONSUMPTION);
     	return SdlDataTypeConverter.objectToDouble(object);
     }
-    public void setExternalTemperature(Double externalTemperature) {
+	/**
+	 * Sets the externalTemperature.
+	 *
+	 * @param externalTemperature The external temperature in degrees celsius. This parameter is deprecated starting RPC
+	 * Spec 6.0, please see climateData.
+	 * @since SmartDeviceLink 6.0.0
+	 */
+	public void setExternalTemperature(Double externalTemperature) {
         setParameters(KEY_EXTERNAL_TEMPERATURE, externalTemperature);
-    }
-    public Double getExternalTemperature() {
-    	Object object = getParameters(KEY_EXTERNAL_TEMPERATURE);
-    	return SdlDataTypeConverter.objectToDouble(object);
-    }
+	}
+
+	/**
+	 * Gets the externalTemperature.
+	 *
+	 * @return The external temperature in degrees celsius. This parameter is deprecated starting RPC
+	 * Spec 6.0, please see climateData.
+	 * @since SmartDeviceLink 6.0.0
+	 */
+	public Double getExternalTemperature() {
+        Object object = getParameters(KEY_EXTERNAL_TEMPERATURE);
+        return SdlDataTypeConverter.objectToDouble(object);
+	}
+
     public void setVin(String vin) {
         setParameters(KEY_VIN, vin);
     }
@@ -389,5 +410,24 @@ public class GetVehicleDataResponse extends RPCResponse {
      */
     public Object getOEMCustomVehicleData(String vehicleDataName){
         return getParameters(vehicleDataName);
+    }
+    /**
+     * Sets the climateData.
+     *
+     * @param climateData See ClimateData
+     * @since SmartDeviceLink 6.0
+     */
+    public void setClimateData(ClimateData climateData) {
+        setParameters(KEY_CLIMATE_DATA, climateData);
+    }
+
+    /**
+     * Gets the climateData.
+     *
+     * @return ClimateData See ClimateData
+     * @since SmartDeviceLink 6.0
+     */
+    public ClimateData getClimateData() {
+        return (ClimateData) getObject(ClimateData.class, KEY_CLIMATE_DATA);
     }
 }

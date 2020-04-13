@@ -32,7 +32,8 @@
       "fuelRange":true,
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
-      "oemCustomVehicleDataName":true
+      "oemCustomVehicleDataName":true,
+      "climateData":true
     }
   },
   "response":{
@@ -170,7 +171,18 @@
           "range":10.0
         }
       ],
-      "oemCustomVehicleDataName":"oemCustomVehicleDataState"
+      "oemCustomVehicleDataName":"oemCustomVehicleDataState",
+      "climateData":{
+        "externalTemperature": {
+          "unit":"CELSIUS",
+          "value":100.0
+        },
+        "cabinTemperature":{
+          "unit":"CELSIUS",
+          "value":100.0
+        },
+        "atmosphericPressure":100.0
+      }
     }
   }
 }

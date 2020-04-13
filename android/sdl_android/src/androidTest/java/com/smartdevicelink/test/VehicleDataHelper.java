@@ -3,6 +3,7 @@ package com.smartdevicelink.test;
 import com.smartdevicelink.proxy.rpc.AirbagStatus;
 import com.smartdevicelink.proxy.rpc.BeltStatus;
 import com.smartdevicelink.proxy.rpc.BodyInformation;
+import com.smartdevicelink.proxy.rpc.ClimateData;
 import com.smartdevicelink.proxy.rpc.ClusterModeStatus;
 import com.smartdevicelink.proxy.rpc.DeviceStatus;
 import com.smartdevicelink.proxy.rpc.ECallInfo;
@@ -78,6 +79,7 @@ public class VehicleDataHelper{
 	public static final TurnSignal TURN_SIGNAL = TurnSignal.OFF;
 	public static final ElectronicParkBrakeStatus ELECTRONIC_PARK_BRAKE_STATUS = ElectronicParkBrakeStatus.CLOSED;
 	public static final String OEM_CUSTOM_VEHICLE_DATA_STATE = "oemCustomVehicleDataState";
+	public static final ClimateData CLIMATE_DATA = new ClimateData();
 
 	//other variables inside some of the above objects
     // tire status
@@ -315,6 +317,11 @@ public class VehicleDataHelper{
     	//MY_KEY set up
     	MY_KEY.setE911Override(MY_KEY_E_911_OVERRIDE);
 
+		//CLIMATE_DATA set up
+		CLIMATE_DATA.setExternalTemperature(Test.GENERAL_TEMPERATURE);
+		CLIMATE_DATA.setCabinTemperature(Test.GENERAL_TEMPERATURE);
+		CLIMATE_DATA.setAtmosphericPressure(Test.GENERAL_FLOAT);
+
 		// FUEL_RANGE and FUEL_RANGE_LIST set up
 		FUEL_RANGE.setType(FUEL_RANGE_TYPE);
 		FUEL_RANGE.setRange(FUEL_RANGE_RANGE);
@@ -358,6 +365,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setTurnSignal(TURN_SIGNAL);
 		VEHICLE_DATA.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 		VEHICLE_DATA.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, OEM_CUSTOM_VEHICLE_DATA_STATE);
+		VEHICLE_DATA.setClimateData(CLIMATE_DATA);
 		
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
@@ -390,6 +398,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setTurnSignal(TURN_SIGNAL);
 		VEHICLE_DATA_RESPONSE.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 		VEHICLE_DATA_RESPONSE.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, OEM_CUSTOM_VEHICLE_DATA_STATE);
+		VEHICLE_DATA_RESPONSE.setClimateData(CLIMATE_DATA);
 	}
 	
     private VehicleDataHelper(){}	

@@ -63,6 +63,7 @@ public enum VehicleDataType {
     /**
      * Notifies EXTERNTEMPData may be subscribed
      */
+    @Deprecated
     VEHICLEDATA_EXTERNTEMP,
     /**
      * Notifies VINData may be subscribed

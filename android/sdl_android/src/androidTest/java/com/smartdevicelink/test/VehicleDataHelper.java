@@ -10,11 +10,14 @@ import com.smartdevicelink.proxy.rpc.EmergencyEvent;
 import com.smartdevicelink.proxy.rpc.FuelRange;
 import com.smartdevicelink.proxy.rpc.GPSData;
 import com.smartdevicelink.proxy.rpc.GetVehicleDataResponse;
+import com.smartdevicelink.proxy.rpc.Grid;
 import com.smartdevicelink.proxy.rpc.HeadLampStatus;
 import com.smartdevicelink.proxy.rpc.MyKey;
 import com.smartdevicelink.proxy.rpc.OnVehicleData;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.TireStatus;
+import com.smartdevicelink.proxy.rpc.WindowState;
+import com.smartdevicelink.proxy.rpc.WindowStatus;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
 import com.smartdevicelink.proxy.rpc.enums.CarModeStatus;
 import com.smartdevicelink.proxy.rpc.enums.CompassDirection;
@@ -78,6 +81,8 @@ public class VehicleDataHelper{
 	public static final TurnSignal TURN_SIGNAL = TurnSignal.OFF;
 	public static final ElectronicParkBrakeStatus ELECTRONIC_PARK_BRAKE_STATUS = ElectronicParkBrakeStatus.CLOSED;
 	public static final String OEM_CUSTOM_VEHICLE_DATA_STATE = "oemCustomVehicleDataState";
+	public static final WindowStatus WINDOW_STATUS = new WindowStatus();
+	public static final List<WindowStatus> WINDOW_STATUS_LIST = new ArrayList<WindowStatus>(1);
 
 	//other variables inside some of the above objects
     // tire status
@@ -189,6 +194,10 @@ public class VehicleDataHelper{
 	// fuel range
 	public static final FuelType FUEL_RANGE_TYPE = FuelType.GASOLINE;
 	public static final Float FUEL_RANGE_RANGE = Test.GENERAL_FLOAT;
+
+	// window status
+	public static final Grid WINDOW_STATUS_LOCATION = Test.GENERAL_GRID;
+	public static final WindowState WINDOW_STATUS_STATE = Test.GENERAL_WINDOW_STATE;
 
 	public static final JSONArray JSON_FUEL_RANGE = new JSONArray();
 
@@ -315,6 +324,11 @@ public class VehicleDataHelper{
     	//MY_KEY set up
     	MY_KEY.setE911Override(MY_KEY_E_911_OVERRIDE);
 
+		//WINDOW_STATUS set up
+		WINDOW_STATUS.setLocation(WINDOW_STATUS_LOCATION);
+		WINDOW_STATUS.setState(WINDOW_STATUS_STATE);
+		WINDOW_STATUS_LIST.add(WINDOW_STATUS);
+
 		// FUEL_RANGE and FUEL_RANGE_LIST set up
 		FUEL_RANGE.setType(FUEL_RANGE_TYPE);
 		FUEL_RANGE.setRange(FUEL_RANGE_RANGE);
@@ -358,6 +372,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setTurnSignal(TURN_SIGNAL);
 		VEHICLE_DATA.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 		VEHICLE_DATA.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, OEM_CUSTOM_VEHICLE_DATA_STATE);
+		VEHICLE_DATA.setWindowStatus(WINDOW_STATUS_LIST);
 		
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
@@ -390,6 +405,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setTurnSignal(TURN_SIGNAL);
 		VEHICLE_DATA_RESPONSE.setElectronicParkBrakeStatus(ELECTRONIC_PARK_BRAKE_STATUS);
 		VEHICLE_DATA_RESPONSE.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, OEM_CUSTOM_VEHICLE_DATA_STATE);
+		VEHICLE_DATA_RESPONSE.setWindowStatus(WINDOW_STATUS_LIST);
 	}
 	
     private VehicleDataHelper(){}	

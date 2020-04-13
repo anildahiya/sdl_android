@@ -32,7 +32,8 @@
       "fuelRange":true,
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
-      "oemCustomVehicleDataName":true
+      "oemCustomVehicleDataName":true,
+      "WindowStatus":true
     }
   },
   "response":{
@@ -170,7 +171,23 @@
           "range":10.0
         }
       ],
-      "oemCustomVehicleDataName":"oemCustomVehicleDataState"
+      "oemCustomVehicleDataName":"oemCustomVehicleDataState",
+      "windowStatus":[
+        {
+          "location":{
+            "col":100,
+            "row":100,
+            "level":100,
+            "colspan":100,
+            "rowspan":100,
+            "levelspan": 100
+          },
+          "state":{
+            "approximatePosition":100,
+            "deviation":100
+          }
+        }
+      ]
     }
   }
 }

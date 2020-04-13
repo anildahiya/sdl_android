@@ -307,7 +307,7 @@ public class UnsubscribeVehicleData extends RPCRequest {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 	public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_WINDOW_STATUS = "windowStatus";
 	/**
 	 * Constructs a new UnsubscribeVehicleData object
 	 */
@@ -867,4 +867,23 @@ public class UnsubscribeVehicleData extends RPCRequest {
 	public Boolean getOEMCustomVehicleData(String vehicleDataName){
 		return getBoolean(vehicleDataName);
 	}
+	/**
+	 * Sets the windowStatus.
+	 *
+	 * @param windowStatus See WindowStatus
+	 * @since SmartDeviceLink 6.0.0
+	 */
+	public void setWindowStatus(Boolean windowStatus) {
+		setParameters(KEY_WINDOW_STATUS, windowStatus);
+	}
+
+	/**
+	 * Gets the windowStatus.
+	 *
+	 * @return Boolean See WindowStatus
+	 * @since SmartDeviceLink 6.0.0
+	 */
+	public Boolean getWindowStatus() {
+        return getBoolean(KEY_WINDOW_STATUS);
+    }
 }

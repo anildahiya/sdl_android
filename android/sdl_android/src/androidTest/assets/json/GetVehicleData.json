@@ -33,7 +33,8 @@
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
       "oemCustomVehicleDataName":true,
-      "handsOffSteering":true
+      "handsOffSteering":true,
+      "seatOccupancy":true
     }
   },
   "response":{
@@ -172,7 +173,39 @@
         }
       ],
       "oemCustomVehicleDataName":"oemCustomVehicleDataState",
-      "handsOffSteering":true
+      "handsOffSteering":true,
+      "seatOccupancy":{
+        "seatsOccupied":[
+          {
+            "seatLocation":{
+              "grid":{
+                "col": 1,
+                "row": 1,
+                "level": 1,
+                "colspan": 1,
+                "rowspan": 1,
+                "levelspan": 1
+              }
+            },
+            "conditionActive":true
+          }
+        ],
+        "seatsBelted":[
+          {
+            "seatLocation":{
+              "grid":{
+                "col": 1,
+                "row": 1,
+                "level": 1,
+                "colspan": 1,
+                "rowspan": 1,
+                "levelspan": 1
+              }
+            },
+            "conditionActive":true
+          }
+        ]
+      }
     }
   }
 }

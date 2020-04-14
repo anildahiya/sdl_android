@@ -323,6 +323,8 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 	public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
 	public static final String KEY_HANDS_OFF_STEERING = "handsOffSteering";
+	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
+
 	/**
 	 * Constructs a new SubscribeVehicleData object
 	 */
@@ -881,6 +883,7 @@ public class SubscribeVehicleData extends RPCRequest {
 	public Boolean getOEMCustomVehicleData(String vehicleDataName){
 		return getBoolean(vehicleDataName);
 	}
+
     /**
      * Sets the handsOffSteering.
      *
@@ -899,5 +902,25 @@ public class SubscribeVehicleData extends RPCRequest {
      */
     public Boolean getHandsOffSteering() {
         return getBoolean(KEY_HANDS_OFF_STEERING);
+	}
+
+	/**
+	 * Sets the seatOccupancy.
+	 *
+	 * @param seatOccupancy See SeatOccupancy
+	 * @since SmartDeviceLink 6.0
+	 */
+	public void setSeatOccupancy(Boolean seatOccupancy) {
+		setParameters(KEY_SEAT_OCCUPANCY, seatOccupancy);
+	}
+
+	/**
+	 * Gets the seatOccupancy.
+	 *
+	 * @return Boolean See SeatOccupancy
+	 * @since SmartDeviceLink 6.0.0
+	 */
+	public Boolean getSeatOccupancy() {
+        return getBoolean(KEY_SEAT_OCCUPANCY);
     }
 }

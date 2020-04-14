@@ -56,6 +56,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		msg.setCloudAppVehicleID(Test.GENERAL_BOOLEAN);
 		msg.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_BOOLEAN);
 		msg.setHandsOffSteering(Test.GENERAL_BOOLEAN);
+		msg.setSeatOccupancy(Test.GENERAL_BOOLEAN);
 
 		return msg;
 	}
@@ -106,6 +107,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 			result.put(UnsubscribeVehicleData.KEY_CLOUD_APP_VEHICLE_ID, Test.GENERAL_BOOLEAN);
 			result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_BOOLEAN);
 			result.put(UnsubscribeVehicleData.KEY_HANDS_OFF_STEERING, Test.GENERAL_BOOLEAN);
+			result.put(UnsubscribeVehicleData.KEY_SEAT_OCCUPANCY, Test.GENERAL_BOOLEAN);
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -149,7 +151,8 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getCloudAppVehicleID());
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getHandsOffSteering());
-		
+		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getSeatOccupancy());
+
 		// Invalid/Null Tests
 		UnsubscribeVehicleData msg = new UnsubscribeVehicleData();
 		assertNotNull(Test.NOT_NULL, msg);
@@ -186,6 +189,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		assertNull(Test.NULL, msg.getCloudAppVehicleID());
 		assertNull(Test.NULL, msg.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
 		assertNull(Test.NULL, msg.getHandsOffSteering());
+		assertNull(Test.NULL, msg.getSeatOccupancy());
 	}
 
 	/**
@@ -238,6 +242,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_CLOUD_APP_VEHICLE_ID), cmd.getCloudAppVehicleID());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME), cmd.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_HANDS_OFF_STEERING), cmd.getHandsOffSteering());
+			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_SEAT_OCCUPANCY), cmd.getSeatOccupancy());
 
 		} 
 		catch (JSONException e) {

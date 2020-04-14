@@ -170,7 +170,8 @@ public enum VehicleDataType {
     /**
      * @since SmartDeviceLink 6.0
      */
-    VEHICLEDATA_HANDSOFFSTEERING;
+    VEHICLEDATA_HANDSOFFSTEERING,
+    VEHICLEDATA_SEATOCCUPANCY;
 
      /**
      * Convert String to VehicleDataType

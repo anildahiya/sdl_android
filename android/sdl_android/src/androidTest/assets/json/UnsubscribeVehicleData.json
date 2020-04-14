@@ -32,7 +32,8 @@
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
       "oemCustomVehicleDataName":true,
-      "handsOffSteering":true
+      "handsOffSteering":true,
+      "seatOccupancy":true
     }
   },
   "response":{
@@ -157,6 +158,10 @@
       },
       "handsOffSteering":{
         "dataType":"VEHICLEDATA_HANDSOFFSTEERING",
+        "resultCode":"SUCCESS"
+      },
+      "seatOccupancy":{
+        "dataType":"VEHICLEDATA_SEATOCCUPANCY",
         "resultCode":"SUCCESS"
       }
     }

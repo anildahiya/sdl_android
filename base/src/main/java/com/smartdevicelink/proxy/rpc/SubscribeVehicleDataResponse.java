@@ -75,6 +75,8 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
 	public static final String KEY_HANDS_OFF_STEERING = "handsOffSteering";
+	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
+
 	/**
 	 * Constructs a new SubscribeVehicleDataResponse object
 	 */
@@ -548,5 +550,25 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
      */
     public VehicleDataResult getHandsOffSteering() {
         return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_HANDS_OFF_STEERING);
+    }
+
+    /**
+     * Sets the seatOccupancy.
+     *
+     * @param seatOccupancy See SeatOccupancy
+     * @since SmartDeviceLink 6.0
+     */
+    public void setSeatOccupancy(VehicleDataResult seatOccupancy) {
+        setParameters(KEY_SEAT_OCCUPANCY, seatOccupancy);
+    }
+
+    /**
+     * Gets the seatOccupancy.
+     *
+     * @return VehicleDataResult See SeatOccupancy
+     * @since SmartDeviceLink 6.0
+     */
+    public VehicleDataResult getSeatOccupancy() {
+        return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_SEAT_OCCUPANCY);
     }
 }

@@ -59,6 +59,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 		msg.setElectronicParkBrakeStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_ELECTRONICPARKBRAKESTATUS.ordinal()));
 		msg.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA);
 		msg.setHandsOffSteering(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING.ordinal()));
+		msg.setSeatOccupancy(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()));
 
 		return msg;
 	}
@@ -113,6 +114,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 	        result.put(SubscribeVehicleDataResponse.KEY_ELECTRONIC_PARK_BRAKE_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_ELECTRONICPARKBRAKESTATUS.ordinal()).serializeJSON());
 	        result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA.serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_HANDS_OFF_STEERING, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING.ordinal()).serializeJSON());
+	        result.put(SubscribeVehicleDataResponse.KEY_SEAT_OCCUPANCY, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()).serializeJSON());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -155,7 +157,8 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 		VehicleDataResult testEBrakeStatus   = ( (SubscribeVehicleDataResponse) msg ).getElectronicParkBrakeStatus();
 		VehicleDataResult testOEMCustomVehicleData   = ( (SubscribeVehicleDataResponse) msg ).getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME);
 		VehicleDataResult testHandsOffSteering     = ( (SubscribeVehicleDataResponse) msg ).getHandsOffSteering();
-		
+		VehicleDataResult testSeatOccupancy     = ( (SubscribeVehicleDataResponse) msg ).getSeatOccupancy();
+
 		// Valid Tests
 		assertTrue(Test.TRUE, testGps.getDataType().equals(VehicleDataType.VEHICLEDATA_GPS));
 		assertTrue(Test.TRUE, testOdometer.getDataType().equals(VehicleDataType.VEHICLEDATA_ODOMETER));
@@ -187,7 +190,8 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 	    assertTrue(Test.TRUE, testEBrakeStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_ELECTRONICPARKBRAKESTATUS));
 	    assertTrue(Test.TRUE, testOEMCustomVehicleData.getOEMCustomVehicleDataType().equals(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
 	    assertTrue(Test.TRUE, testHandsOffSteering.getDataType().equals(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING));
-   
+	    assertTrue(Test.TRUE, testSeatOccupancy.getDataType().equals(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY));
+
         // Invalid/Null Tests
 		SubscribeVehicleDataResponse msg = new SubscribeVehicleDataResponse();
         assertNotNull("Null object creation failed.", msg);        
@@ -223,6 +227,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
         assertNull(Test.NULL, msg.getElectronicParkBrakeStatus());
         assertNull(Test.NULL, msg.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
         assertNull(Test.NULL, msg.getHandsOffSteering());
+        assertNull(Test.NULL, msg.getSeatOccupancy());
     }
 	
     /**
@@ -364,6 +369,10 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 			JSONObject handsOffSteering = JsonUtils.readJsonObjectFromJsonObject(parameters, SubscribeVehicleDataResponse.KEY_HANDS_OFF_STEERING);
 			VehicleDataResult referenceHandsOffSteering = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(handsOffSteering));
 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceHandsOffSteering, cmd.getHandsOffSteering()));
+
+			JSONObject seatOccupancy = JsonUtils.readJsonObjectFromJsonObject(parameters, SubscribeVehicleDataResponse.KEY_SEAT_OCCUPANCY);
+			VehicleDataResult referenceSeatOccupancy = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(seatOccupancy));
+ 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceSeatOccupancy, cmd.getSeatOccupancy()));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}    	

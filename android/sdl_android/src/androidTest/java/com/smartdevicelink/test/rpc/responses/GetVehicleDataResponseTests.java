@@ -15,6 +15,7 @@ import com.smartdevicelink.proxy.rpc.GPSData;
 import com.smartdevicelink.proxy.rpc.GetVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.HeadLampStatus;
 import com.smartdevicelink.proxy.rpc.MyKey;
+import com.smartdevicelink.proxy.rpc.SeatOccupancy;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.TireStatus;
 import com.smartdevicelink.proxy.rpc.enums.TurnSignal;
@@ -92,6 +93,7 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
             result.put(GetVehicleDataResponse.KEY_ELECTRONIC_PARK_BRAKE_STATUS, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS);
             result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE);
             result.put(GetVehicleDataResponse.KEY_HANDS_OFF_STEERING, VehicleDataHelper.HANDS_OFF_STEERING);
+            result.put(GetVehicleDataResponse.KEY_SEAT_OCCUPANCY, VehicleDataHelper.SEAT_OCCUPANCY);
         } catch(JSONException e){
         	fail(Test.JSON_FAIL);
         }
@@ -116,6 +118,7 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 		JSONObject myKeyObj = new JSONObject();
 		JSONObject fuelRangeObj = new JSONObject();
 		JSONArray  fuelRangeArrayObj = new JSONArray();
+		JSONObject seatOccupancyObj = new JSONObject();
 		
 		try {
 			//set up the JSONObject to represent GetVehicleDataResponse
@@ -236,6 +239,10 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 			//MY_KEY
 			myKeyObj.put(MyKey.KEY_E_911_OVERRIDE, VehicleDataHelper.MY_KEY_E_911_OVERRIDE);
 
+			//SEAT_OCCUPANCY
+			seatOccupancyObj.put(SeatOccupancy.KEY_SEATS_OCCUPIED, VehicleDataHelper.SEAT_OCCUPANCY.getSeatsOccupied());
+			seatOccupancyObj.put(SeatOccupancy.KEY_SEATS_BELTED, VehicleDataHelper.SEAT_OCCUPANCY.getSeatsBelted());
+
 			// FUEL_RANGE
 			fuelRangeObj.put(FuelRange.KEY_TYPE, VehicleDataHelper.FUEL_RANGE_TYPE);
 			fuelRangeObj.put(FuelRange.KEY_RANGE, VehicleDataHelper.FUEL_RANGE_RANGE);
@@ -272,7 +279,8 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 			reference.put(GetVehicleDataResponse.KEY_ELECTRONIC_PARK_BRAKE_STATUS, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS);
 			reference.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE);
 			reference.put(GetVehicleDataResponse.KEY_HANDS_OFF_STEERING, VehicleDataHelper.HANDS_OFF_STEERING);
-			
+			reference.put(GetVehicleDataResponse.KEY_SEAT_OCCUPANCY, seatOccupancyObj);
+
 			JSONObject underTest = msg.serializeJSON();
 			
 			//go inside underTest and only return the JSONObject inside the parameters key inside the response key
@@ -385,6 +393,15 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 									new MyKey(JsonRPCMarshaller.deserializeJSONObject(myKeyObjReference)),
 									new MyKey(JsonRPCMarshaller.deserializeJSONObject(myKeyObjTest))));
 				}
+				else if (key.equals(GetVehicleDataResponse.KEY_SEAT_OCCUPANCY)) {
+					JSONObject seatOccupancyObjReference = JsonUtils.readJsonObjectFromJsonObject(reference, key);
+					JSONObject seatOccupancyObjTest = JsonUtils.readJsonObjectFromJsonObject(underTest, key);
+
+					assertTrue("JSON value didn't match expected value for key \"" + key + "\".",
+							Validator.validateSeatOccupancy(
+									new SeatOccupancy(JsonRPCMarshaller.deserializeJSONObject(seatOccupancyObjReference)),
+									new SeatOccupancy(JsonRPCMarshaller.deserializeJSONObject(seatOccupancyObjTest))));
+				}
 				else if (key.equals(GetVehicleDataResponse.KEY_ENGINE_OIL_LIFE)) {
 					assertEquals("JSON value didn't match expected value for key \"" + key + "\".",
 							JsonUtils.readDoubleFromJsonObject(reference, key), JsonUtils.readDoubleFromJsonObject(underTest, key));
@@ -456,7 +473,8 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 		assertEquals(Test.MATCH, VehicleDataHelper.ELECTRONIC_PARK_BRAKE_STATUS, ( (GetVehicleDataResponse) msg ).getElectronicParkBrakeStatus());
 		assertEquals(Test.MATCH, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE, ( (GetVehicleDataResponse) msg ).getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
 		assertEquals(Test.MATCH, VehicleDataHelper.HANDS_OFF_STEERING, ( (GetVehicleDataResponse) msg ).getHandsOffSteering());
-		
+		assertEquals(Test.MATCH, VehicleDataHelper.SEAT_OCCUPANCY, ( (GetVehicleDataResponse) msg ).getSeatOccupancy());
+
 		// Invalid/Null Tests
 		GetVehicleDataResponse msg = new GetVehicleDataResponse();
 		assertNotNull(Test.NOT_NULL, msg);
@@ -491,6 +509,7 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
         assertNull(Test.NULL, msg.getElectronicParkBrakeStatus());
         assertNull(Test.NULL, msg.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
         assertNull(Test.NULL, msg.getHandsOffSteering());
+        assertNull(Test.NULL, msg.getSeatOccupancy());
     }
     
 
@@ -583,6 +602,10 @@ public class GetVehicleDataResponseTests extends BaseRpcTests{
 
 			Boolean handsOffSteering = JsonUtils.readBooleanFromJsonObject(parameters, GetVehicleDataResponse.KEY_HANDS_OFF_STEERING);
 			assertEquals(Test.MATCH, handsOffSteering, cmd.getHandsOffSteering());
+
+			JSONObject seatOccupancyObj = JsonUtils.readJsonObjectFromJsonObject(parameters, GetVehicleDataResponse.KEY_SEAT_OCCUPANCY);
+			SeatOccupancy seatOccupancy = new SeatOccupancy(JsonRPCMarshaller.deserializeJSONObject(seatOccupancyObj));
+			assertTrue(Test.TRUE, Validator.validateSeatOccupancy(seatOccupancy, cmd.getSeatOccupancy()) );
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}    	

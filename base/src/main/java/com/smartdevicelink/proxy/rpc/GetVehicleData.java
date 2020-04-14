@@ -100,7 +100,7 @@ import java.util.Hashtable;
  * 		<tr>
  * 			<td>externalTemperature</td>
  * 			<td>Boolean</td>
- * 			<td>The external temperature in degrees celsius</td>
+ * 			<td>The external temperature in degrees celsius. This parameter is deprecated starting RPCSpec 6.0, please see climateData.</td>
  *                 <td>N</td>
  *                 <td>Subscribable</td>
  * 			<td>SmartDeviceLink 2.0</td>
@@ -259,6 +259,10 @@ import java.util.Hashtable;
 public class GetVehicleData extends RPCRequest {
 	public static final String KEY_SPEED = "speed";
 	public static final String KEY_RPM = "rpm";
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final String KEY_EXTERNAL_TEMPERATURE = "externalTemperature";
 	public static final String KEY_FUEL_LEVEL = "fuelLevel";
 	public static final String KEY_VIN = "vin";
@@ -291,6 +295,7 @@ public class GetVehicleData extends RPCRequest {
 	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
 	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 	public static final String KEY_WINDOW_STATUS = "windowStatus";
+	public static final String KEY_CLIMATE_DATA = "climateData";
 
 	/**
 	 * Constructs a new GetVehicleData object
@@ -356,9 +361,24 @@ public class GetVehicleData extends RPCRequest {
     public Boolean getInstantFuelConsumption() {
         return getBoolean(KEY_INSTANT_FUEL_CONSUMPTION);
     }
+    /**
+     * Sets the externalTemperature.
+     *
+     * @param externalTemperature The external temperature in degrees celsius. This parameter is deprecated starting RPC
+     * Spec 6.0, please see climateData.
+     * @since SmartDeviceLink 6.0
+     */
     public void setExternalTemperature(Boolean externalTemperature) {
         setParameters(KEY_EXTERNAL_TEMPERATURE, externalTemperature);
     }
+
+    /**
+     * Gets the externalTemperature.
+     *
+     * @return Boolean The external temperature in degrees celsius. This parameter is deprecated starting RPC
+     * Spec 6.0, please see climateData.
+     * @since SmartDeviceLink 6.0
+     */
     public Boolean getExternalTemperature() {
         return getBoolean(KEY_EXTERNAL_TEMPERATURE);
     }
@@ -639,5 +659,25 @@ public class GetVehicleData extends RPCRequest {
      */
     public Boolean getWindowStatus() {
         return getBoolean(KEY_WINDOW_STATUS);
+    }
+
+    /**
+     * Sets the climateData.
+     *
+     * @param climateData See ClimateData
+     * @since SmartDeviceLink 6.0
+     */
+    public void setClimateData(Boolean climateData) {
+        setParameters(KEY_CLIMATE_DATA, climateData);
+    }
+
+    /**
+     * Gets the climateData.
+     *
+     * @return Boolean See ClimateData
+     * @since SmartDeviceLink 6.0
+     */
+    public Boolean getClimateData() {
+        return getBoolean(KEY_CLIMATE_DATA);
     }
 }

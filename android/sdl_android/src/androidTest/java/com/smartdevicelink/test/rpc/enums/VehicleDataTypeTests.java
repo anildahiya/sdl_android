@@ -90,6 +90,8 @@ public class VehicleDataTypeTests extends TestCase {
 		VehicleDataType enumVehicleDataStabilityControlsStatus= VehicleDataType.valueForString(example);
 		example = "VEHICLEDATA_WINDOWSTATUS";
 		VehicleDataType enumVehicleDataWindowStatus= VehicleDataType.valueForString(example);
+		example = "VEHICLEDATA_CLIMATEDATA";
+		VehicleDataType enumVehicleDataClimateData= VehicleDataType.valueForString(example);
 
 		assertNotNull("VEHICLEDATA_GPS returned null", enumVehicleDataGps);
 		assertNotNull("VEHICLEDATA_SPEED returned null", enumVehicleDataSpeed);
@@ -127,6 +129,7 @@ public class VehicleDataTypeTests extends TestCase {
 		assertNotNull("VEHICLEDATA_SEATOCCUPANCY returned null", enumVehicleDataSeatOccupancy);
 		assertNotNull("VEHICLEDATA_STABILITYCONTROLSSTATUS returned null", enumVehicleDataStabilityControlsStatus);
 		assertNotNull("VEHICLEDATA_WINDOWSTATUS returned null", enumVehicleDataWindowStatus);
+		assertNotNull("VEHICLEDATA_CLIMATEDATA returned null", enumVehicleDataClimateData);
 	}
 	
 	/**
@@ -200,6 +203,7 @@ public class VehicleDataTypeTests extends TestCase {
 		enumTestList.add(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY);
 		enumTestList.add(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS);
 		enumTestList.add(VehicleDataType.VEHICLEDATA_WINDOWSTATUS);
+		enumTestList.add(VehicleDataType.VEHICLEDATA_CLIMATEDATA);
 
 		assertTrue("Enum value list does not match enum class list", 
 				enumValueList.containsAll(enumTestList) && enumTestList.containsAll(enumValueList));

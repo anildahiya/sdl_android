@@ -3,6 +3,7 @@ package com.smartdevicelink.test;
 import com.smartdevicelink.proxy.rpc.AirbagStatus;
 import com.smartdevicelink.proxy.rpc.BeltStatus;
 import com.smartdevicelink.proxy.rpc.BodyInformation;
+import com.smartdevicelink.proxy.rpc.ClimateData;
 import com.smartdevicelink.proxy.rpc.ClusterModeStatus;
 import com.smartdevicelink.proxy.rpc.DeviceStatus;
 import com.smartdevicelink.proxy.rpc.ECallInfo;
@@ -88,6 +89,7 @@ public class VehicleDataHelper{
 	public static final StabilityControlsStatus STABILITY_CONTROLS_STATUS = new StabilityControlsStatus();
 	public static final WindowStatus WINDOW_STATUS = new WindowStatus();
 	public static final List<WindowStatus> WINDOW_STATUS_LIST = new ArrayList<WindowStatus>(1);
+	public static final ClimateData CLIMATE_DATA = new ClimateData();
 
 	//other variables inside some of the above objects
     // tire status
@@ -342,6 +344,11 @@ public class VehicleDataHelper{
 		WINDOW_STATUS.setState(WINDOW_STATUS_STATE);
 		WINDOW_STATUS_LIST.add(WINDOW_STATUS);
 
+		//CLIMATE_DATA set up
+		CLIMATE_DATA.setExternalTemperature(Test.GENERAL_TEMPERATURE);
+		CLIMATE_DATA.setCabinTemperature(Test.GENERAL_TEMPERATURE);
+		CLIMATE_DATA.setAtmosphericPressure(Test.GENERAL_FLOAT);
+
 		// FUEL_RANGE and FUEL_RANGE_LIST set up
 		FUEL_RANGE.setType(FUEL_RANGE_TYPE);
 		FUEL_RANGE.setRange(FUEL_RANGE_RANGE);
@@ -393,6 +400,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setSeatOccupancy(SEAT_OCCUPANCY);
 		VEHICLE_DATA.setStabilityControlsStatus(STABILITY_CONTROLS_STATUS);
 		VEHICLE_DATA.setWindowStatus(WINDOW_STATUS_LIST);
+		VEHICLE_DATA.setClimateData(CLIMATE_DATA);
 
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
@@ -429,6 +437,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setSeatOccupancy(SEAT_OCCUPANCY);
 		VEHICLE_DATA_RESPONSE.setStabilityControlsStatus(STABILITY_CONTROLS_STATUS);
 		VEHICLE_DATA_RESPONSE.setWindowStatus(WINDOW_STATUS_LIST);
+		VEHICLE_DATA_RESPONSE.setClimateData(CLIMATE_DATA);
 	}
 	
     private VehicleDataHelper(){}	

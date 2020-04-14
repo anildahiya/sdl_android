@@ -36,7 +36,8 @@
       "handsOffSteering":true,
       "seatOccupancy":true,
       "stabilityControlsStatus":true,
-      "WindowStatus":true
+      "WindowStatus":true,
+      "climateData":true
     }
   },
   "response":{
@@ -227,7 +228,18 @@
             "deviation":100
           }
         }
-      ]
+      ],
+      "climateData":{
+        "externalTemperature": {
+          "unit":"CELSIUS",
+          "value":100.0
+        },
+        "cabinTemperature":{
+          "unit":"CELSIUS",
+          "value":100.0
+        },
+        "atmosphericPressure":100.0
+      }
     }
   }
 }

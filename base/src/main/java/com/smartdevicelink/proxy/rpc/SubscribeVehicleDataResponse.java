@@ -48,6 +48,10 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_SPEED = "speed";
 	public static final String KEY_RPM = "rpm";
 	public static final String KEY_FUEL_LEVEL = "fuelLevel";
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final String KEY_EXTERNAL_TEMPERATURE = "externalTemperature";
 	public static final String KEY_PRNDL = "prndl";
 	public static final String KEY_TIRE_PRESSURE = "tirePressure";
@@ -78,6 +82,7 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
 	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 	public static final String KEY_WINDOW_STATUS = "windowStatus";
+	public static final String KEY_CLIMATE_DATA = "climateData";
 
 	/**
 	 * Constructs a new SubscribeVehicleDataResponse object
@@ -213,15 +218,21 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
         return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_INSTANT_FUEL_CONSUMPTION);
     }
     /**
-     * Sets External Temperature
-     * @param externalTemperature a VehicleDataResult related to external temperature
+     * Sets the externalTemperature.
+     *
+     * @param externalTemperature The external temperature in degrees celsius. This parameter is deprecated starting RPC
+     * Spec 6.0, please see climateData.
+     * @since SmartDeviceLink 6.0.0
      */
     public void setExternalTemperature(VehicleDataResult externalTemperature) {
         setParameters(KEY_EXTERNAL_TEMPERATURE, externalTemperature);
     }
     /**
-     * Gets External Temperature
-     * @return a VehicleDataResult related to external temperature
+     * Gets the externalTemperature.
+     *
+     * @return VehicleDataResult The external temperature in degrees celsius. This parameter is deprecated starting RPC
+     * Spec 6.0, please see climateData.
+     * @since SmartDeviceLink 6.0.0
      */
     @SuppressWarnings("unchecked")
     public VehicleDataResult getExternalTemperature() {
@@ -612,5 +623,25 @@ public class SubscribeVehicleDataResponse extends RPCResponse {
      */
     public VehicleDataResult getWindowStatus() {
         return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_WINDOW_STATUS);
+    }
+
+    /**
+     * Sets the climateData.
+     *
+     * @param climateData See ClimateData
+     * @since SmartDeviceLink 6.0
+     */
+    public void setClimateData(VehicleDataResult climateData) {
+        setParameters(KEY_CLIMATE_DATA, climateData);
+    }
+
+    /**
+     * Gets the climateData.
+     *
+     * @return VehicleDataResult See ClimateData
+     * @since SmartDeviceLink 6.0
+     */
+    public VehicleDataResult getClimateData() {
+        return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_CLIMATE_DATA);
     }
 }

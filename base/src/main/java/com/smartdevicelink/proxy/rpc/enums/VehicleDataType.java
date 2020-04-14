@@ -63,6 +63,7 @@ public enum VehicleDataType {
     /**
      * Notifies EXTERNTEMPData may be subscribed
      */
+    @Deprecated
     VEHICLEDATA_EXTERNTEMP,
     /**
      * Notifies VINData may be subscribed
@@ -173,7 +174,8 @@ public enum VehicleDataType {
     VEHICLEDATA_HANDSOFFSTEERING,
     VEHICLEDATA_SEATOCCUPANCY,
     VEHICLEDATA_STABILITYCONTROLSSTATUS,
-    VEHICLEDATA_WINDOWSTATUS;
+    VEHICLEDATA_WINDOWSTATUS,
+    VEHICLEDATA_CLIMATEDATA;
 
      /**
      * Convert String to VehicleDataType

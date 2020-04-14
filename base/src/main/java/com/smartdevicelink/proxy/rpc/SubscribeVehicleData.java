@@ -108,7 +108,7 @@ import java.util.Hashtable;
  * 		<tr>
  * 			<td>externalTemperature</td>
  * 			<td>Boolean</td>
- * 			<td>The external temperature in degrees celsius</td>
+ * 			<td>The external temperature in degrees celsius. This parameter is deprecated starting RPCSpec 6.0, please see climateData.</td>
  *                 <td>N</td>
  *                 <td>Subscribable</td>
  * 			<td>SmartDeviceLink 2.0 </td>
@@ -294,6 +294,10 @@ import java.util.Hashtable;
  */
 public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_RPM = "rpm";
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final String KEY_EXTERNAL_TEMPERATURE = "externalTemperature";
 	public static final String KEY_FUEL_LEVEL = "fuelLevel";
 	public static final String KEY_PRNDL = "prndl";
@@ -326,6 +330,7 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
 	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 	public static final String KEY_WINDOW_STATUS = "windowStatus";
+	public static final String KEY_CLIMATE_DATA = "climateData";
 
 	/**
 	 * Constructs a new SubscribeVehicleData object
@@ -493,25 +498,26 @@ public class SubscribeVehicleData extends RPCRequest {
     }
 
 	/**
-	 * Sets a boolean value. If true, subscribes externalTemperature data
-	 * 
-	 * @param externalTemperature
-	 *            a boolean value
+	 * Sets the externalTemperature.
+	 *
+	 * @param externalTemperature The external temperature in degrees celsius. This parameter is deprecated starting RPC
+	 * Spec 6.0, please see climateData.
+	 * @since SmartDeviceLink 6.0.0
 	 */
-    public void setExternalTemperature(Boolean externalTemperature) {
-		setParameters(KEY_EXTERNAL_TEMPERATURE, externalTemperature);
-    }
+	public void setExternalTemperature(Boolean externalTemperature) {
+        setParameters(KEY_EXTERNAL_TEMPERATURE, externalTemperature);
+	}
 
 	/**
-	 * Gets a boolean value. If true, means the externalTemperature data has been
-	 * subscribed.
-	 * 
-	 * @return Boolean -a Boolean value. If true, means the externalTemperature data
-	 *         has been subscribed.
+	 * Gets the externalTemperature.
+	 *
+	 * @return Boolean The external temperature in degrees celsius. This parameter is deprecated starting RPC
+	 * Spec 6.0, please see climateData.
+	 * @since SmartDeviceLink 6.0.0
 	 */
-    public Boolean getExternalTemperature() {
+	public Boolean getExternalTemperature() {
         return getBoolean(KEY_EXTERNAL_TEMPERATURE);
-    }
+	}
 
 	/**
 	 * Sets a boolean value. If true, subscribes Currently selected gear data
@@ -965,4 +971,24 @@ public class SubscribeVehicleData extends RPCRequest {
 	public Boolean getWindowStatus() {
         return getBoolean(KEY_WINDOW_STATUS);
     }
+
+	/**
+	 * Sets the climateData.
+	 *
+	 * @param climateData See ClimateData
+	 * @since SmartDeviceLink 6.0
+	 */
+	public void setClimateData(Boolean climateData) {
+		setParameters(KEY_CLIMATE_DATA, climateData);
+	}
+
+	/**
+	 * Gets the climateData.
+	 *
+	 * @return Boolean See ClimateData
+	 * @since SmartDeviceLink 6.0
+	 */
+	public Boolean getClimateData() {
+		return getBoolean(KEY_CLIMATE_DATA);
+	}
 }

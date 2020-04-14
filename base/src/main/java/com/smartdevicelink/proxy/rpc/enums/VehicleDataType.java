@@ -71,6 +71,7 @@ public enum VehicleDataType {
     /**
      * Notifies PRNDLData may be subscribed
      */
+    @Deprecated
     VEHICLEDATA_PRNDL,
     /**
      * Notifies TIREPRESSUREData may be subscribed
@@ -167,7 +168,10 @@ public enum VehicleDataType {
      * @since SmartDeviceLink 6.0
      */
     VEHICLEDATA_OEM_CUSTOM_DATA,
-    ;
+    /**
+     * @since SmartDeviceLink 6.0
+     */
+    VEHICLEDATA_GEARSTATUS;
 
      /**
      * Convert String to VehicleDataType

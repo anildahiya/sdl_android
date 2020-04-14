@@ -32,7 +32,8 @@
       "fuelRange":true,
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
-      "oemCustomVehicleDataName":true
+      "oemCustomVehicleDataName":true,
+      "gearStatus":true
     }
   },
   "response":{
@@ -170,7 +171,12 @@
           "range":10.0
         }
       ],
-      "oemCustomVehicleDataName":"oemCustomVehicleDataState"
+      "oemCustomVehicleDataName":"oemCustomVehicleDataState",
+      "gearStatus":{
+        "userSelectedGear":"PARK",
+        "actualGear":"PARK",
+        "transmissionType":"AUTOMATIC"
+      }
     }
   }
 }

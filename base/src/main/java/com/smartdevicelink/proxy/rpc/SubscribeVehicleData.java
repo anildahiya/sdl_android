@@ -296,6 +296,11 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_RPM = "rpm";
 	public static final String KEY_EXTERNAL_TEMPERATURE = "externalTemperature";
 	public static final String KEY_FUEL_LEVEL = "fuelLevel";
+
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final String KEY_PRNDL = "prndl";
 	public static final String KEY_TIRE_PRESSURE = "tirePressure";
 	public static final String KEY_ENGINE_TORQUE = "engineTorque";
@@ -322,7 +327,7 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
 	public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_GEAR_STATUS = "gearStatus";
 	/**
 	 * Constructs a new SubscribeVehicleData object
 	 */
@@ -509,23 +514,22 @@ public class SubscribeVehicleData extends RPCRequest {
         return getBoolean(KEY_EXTERNAL_TEMPERATURE);
     }
 
-	/**
-	 * Sets a boolean value. If true, subscribes Currently selected gear data
-	 * 
-	 * @param prndl
-	 *            a boolean value
-	 */
+    /**
+     * Sets the prndl.
+     *
+     * @param prndl See PRNDL. This parameter is deprecated starting RPC Spec 6.0, please see gearStatus.
+     * @since SmartDeviceLink 6.0
+     */
     public void setPrndl(Boolean prndl) {
 		setParameters(KEY_PRNDL, prndl);
     }
 
-	/**
-	 * Gets a boolean value. If true, means the Currently selected gear data has been
-	 * subscribed.
-	 * 
-	 * @return Boolean -a Boolean value. If true, means the Currently selected gear data
-	 *         has been subscribed.
-	 */
+    /**
+     * Gets the prndl.
+     *
+     * @return Boolean See PRNDL. This parameter is deprecated starting RPC Spec 6.0, please see gearStatus.
+     * @since SmartDeviceLink 6.0
+     */
     public Boolean getPrndl() {
         return getBoolean(KEY_PRNDL);
     }
@@ -881,4 +885,23 @@ public class SubscribeVehicleData extends RPCRequest {
 	public Boolean getOEMCustomVehicleData(String vehicleDataName){
 		return getBoolean(vehicleDataName);
 	}
+	/**
+	 * Sets the gearStatus.
+	 *
+	 * @param gearStatus See GearStatus
+	 * @since SmartDeviceLink 6.0
+	 */
+	public void setGearStatus(Boolean gearStatus) {
+        setParameters(KEY_GEAR_STATUS, gearStatus);
+    }
+
+	/**
+	 * Gets the gearStatus.
+	 *
+	 * @return Boolean See GearStatus
+	 * @since SmartDeviceLink 6.0
+	 */
+	public Boolean getGearStatus() {
+        return getBoolean(KEY_GEAR_STATUS);
+    }
 }

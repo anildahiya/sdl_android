@@ -49,6 +49,10 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_RPM = "rpm";
 	public static final String KEY_FUEL_LEVEL = "fuelLevel";
 	public static final String KEY_EXTERNAL_TEMPERATURE = "externalTemperature";
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final String KEY_PRNDL = "prndl";
 	public static final String KEY_TIRE_PRESSURE = "tirePressure";
 	public static final String KEY_ENGINE_TORQUE = "engineTorque";
@@ -74,7 +78,7 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_GEAR_STATUS = "gearStatus";
 	/**
 	 * Constructs a new UnsubscribeVehicleDataResponse object
 	 */
@@ -226,15 +230,19 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
         return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_EXTERNAL_TEMPERATURE);
     }
     /**
-     * Gets currently selected gear data
-     * @param prndl a VehicleDataResult related to the PRNDL status (automatic transmission gear)
+     * Sets the prndl.
+     *
+     * @param prndl See PRNDL. This parameter is deprecated starting RPC Spec 6.0, please see gearStatus.
+     * @since SmartDeviceLink 6.0.0
      */
     public void setPrndl(VehicleDataResult prndl) {
         setParameters(KEY_PRNDL, prndl);
     }
     /**
-     * Gets currently selected gear data
-     * @return a VehicleDataResult related to the PRNDL status (automatic transmission gear)
+     * Gets the prndl.
+     *
+     * @return VehicleDataResult See PRNDL. This parameter is deprecated starting RPC Spec 6.0, please see gearStatus.
+     * @since SmartDeviceLink 6.0.0
      */
     @SuppressWarnings("unchecked")
     public VehicleDataResult getPrndl() {
@@ -532,5 +540,24 @@ public class UnsubscribeVehicleDataResponse extends RPCResponse {
      */
     public VehicleDataResult getOEMCustomVehicleData(String vehicleDataName){
         return (VehicleDataResult) getObject(VehicleDataResult.class, vehicleDataName);
+    }
+    /**
+     * Sets the gearStatus.
+     *
+     * @param gearStatus See GearStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public void setGearStatus(VehicleDataResult gearStatus) {
+        setParameters(KEY_GEAR_STATUS, gearStatus);
+    }
+
+    /**
+     * Gets the gearStatus.
+     *
+     * @return VehicleDataResult See GearStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public VehicleDataResult getGearStatus() {
+        return (VehicleDataResult) getObject(VehicleDataResult.class, KEY_GEAR_STATUS);
     }
 }

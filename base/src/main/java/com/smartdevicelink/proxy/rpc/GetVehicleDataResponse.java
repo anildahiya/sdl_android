@@ -59,6 +59,10 @@ public class GetVehicleDataResponse extends RPCResponse {
 	public static final String KEY_EXTERNAL_TEMPERATURE = "externalTemperature";
 	public static final String KEY_FUEL_LEVEL = "fuelLevel";
 	public static final String KEY_VIN = "vin";
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final String KEY_PRNDL = "prndl";
 	public static final String KEY_TIRE_PRESSURE = "tirePressure";
 	public static final String KEY_ENGINE_TORQUE = "engineTorque";
@@ -84,7 +88,7 @@ public class GetVehicleDataResponse extends RPCResponse {
 	public static final String KEY_TURN_SIGNAL = "turnSignal";
 	public static final String KEY_ELECTRONIC_PARK_BRAKE_STATUS = "electronicParkBrakeStatus";
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
-
+	public static final String KEY_GEAR_STATUS = "gearStatus";
 	/** 
 	 * Constructs a new GetVehicleDataResponse object
 	 */
@@ -166,9 +170,23 @@ public class GetVehicleDataResponse extends RPCResponse {
     public String getVin() {
     	return getString(KEY_VIN);
     }
+
+    /**
+     * Sets the prndl.
+     *
+     * @param prndl See PRNDL. This parameter is deprecated starting RPC Spec 6.0, please see gearStatus.
+     * @since SmartDeviceLink 6.0
+     */
     public void setPrndl(PRNDL prndl) {
         setParameters(KEY_PRNDL, prndl);
     }
+
+    /**
+     * Gets the prndl.
+     *
+     * @return PRNDL See PRNDL. This parameter is deprecated starting RPC Spec 6.0, please see gearStatus.
+     * @since SmartDeviceLink 6.0
+     */
     public PRNDL getPrndl() {
         return (PRNDL) getObject(PRNDL.class, KEY_PRNDL);
     }
@@ -389,5 +407,24 @@ public class GetVehicleDataResponse extends RPCResponse {
      */
     public Object getOEMCustomVehicleData(String vehicleDataName){
         return getParameters(vehicleDataName);
+    }
+    /**
+     * Sets the gearStatus.
+     *
+     * @param gearStatus See GearStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public void setGearStatus(GearStatus gearStatus) {
+        setParameters(KEY_GEAR_STATUS, gearStatus);
+    }
+
+    /**
+     * Gets the gearStatus.
+     *
+     * @return GearStatus See GearStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public GearStatus getGearStatus() {
+        return (GearStatus) getObject(GearStatus.class, KEY_GEAR_STATUS);
     }
 }

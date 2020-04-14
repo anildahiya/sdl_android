@@ -31,7 +31,8 @@
       "fuelRange":true,
       "turnSignal":true,
       "electronicParkBrakeStatus":true,
-      "oemCustomVehicleDataName":true
+      "oemCustomVehicleDataName":true,
+      "gearStatus":true
     }
   },
   "response":{
@@ -152,6 +153,10 @@
       },
       "oemCustomVehicleDataName":{
         "oemCustomDataType":"oemCustomVehicleDataName",
+        "resultCode":"SUCCESS"
+      },
+      "gearStatus":{
+        "dataType":"VEHICLEDATA_GEARSTATUS",
         "resultCode":"SUCCESS"
       }
     }

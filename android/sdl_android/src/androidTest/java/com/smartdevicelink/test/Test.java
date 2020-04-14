@@ -164,6 +164,7 @@ import com.smartdevicelink.proxy.rpc.enums.MetadataType;
 import com.smartdevicelink.proxy.rpc.enums.ModuleType;
 import com.smartdevicelink.proxy.rpc.enums.NavigationAction;
 import com.smartdevicelink.proxy.rpc.enums.NavigationJunction;
+import com.smartdevicelink.proxy.rpc.enums.PRNDL;
 import com.smartdevicelink.proxy.rpc.enums.PowerModeQualificationStatus;
 import com.smartdevicelink.proxy.rpc.enums.PowerModeStatus;
 import com.smartdevicelink.proxy.rpc.enums.PrerecordedSpeech;
@@ -187,6 +188,7 @@ import com.smartdevicelink.proxy.rpc.enums.TemperatureUnit;
 import com.smartdevicelink.proxy.rpc.enums.TextAlignment;
 import com.smartdevicelink.proxy.rpc.enums.TextFieldName;
 import com.smartdevicelink.proxy.rpc.enums.TouchType;
+import com.smartdevicelink.proxy.rpc.enums.TransmissionType;
 import com.smartdevicelink.proxy.rpc.enums.TriggerSource;
 import com.smartdevicelink.proxy.rpc.enums.UpdateMode;
 import com.smartdevicelink.proxy.rpc.enums.VehicleDataEventStatus;
@@ -426,6 +428,8 @@ public class Test {
 
 	public static final HMICapabilities                GENERAL_HMICAPABILITIES                = new HMICapabilities();
 
+	public static final PRNDL                          GENERAL_PRNDL                          = PRNDL.PARK;
+	public static final TransmissionType               GENERAL_TRANSMISSION_TYPE              = TransmissionType.AUTOMATIC;
 	public static final MetadataTags                   GENERAL_METADATASTRUCT                 = new MetadataTags();
 	public static final Rectangle                      GENERAL_RECTANGLE                      = new Rectangle();
 	public static final HapticRect                     GENERAL_HAPTIC_RECT                    = new HapticRect();

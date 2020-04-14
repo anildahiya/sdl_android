@@ -325,6 +325,7 @@ public class SubscribeVehicleData extends RPCRequest {
 	public static final String KEY_HANDS_OFF_STEERING = "handsOffSteering";
 	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
 	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
+	public static final String KEY_WINDOW_STATUS = "windowStatus";
 
 	/**
 	 * Constructs a new SubscribeVehicleData object
@@ -944,4 +945,24 @@ public class SubscribeVehicleData extends RPCRequest {
 	public Boolean getStabilityControlsStatus() {
 		return getBoolean(KEY_STABILITY_CONTROLS_STATUS);
 	}
+
+	/**
+	 * Sets the windowStatus.
+	 *
+	 * @param windowStatus See WindowStatus
+	 * @since SmartDeviceLink 6.0.0
+	 */
+	public void setWindowStatus(Boolean windowStatus) {
+		setParameters(KEY_WINDOW_STATUS, windowStatus);
+	}
+
+	/**
+	 * Gets the windowStatus.
+	 *
+	 * @return Boolean See WindowStatus
+	 * @since SmartDeviceLink 6.0.0
+	 */
+	public Boolean getWindowStatus() {
+        return getBoolean(KEY_WINDOW_STATUS);
+    }
 }

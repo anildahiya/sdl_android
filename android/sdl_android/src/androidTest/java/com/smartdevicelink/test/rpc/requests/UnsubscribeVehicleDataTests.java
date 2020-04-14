@@ -58,6 +58,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		msg.setHandsOffSteering(Test.GENERAL_BOOLEAN);
 		msg.setSeatOccupancy(Test.GENERAL_BOOLEAN);
 		msg.setStabilityControlsStatus(Test.GENERAL_BOOLEAN);
+		msg.setWindowStatus(Test.GENERAL_BOOLEAN);
 
 		return msg;
 	}
@@ -110,6 +111,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 			result.put(UnsubscribeVehicleData.KEY_HANDS_OFF_STEERING, Test.GENERAL_BOOLEAN);
 			result.put(UnsubscribeVehicleData.KEY_SEAT_OCCUPANCY, Test.GENERAL_BOOLEAN);
 			result.put(UnsubscribeVehicleData.KEY_STABILITY_CONTROLS_STATUS, Test.GENERAL_BOOLEAN);
+			result.put(UnsubscribeVehicleData.KEY_WINDOW_STATUS, Test.GENERAL_BOOLEAN);
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -155,6 +157,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getHandsOffSteering());
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getSeatOccupancy());
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getStabilityControlsStatus());
+		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getWindowStatus());
 
 		// Invalid/Null Tests
 		UnsubscribeVehicleData msg = new UnsubscribeVehicleData();
@@ -194,6 +197,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		assertNull(Test.NULL, msg.getHandsOffSteering());
 		assertNull(Test.NULL, msg.getSeatOccupancy());
 		assertNull(Test.NULL, msg.getStabilityControlsStatus());
+		assertNull(Test.NULL, msg.getWindowStatus());
 	}
 
 	/**
@@ -248,6 +252,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_HANDS_OFF_STEERING), cmd.getHandsOffSteering());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_SEAT_OCCUPANCY), cmd.getSeatOccupancy());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_STABILITY_CONTROLS_STATUS), cmd.getStabilityControlsStatus());
+			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_WINDOW_STATUS), cmd.getWindowStatus());
 
 		} 
 		catch (JSONException e) {

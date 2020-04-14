@@ -2338,6 +2338,27 @@ public class Validator{
         return true;
     }
 
+    public static boolean validateWindowStatus (List<WindowStatus> item1, List<WindowStatus> item2) {
+        if (item1 == null) {
+            return ( item2 == null );
+        }
+        if (item2 == null) {
+            return ( item1 == null );
+        }
+
+        if (item1.size() != item2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < item1.size(); i++) {
+            if (!validateWindowStatus(item1.get(i), item2.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static boolean validateFuelRange (List<FuelRange> item1, List<FuelRange> item2) {
         if (item1 == null) {
             return ( item2 == null );
@@ -3848,6 +3869,45 @@ public class Validator{
 		}
 
     	return true;
+	}
+
+	public static boolean validateWindowState(WindowState windowState1, WindowState windowState2) {
+		String tag = "validateWindowState";
+		if (windowState1 == null) {
+			return (windowState2 == null);
+		}
+		if (windowState2 == null) {
+			return (windowState1 == null);
+		}
+		if (windowState1.getApproximatePosition() != windowState2.getApproximatePosition()) {
+			log(tag, "approximatePosition do not match");
+			return false;
+		}
+
+		if (windowState1.getDeviation() != windowState2.getDeviation()) {
+			log(tag, "deviation do not match");
+			return false;
+		}
+
+		return true;
+	}
+
+	public static boolean validateWindowStatus(WindowStatus windowStatus1, WindowStatus windowStatus2) {
+		if (windowStatus1 == null) {
+			return (windowStatus2 == null);
+		}
+		if (windowStatus2 == null) {
+			return (windowStatus1 == null);
+		}
+
+		if (!validateGrid(windowStatus1.getLocation(), windowStatus2.getLocation())) {
+			return false;
+		}
+		if (!validateWindowState(windowStatus1.getState(), windowStatus2.getState())) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public static boolean validateModuleInfo(ModuleInfo m1, ModuleInfo m2) {

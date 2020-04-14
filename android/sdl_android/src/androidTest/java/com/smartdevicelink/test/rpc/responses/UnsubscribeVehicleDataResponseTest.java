@@ -63,6 +63,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 		msg.setHandsOffSteering(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING.ordinal()));
 		msg.setSeatOccupancy(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()));
 		msg.setStabilityControlsStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS.ordinal()));
+		msg.setWindowStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_WINDOWSTATUS.ordinal()));
 
 		return msg;
 	}
@@ -119,6 +120,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 	        result.put(SubscribeVehicleDataResponse.KEY_HANDS_OFF_STEERING, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_SEAT_OCCUPANCY, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_STABILITY_CONTROLS_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS.ordinal()).serializeJSON());
+	        result.put(SubscribeVehicleDataResponse.KEY_WINDOW_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_WINDOWSTATUS.ordinal()).serializeJSON());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -163,6 +165,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 		VehicleDataResult testHandsOffSteering     = ( (UnsubscribeVehicleDataResponse) msg ).getHandsOffSteering();
 		VehicleDataResult testSeatOccupancy     = ( (UnsubscribeVehicleDataResponse) msg ).getSeatOccupancy();
 		VehicleDataResult testStabilityControlsStatus     = ( (UnsubscribeVehicleDataResponse) msg ).getStabilityControlsStatus();
+		VehicleDataResult testWindowStatus     = ( (UnsubscribeVehicleDataResponse) msg ).getWindowStatus();
 
 		// Valid Tests
 		assertTrue(Test.TRUE, testGps.getDataType().equals(VehicleDataType.VEHICLEDATA_GPS));
@@ -197,6 +200,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 	    assertTrue(Test.TRUE, testHandsOffSteering.getDataType().equals(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING));
 	    assertTrue(Test.TRUE, testSeatOccupancy.getDataType().equals(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY));
 	    assertTrue(Test.TRUE, testStabilityControlsStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS));
+		assertTrue(Test.TRUE, testWindowStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_WINDOWSTATUS));
 
         // Invalid/Null Tests
 		UnsubscribeVehicleDataResponse msg = new UnsubscribeVehicleDataResponse();
@@ -235,6 +239,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
         assertNull(Test.NULL, msg.getHandsOffSteering());
         assertNull(Test.NULL, msg.getSeatOccupancy());
         assertNull(Test.NULL, msg.getStabilityControlsStatus());
+        assertNull(Test.NULL, msg.getWindowStatus());
     }
 
     /**
@@ -384,6 +389,10 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 			JSONObject stabilityControlsStatus = JsonUtils.readJsonObjectFromJsonObject(parameters, UnsubscribeVehicleDataResponse.KEY_STABILITY_CONTROLS_STATUS);
 			VehicleDataResult referenceStabilityControlsStatus = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(stabilityControlsStatus));
 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceStabilityControlsStatus, cmd.getStabilityControlsStatus()));
+
+			JSONObject windowStatus = JsonUtils.readJsonObjectFromJsonObject(parameters, UnsubscribeVehicleDataResponse.KEY_WINDOW_STATUS);
+			VehicleDataResult referenceWindowStatus = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(windowStatus));
+			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceWindowStatus, cmd.getWindowStatus()));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

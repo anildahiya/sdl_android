@@ -109,6 +109,8 @@ import com.smartdevicelink.proxy.rpc.WeatherData;
 import com.smartdevicelink.proxy.rpc.WeatherServiceData;
 import com.smartdevicelink.proxy.rpc.WeatherServiceManifest;
 import com.smartdevicelink.proxy.rpc.WindowCapability;
+import com.smartdevicelink.proxy.rpc.WindowState;
+import com.smartdevicelink.proxy.rpc.WindowStatus;
 import com.smartdevicelink.proxy.rpc.WindowTypeCapabilities;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
 import com.smartdevicelink.proxy.rpc.enums.AppHMIType;
@@ -427,7 +429,7 @@ public class Test {
 	public static final MenuConfiguration              GENERAL_MENU_CONFIGURATION             = new MenuConfiguration(GENERAL_MENU_LAYOUT, GENERAL_MENU_LAYOUT);
 
 	public static final HMICapabilities                GENERAL_HMICAPABILITIES                = new HMICapabilities();
-
+	public static final WindowState                    GENERAL_WINDOW_STATE                   = new WindowState();
 	public static final MetadataTags                   GENERAL_METADATASTRUCT                 = new MetadataTags();
 	public static final Rectangle                      GENERAL_RECTANGLE                      = new Rectangle();
 	public static final HapticRect                     GENERAL_HAPTIC_RECT                    = new HapticRect();
@@ -510,6 +512,8 @@ public class Test {
 		}
 	});
 	public static final List<VoiceCommand>              GENERAL_VOICE_COMMAND_LIST             = Arrays.asList(GENERAL_VOICE_COMMAND);
+	public static final WindowStatus                    GENERAL_WINDOW_STATUS                  = new WindowStatus();
+	public static final List<WindowStatus>              GENERAL_WINDOW_STATUS_LIST             = new ArrayList<WindowStatus>(1);
 
 	public static final JSONArray  JSON_TURNS                     = new JSONArray();
 	public static final JSONArray  JSON_CHOICES                   = new JSONArray();
@@ -842,6 +846,10 @@ public class Test {
         GENERAL_SOFTBUTTONCAPABILITIES.setUpDownAvailable(GENERAL_BOOLEAN);
         GENERAL_SOFTBUTTONCAPABILITIES.setImageSupported(GENERAL_BOOLEAN);
         GENERAL_SOFTBUTTONCAPABILITIES_LIST.add(GENERAL_SOFTBUTTONCAPABILITIES);
+
+        GENERAL_WINDOW_STATUS.setLocation(GENERAL_GRID);
+        GENERAL_WINDOW_STATUS.setState(GENERAL_WINDOW_STATE);
+        GENERAL_WINDOW_STATUS_LIST.add(GENERAL_WINDOW_STATUS);
 
         GENERAL_VEHICLETYPE.setMake(GENERAL_STRING);
         GENERAL_VEHICLETYPE.setModel(GENERAL_STRING);

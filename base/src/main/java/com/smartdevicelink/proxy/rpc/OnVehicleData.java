@@ -327,6 +327,7 @@ public class OnVehicleData extends RPCNotification {
 	public static final String KEY_HANDS_OFF_STEERING = "handsOffSteering";
 	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
 	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
+	public static final String KEY_WINDOW_STATUS = "windowStatus";
 
     public OnVehicleData() {
         super(FunctionID.ON_VEHICLE_DATA.toString());
@@ -659,5 +660,24 @@ public class OnVehicleData extends RPCNotification {
      */
     public StabilityControlsStatus getStabilityControlsStatus() {
         return (StabilityControlsStatus) getObject(StabilityControlsStatus.class, KEY_STABILITY_CONTROLS_STATUS);
+    }
+
+    /**
+     * Sets the windowStatus.
+     *
+     * @param windowStatus See WindowStatus
+     */
+    public void setWindowStatus(List<WindowStatus> windowStatus) {
+        setParameters(KEY_WINDOW_STATUS, windowStatus);
+    }
+
+    /**
+     * Gets the windowStatus.
+     *
+     * @return List<WindowStatus> See WindowStatus
+     */
+    @SuppressWarnings("unchecked")
+    public List<WindowStatus> getWindowStatus() {
+        return (List<WindowStatus>) getObject(WindowStatus.class, KEY_WINDOW_STATUS);
     }
 }

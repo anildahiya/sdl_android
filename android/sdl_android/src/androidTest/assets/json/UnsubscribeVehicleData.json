@@ -34,7 +34,8 @@
       "oemCustomVehicleDataName":true,
       "handsOffSteering":true,
       "seatOccupancy":true,
-      "stabilityControlsStatus":true
+      "stabilityControlsStatus":true,
+      "windowStatus":true
     }
   },
   "response":{
@@ -167,6 +168,10 @@
       },
       "stabilityControlsStatus":{
         "dataType":"VEHICLEDATA_STABILITYCONTROLSSTATUS",
+        "resultCode":"SUCCESS"
+      },
+      "windowStatus":{
+        "dataType":"VEHICLEDATA_WINDOWSTATUS",
         "resultCode":"SUCCESS"
       }
     }

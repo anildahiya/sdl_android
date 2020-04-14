@@ -61,6 +61,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 		msg.setHandsOffSteering(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING.ordinal()));
 		msg.setSeatOccupancy(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()));
 		msg.setStabilityControlsStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS.ordinal()));
+		msg.setWindowStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_WINDOWSTATUS.ordinal()));
 
 		return msg;
 	}
@@ -117,6 +118,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 	        result.put(SubscribeVehicleDataResponse.KEY_HANDS_OFF_STEERING, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_SEAT_OCCUPANCY, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_STABILITY_CONTROLS_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS.ordinal()).serializeJSON());
+	        result.put(SubscribeVehicleDataResponse.KEY_WINDOW_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_WINDOWSTATUS.ordinal()).serializeJSON());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -161,6 +163,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 		VehicleDataResult testHandsOffSteering     = ( (SubscribeVehicleDataResponse) msg ).getHandsOffSteering();
 		VehicleDataResult testSeatOccupancy     = ( (SubscribeVehicleDataResponse) msg ).getSeatOccupancy();
 		VehicleDataResult testStabilityControlsStatus     = ( (SubscribeVehicleDataResponse) msg ).getStabilityControlsStatus();
+		VehicleDataResult testWindowStatus   = ( (SubscribeVehicleDataResponse) msg ).getWindowStatus();
 
 		// Valid Tests
 		assertTrue(Test.TRUE, testGps.getDataType().equals(VehicleDataType.VEHICLEDATA_GPS));
@@ -195,6 +198,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 	    assertTrue(Test.TRUE, testHandsOffSteering.getDataType().equals(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING));
 	    assertTrue(Test.TRUE, testSeatOccupancy.getDataType().equals(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY));
 	    assertTrue(Test.TRUE, testStabilityControlsStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS));
+		assertTrue(Test.TRUE, testWindowStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_WINDOWSTATUS));
 
         // Invalid/Null Tests
 		SubscribeVehicleDataResponse msg = new SubscribeVehicleDataResponse();
@@ -233,6 +237,7 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
         assertNull(Test.NULL, msg.getHandsOffSteering());
         assertNull(Test.NULL, msg.getSeatOccupancy());
         assertNull(Test.NULL, msg.getStabilityControlsStatus());
+        assertNull(Test.NULL, msg.getWindowStatus());
     }
 	
     /**
@@ -382,6 +387,10 @@ public class SubscribeVehicleDataResponseTest extends BaseRpcTests {
 			JSONObject stabilityControlsStatus = JsonUtils.readJsonObjectFromJsonObject(parameters, SubscribeVehicleDataResponse.KEY_STABILITY_CONTROLS_STATUS);
 			VehicleDataResult referenceStabilityControlsStatus = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(stabilityControlsStatus));
 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceStabilityControlsStatus, cmd.getStabilityControlsStatus()));
+
+			JSONObject windowStatus = JsonUtils.readJsonObjectFromJsonObject(parameters, SubscribeVehicleDataResponse.KEY_WINDOW_STATUS);
+			VehicleDataResult referenceWindowStatus = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(windowStatus));
+			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceWindowStatus, cmd.getWindowStatus()));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}    	

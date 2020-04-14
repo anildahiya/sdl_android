@@ -10,6 +10,7 @@ import com.smartdevicelink.proxy.rpc.EmergencyEvent;
 import com.smartdevicelink.proxy.rpc.FuelRange;
 import com.smartdevicelink.proxy.rpc.GPSData;
 import com.smartdevicelink.proxy.rpc.GetVehicleDataResponse;
+import com.smartdevicelink.proxy.rpc.Grid;
 import com.smartdevicelink.proxy.rpc.HeadLampStatus;
 import com.smartdevicelink.proxy.rpc.MyKey;
 import com.smartdevicelink.proxy.rpc.OnVehicleData;
@@ -17,6 +18,8 @@ import com.smartdevicelink.proxy.rpc.SeatOccupancy;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
 import com.smartdevicelink.proxy.rpc.StabilityControlsStatus;
 import com.smartdevicelink.proxy.rpc.TireStatus;
+import com.smartdevicelink.proxy.rpc.WindowState;
+import com.smartdevicelink.proxy.rpc.WindowStatus;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
 import com.smartdevicelink.proxy.rpc.enums.CarModeStatus;
 import com.smartdevicelink.proxy.rpc.enums.CompassDirection;
@@ -83,6 +86,8 @@ public class VehicleDataHelper{
 	public static final Boolean HANDS_OFF_STEERING = true;
 	public static final SeatOccupancy SEAT_OCCUPANCY = new SeatOccupancy();
 	public static final StabilityControlsStatus STABILITY_CONTROLS_STATUS = new StabilityControlsStatus();
+	public static final WindowStatus WINDOW_STATUS = new WindowStatus();
+	public static final List<WindowStatus> WINDOW_STATUS_LIST = new ArrayList<WindowStatus>(1);
 
 	//other variables inside some of the above objects
     // tire status
@@ -198,6 +203,10 @@ public class VehicleDataHelper{
 	// fuel range
 	public static final FuelType FUEL_RANGE_TYPE = FuelType.GASOLINE;
 	public static final Float FUEL_RANGE_RANGE = Test.GENERAL_FLOAT;
+
+	// window status
+	public static final Grid WINDOW_STATUS_LOCATION = Test.GENERAL_GRID;
+	public static final WindowState WINDOW_STATUS_STATE = Test.GENERAL_WINDOW_STATE;
 
 	public static final JSONArray JSON_FUEL_RANGE = new JSONArray();
 
@@ -328,6 +337,11 @@ public class VehicleDataHelper{
 		SEAT_OCCUPANCY.setSeatsOccupied(Test.GENERAL_SEATSTATUS_LIST);
 		SEAT_OCCUPANCY.setSeatsBelted(Test.GENERAL_SEATSTATUS_LIST);
 
+		//WINDOW_STATUS set up
+		WINDOW_STATUS.setLocation(WINDOW_STATUS_LOCATION);
+		WINDOW_STATUS.setState(WINDOW_STATUS_STATE);
+		WINDOW_STATUS_LIST.add(WINDOW_STATUS);
+
 		// FUEL_RANGE and FUEL_RANGE_LIST set up
 		FUEL_RANGE.setType(FUEL_RANGE_TYPE);
 		FUEL_RANGE.setRange(FUEL_RANGE_RANGE);
@@ -378,7 +392,8 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setHandsOffSteering(HANDS_OFF_STEERING);
 		VEHICLE_DATA.setSeatOccupancy(SEAT_OCCUPANCY);
 		VEHICLE_DATA.setStabilityControlsStatus(STABILITY_CONTROLS_STATUS);
-		
+		VEHICLE_DATA.setWindowStatus(WINDOW_STATUS_LIST);
+
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
 		VEHICLE_DATA_RESPONSE.setRpm(RPM);
@@ -413,6 +428,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setHandsOffSteering(HANDS_OFF_STEERING);
 		VEHICLE_DATA_RESPONSE.setSeatOccupancy(SEAT_OCCUPANCY);
 		VEHICLE_DATA_RESPONSE.setStabilityControlsStatus(STABILITY_CONTROLS_STATUS);
+		VEHICLE_DATA_RESPONSE.setWindowStatus(WINDOW_STATUS_LIST);
 	}
 	
     private VehicleDataHelper(){}	

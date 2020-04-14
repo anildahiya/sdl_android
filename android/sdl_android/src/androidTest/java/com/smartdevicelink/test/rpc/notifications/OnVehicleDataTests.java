@@ -17,6 +17,7 @@ import com.smartdevicelink.proxy.rpc.MyKey;
 import com.smartdevicelink.proxy.rpc.OnVehicleData;
 import com.smartdevicelink.proxy.rpc.SeatOccupancy;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
+import com.smartdevicelink.proxy.rpc.StabilityControlsStatus;
 import com.smartdevicelink.proxy.rpc.TireStatus;
 import com.smartdevicelink.proxy.rpc.enums.ComponentVolumeStatus;
 import com.smartdevicelink.proxy.rpc.enums.ElectronicParkBrakeStatus;
@@ -96,6 +97,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 			result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE);
 			result.put(OnVehicleData.KEY_HANDS_OFF_STEERING, VehicleDataHelper.HANDS_OFF_STEERING);
 			result.put(OnVehicleData.KEY_SEAT_OCCUPANCY, VehicleDataHelper.SEAT_OCCUPANCY.serializeJSON());
+			result.put(OnVehicleData.KEY_STABILITY_CONTROLS_STATUS, VehicleDataHelper.STABILITY_CONTROLS_STATUS);
         } catch(JSONException e) {
         	fail(Test.JSON_FAIL);
         }
@@ -140,6 +142,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
     	Object oemCustomVehicleData = ( (OnVehicleData) msg).getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME);
     	Boolean handsOffSteering = ( (OnVehicleData) msg).getHandsOffSteering();
     	SeatOccupancy seatOccupancy = ( (OnVehicleData) msg).getSeatOccupancy();
+    	StabilityControlsStatus stabilityControlsStatus = ( (OnVehicleData) msg).getStabilityControlsStatus();
 
     	// Valid Tests
     	assertEquals(Test.MATCH, VehicleDataHelper.SPEED, speed);
@@ -174,6 +177,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
 	    assertEquals(Test.MATCH, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE, oemCustomVehicleData);
 	    assertEquals(Test.MATCH, VehicleDataHelper.HANDS_OFF_STEERING, handsOffSteering);
 	    assertTrue(Test.TRUE, Validator.validateSeatOccupancy(VehicleDataHelper.SEAT_OCCUPANCY, seatOccupancy));
+	    assertTrue(Test.TRUE, Validator.validateStabilityControlsStatus(VehicleDataHelper.STABILITY_CONTROLS_STATUS, stabilityControlsStatus));
 
 	    // Invalid/Null Tests
         OnVehicleData msg = new OnVehicleData();
@@ -212,6 +216,7 @@ public class OnVehicleDataTests extends BaseRpcTests{
         assertNull(Test.NULL, msg.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
         assertNull(Test.NULL, msg.getHandsOffSteering());
         assertNull(Test.NULL, msg.getSeatOccupancy());
+        assertNull(Test.NULL, msg.getStabilityControlsStatus());
 	}
     
     public void testJson() {
@@ -232,7 +237,8 @@ public class OnVehicleDataTests extends BaseRpcTests{
 		JSONObject fuelRangeObj = new JSONObject();
 		JSONArray fuelRangeArrayObj = new JSONArray();
 		JSONObject seatOccupancyObj = new JSONObject();
-		
+		JSONObject stabilityControlsStatusObj = new JSONObject();
+
 		try {
 			//Set up the JSONObject to represent OnVehicleData:
 			
@@ -357,6 +363,10 @@ public class OnVehicleDataTests extends BaseRpcTests{
 			seatOccupancyObj.put(SeatOccupancy.KEY_SEATS_OCCUPIED, VehicleDataHelper.SEAT_OCCUPANCY.getSeatsOccupied());
 			seatOccupancyObj.put(SeatOccupancy.KEY_SEATS_BELTED, VehicleDataHelper.SEAT_OCCUPANCY.getSeatsBelted());
 
+			//STABILITY_CONTROLS_STATUS
+			stabilityControlsStatusObj.put(StabilityControlsStatus.KEY_ESC_SYSTEM, VehicleDataHelper.STABILITY_CONTROLS_STATUS_ESC_SYSTEM);
+			stabilityControlsStatusObj.put(StabilityControlsStatus.KEY_TRAILER_SWAY_CONTROL, VehicleDataHelper.STABILITY_CONTROLS_STATUS_TRAILERS_WAY_CONTROL);
+
 			// FUEL_RANGE
 			fuelRangeObj.put(FuelRange.KEY_TYPE, VehicleDataHelper.FUEL_RANGE_TYPE);
 			fuelRangeObj.put(FuelRange.KEY_RANGE, VehicleDataHelper.FUEL_RANGE_RANGE);
@@ -394,7 +404,8 @@ public class OnVehicleDataTests extends BaseRpcTests{
 			reference.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, VehicleDataHelper.OEM_CUSTOM_VEHICLE_DATA_STATE);
 			reference.put(OnVehicleData.KEY_HANDS_OFF_STEERING, VehicleDataHelper.HANDS_OFF_STEERING);
 			reference.put(OnVehicleData.KEY_SEAT_OCCUPANCY, seatOccupancyObj);
-
+			reference.put(OnVehicleData.KEY_STABILITY_CONTROLS_STATUS, stabilityControlsStatusObj);
+			
 			JSONObject underTest = msg.serializeJSON();
 			//go inside underTest and only return the JSONObject inside the parameters key inside the notification key
 			underTest = underTest.getJSONObject("notification").getJSONObject("parameters");
@@ -498,6 +509,14 @@ public class OnVehicleDataTests extends BaseRpcTests{
 				}
 				else if (key.equals(OnVehicleData.KEY_ENGINE_OIL_LIFE)) {
 					assertEquals(JsonUtils.readDoubleFromJsonObject(reference, key), JsonUtils.readDoubleFromJsonObject(underTest, key));
+				}
+				else if (key.equals(OnVehicleData.KEY_STABILITY_CONTROLS_STATUS)) {
+					JSONObject stabilityControlsStatusObjReference = JsonUtils.readJsonObjectFromJsonObject(reference, key);
+					JSONObject stabilityControlsStatusObjTest = JsonUtils.readJsonObjectFromJsonObject(underTest, key);
+
+					assertTrue(Test.TRUE, Validator.validateStabilityControlsStatus(
+							new StabilityControlsStatus(JsonRPCMarshaller.deserializeJSONObject(stabilityControlsStatusObjReference)),
+							new StabilityControlsStatus(JsonRPCMarshaller.deserializeJSONObject(stabilityControlsStatusObjTest))));
 				}
 				else if (key.equals(OnVehicleData.KEY_FUEL_RANGE)) {
 					JSONArray fuelRangeArrayObjReference = JsonUtils.readJsonArrayFromJsonObject(reference, key);

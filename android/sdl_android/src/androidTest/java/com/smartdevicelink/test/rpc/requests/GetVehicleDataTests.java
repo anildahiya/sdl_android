@@ -56,6 +56,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
 		msg.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_BOOLEAN);
 		msg.setHandsOffSteering(Test.GENERAL_BOOLEAN);
 		msg.setSeatOccupancy(Test.GENERAL_BOOLEAN);
+		msg.setStabilityControlsStatus(Test.GENERAL_BOOLEAN);
 
         return msg;
     }
@@ -107,6 +108,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
             result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_BOOLEAN);
             result.put(GetVehicleData.KEY_HANDS_OFF_STEERING, Test.GENERAL_BOOLEAN);
             result.put(GetVehicleData.KEY_SEAT_OCCUPANCY, Test.GENERAL_BOOLEAN);
+            result.put(GetVehicleData.KEY_STABILITY_CONTROLS_STATUS, Test.GENERAL_BOOLEAN);
         }catch(JSONException e){
         	fail(Test.JSON_FAIL);
         }
@@ -152,7 +154,8 @@ public class GetVehicleDataTests extends BaseRpcTests {
 		assertTrue(Test.TRUE, ( (GetVehicleData) msg ).getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
 		assertTrue(Test.TRUE, ( (GetVehicleData) msg ).getHandsOffSteering());
 		assertTrue(Test.TRUE, ( (GetVehicleData) msg ).getSeatOccupancy());
-
+		assertTrue(Test.TRUE, ( (GetVehicleData) msg ).getStabilityControlsStatus());
+    
 		// Invalid/Null Tests
         GetVehicleData msg = new GetVehicleData();
         assertNotNull(Test.NOT_NULL, msg);
@@ -190,6 +193,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
         assertNull(Test.NULL, msg.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
         assertNull(Test.NULL, msg.getHandsOffSteering());
         assertNull(Test.NULL, msg.getSeatOccupancy());
+        assertNull(Test.NULL, msg.getStabilityControlsStatus());
     }
     
     /**
@@ -243,6 +247,7 @@ public class GetVehicleDataTests extends BaseRpcTests {
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME), cmd.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, GetVehicleData.KEY_HANDS_OFF_STEERING), cmd.getHandsOffSteering());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, GetVehicleData.KEY_SEAT_OCCUPANCY), cmd.getSeatOccupancy());
+			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, GetVehicleData.KEY_STABILITY_CONTROLS_STATUS), cmd.getStabilityControlsStatus());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}    	

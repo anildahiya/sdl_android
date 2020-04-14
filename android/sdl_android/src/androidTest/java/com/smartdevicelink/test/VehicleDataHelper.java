@@ -15,6 +15,7 @@ import com.smartdevicelink.proxy.rpc.MyKey;
 import com.smartdevicelink.proxy.rpc.OnVehicleData;
 import com.smartdevicelink.proxy.rpc.SeatOccupancy;
 import com.smartdevicelink.proxy.rpc.SingleTireStatus;
+import com.smartdevicelink.proxy.rpc.StabilityControlsStatus;
 import com.smartdevicelink.proxy.rpc.TireStatus;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
 import com.smartdevicelink.proxy.rpc.enums.CarModeStatus;
@@ -81,6 +82,7 @@ public class VehicleDataHelper{
 	public static final String OEM_CUSTOM_VEHICLE_DATA_STATE = "oemCustomVehicleDataState";
 	public static final Boolean HANDS_OFF_STEERING = true;
 	public static final SeatOccupancy SEAT_OCCUPANCY = new SeatOccupancy();
+	public static final StabilityControlsStatus STABILITY_CONTROLS_STATUS = new StabilityControlsStatus();
 
 	//other variables inside some of the above objects
     // tire status
@@ -186,6 +188,10 @@ public class VehicleDataHelper{
 	public static final CarModeStatus CLUSTER_MODE_STATUS_CAR_MODE_STATUS = CarModeStatus.TRANSPORT;
 	public static final PowerModeStatus CLUSTER_MODE_STATUS_POWER_MODE_STATUS = PowerModeStatus.POST_ACCESORY_0;
 	
+	// Stability Controls Status
+	public static final VehicleDataStatus STABILITY_CONTROLS_STATUS_ESC_SYSTEM = VehicleDataStatus.ON;
+	public static final VehicleDataStatus STABILITY_CONTROLS_STATUS_TRAILERS_WAY_CONTROL = VehicleDataStatus.ON;
+
 	// my key
 	public static final VehicleDataStatus MY_KEY_E_911_OVERRIDE = VehicleDataStatus.NO_DATA_EXISTS;
 
@@ -327,6 +333,10 @@ public class VehicleDataHelper{
 		FUEL_RANGE.setRange(FUEL_RANGE_RANGE);
 		FUEL_RANGE_LIST.add(FUEL_RANGE);
 
+		// STABILITY_CONTROLS_STATUS set up
+		STABILITY_CONTROLS_STATUS.setEscSystem(STABILITY_CONTROLS_STATUS_ESC_SYSTEM);
+		STABILITY_CONTROLS_STATUS.setTrailerSwayControl(STABILITY_CONTROLS_STATUS_TRAILERS_WAY_CONTROL);
+
 		// FUEL_RANGE json array set up
 		try {
 			JSON_FUEL_RANGE.put(FUEL_RANGE.serializeJSON());
@@ -367,7 +377,8 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, OEM_CUSTOM_VEHICLE_DATA_STATE);
 		VEHICLE_DATA.setHandsOffSteering(HANDS_OFF_STEERING);
 		VEHICLE_DATA.setSeatOccupancy(SEAT_OCCUPANCY);
-
+		VEHICLE_DATA.setStabilityControlsStatus(STABILITY_CONTROLS_STATUS);
+		
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
 		VEHICLE_DATA_RESPONSE.setRpm(RPM);
@@ -401,6 +412,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, OEM_CUSTOM_VEHICLE_DATA_STATE);
 		VEHICLE_DATA_RESPONSE.setHandsOffSteering(HANDS_OFF_STEERING);
 		VEHICLE_DATA_RESPONSE.setSeatOccupancy(SEAT_OCCUPANCY);
+		VEHICLE_DATA_RESPONSE.setStabilityControlsStatus(STABILITY_CONTROLS_STATUS);
 	}
 	
     private VehicleDataHelper(){}	

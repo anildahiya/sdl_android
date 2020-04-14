@@ -86,6 +86,7 @@ public class GetVehicleDataResponse extends RPCResponse {
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
 	public static final String KEY_HANDS_OFF_STEERING = "handsOffSteering";
 	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
+	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 
 	/** 
 	 * Constructs a new GetVehicleDataResponse object
@@ -375,7 +376,6 @@ public class GetVehicleDataResponse extends RPCResponse {
         return getString(KEY_CLOUD_APP_VEHICLE_ID);
     }
 
-
     /**
      * Sets a value for OEM Custom VehicleData.
      * @param vehicleDataName a String value
@@ -430,5 +430,25 @@ public class GetVehicleDataResponse extends RPCResponse {
      */
     public SeatOccupancy getSeatOccupancy() {
         return (SeatOccupancy) getObject(SeatOccupancy.class, KEY_SEAT_OCCUPANCY);
+    }
+
+    /**
+     * Sets the stabilityControlsStatus.
+     *
+     * @param stabilityControlsStatus See StabilityControlsStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public void setStabilityControlsStatus(StabilityControlsStatus stabilityControlsStatus) {
+        setParameters(KEY_STABILITY_CONTROLS_STATUS, stabilityControlsStatus);
+    }
+
+    /**
+     * Gets the stabilityControlsStatus.
+     *
+     * @return StabilityControlsStatus See StabilityControlsStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public StabilityControlsStatus getStabilityControlsStatus() {
+        return (StabilityControlsStatus) getObject(StabilityControlsStatus.class, KEY_STABILITY_CONTROLS_STATUS);
     }
 }

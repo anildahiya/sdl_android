@@ -62,6 +62,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 		msg.setOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA);
 		msg.setHandsOffSteering(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING.ordinal()));
 		msg.setSeatOccupancy(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()));
+		msg.setStabilityControlsStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS.ordinal()));
 
 		return msg;
 	}
@@ -117,6 +118,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 	        result.put(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME, Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA.serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_HANDS_OFF_STEERING, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_SEAT_OCCUPANCY, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY.ordinal()).serializeJSON());
+	        result.put(SubscribeVehicleDataResponse.KEY_STABILITY_CONTROLS_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS.ordinal()).serializeJSON());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -160,6 +162,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 		VehicleDataResult testOemCustomData   = ( (UnsubscribeVehicleDataResponse) msg ).getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME);
 		VehicleDataResult testHandsOffSteering     = ( (UnsubscribeVehicleDataResponse) msg ).getHandsOffSteering();
 		VehicleDataResult testSeatOccupancy     = ( (UnsubscribeVehicleDataResponse) msg ).getSeatOccupancy();
+		VehicleDataResult testStabilityControlsStatus     = ( (UnsubscribeVehicleDataResponse) msg ).getStabilityControlsStatus();
 
 		// Valid Tests
 		assertTrue(Test.TRUE, testGps.getDataType().equals(VehicleDataType.VEHICLEDATA_GPS));
@@ -193,6 +196,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 	    assertTrue(Test.TRUE, testOemCustomData.getOEMCustomVehicleDataType().equals(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
 	    assertTrue(Test.TRUE, testHandsOffSteering.getDataType().equals(VehicleDataType.VEHICLEDATA_HANDSOFFSTEERING));
 	    assertTrue(Test.TRUE, testSeatOccupancy.getDataType().equals(VehicleDataType.VEHICLEDATA_SEATOCCUPANCY));
+	    assertTrue(Test.TRUE, testStabilityControlsStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS));
 
         // Invalid/Null Tests
 		UnsubscribeVehicleDataResponse msg = new UnsubscribeVehicleDataResponse();
@@ -230,6 +234,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
         assertNull(Test.NULL, msg.getOEMCustomVehicleData(Test.GENERAL_OEM_CUSTOM_VEHICLE_DATA_NAME));
         assertNull(Test.NULL, msg.getHandsOffSteering());
         assertNull(Test.NULL, msg.getSeatOccupancy());
+        assertNull(Test.NULL, msg.getStabilityControlsStatus());
     }
 
     /**
@@ -375,6 +380,10 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 			JSONObject seatOccupancy = JsonUtils.readJsonObjectFromJsonObject(parameters, UnsubscribeVehicleDataResponse.KEY_SEAT_OCCUPANCY);
 			VehicleDataResult referenceSeatOccupancy = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(seatOccupancy));
 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceSeatOccupancy, cmd.getSeatOccupancy()));
+
+			JSONObject stabilityControlsStatus = JsonUtils.readJsonObjectFromJsonObject(parameters, UnsubscribeVehicleDataResponse.KEY_STABILITY_CONTROLS_STATUS);
+			VehicleDataResult referenceStabilityControlsStatus = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(stabilityControlsStatus));
+			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceStabilityControlsStatus, cmd.getStabilityControlsStatus()));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

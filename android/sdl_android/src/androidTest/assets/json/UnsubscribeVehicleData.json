@@ -33,7 +33,8 @@
       "electronicParkBrakeStatus":true,
       "oemCustomVehicleDataName":true,
       "handsOffSteering":true,
-      "seatOccupancy":true
+      "seatOccupancy":true,
+      "stabilityControlsStatus":true
     }
   },
   "response":{
@@ -162,6 +163,10 @@
       },
       "seatOccupancy":{
         "dataType":"VEHICLEDATA_SEATOCCUPANCY",
+        "resultCode":"SUCCESS"
+      },
+      "stabilityControlsStatus":{
+        "dataType":"VEHICLEDATA_STABILITYCONTROLSSTATUS",
         "resultCode":"SUCCESS"
       }
     }

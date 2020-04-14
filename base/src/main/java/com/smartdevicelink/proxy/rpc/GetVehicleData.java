@@ -289,6 +289,7 @@ public class GetVehicleData extends RPCRequest {
     public static final String KEY_CLOUD_APP_VEHICLE_ID = "cloudAppVehicleID";
 	public static final String KEY_HANDS_OFF_STEERING = "handsOffSteering";
 	public static final String KEY_SEAT_OCCUPANCY = "seatOccupancy";
+	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 
 	/**
 	 * Constructs a new GetVehicleData object
@@ -597,5 +598,25 @@ public class GetVehicleData extends RPCRequest {
      */
     public Boolean getSeatOccupancy() {
         return getBoolean(KEY_SEAT_OCCUPANCY);
+    }
+
+    /**
+     * Sets the stabilityControlsStatus.
+     *
+     * @param stabilityControlsStatus See StabilityControlsStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public void setStabilityControlsStatus(Boolean stabilityControlsStatus) {
+        setParameters(KEY_STABILITY_CONTROLS_STATUS, stabilityControlsStatus);
+    }
+
+    /**
+     * Gets the stabilityControlsStatus.
+     *
+     * @return Boolean See StabilityControlsStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public Boolean getStabilityControlsStatus() {
+        return getBoolean(KEY_STABILITY_CONTROLS_STATUS);
     }
 }

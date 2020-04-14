@@ -2319,6 +2319,25 @@ public class Validator{
         return true;
     }
 
+    public static boolean validateStabilityControlsStatus(StabilityControlsStatus item1, StabilityControlsStatus item2){
+        if(item1 == null){
+            return ( item2 == null );
+        }
+        if(item2 == null){
+            return ( item1 == null );
+        }
+
+        if(item1.getEscSystem() != item2.getEscSystem()){
+            return false;
+        }
+
+        if(item1.getTrailerSwayControl() != item2.getTrailerSwayControl()){
+            return false;
+        }
+
+        return true;
+    }
+
     public static boolean validateFuelRange (List<FuelRange> item1, List<FuelRange> item2) {
         if (item1 == null) {
             return ( item2 == null );

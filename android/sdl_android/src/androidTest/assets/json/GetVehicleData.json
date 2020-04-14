@@ -34,7 +34,8 @@
       "electronicParkBrakeStatus":true,
       "oemCustomVehicleDataName":true,
       "handsOffSteering":true,
-      "seatOccupancy":true
+      "seatOccupancy":true,
+      "stabilityControlsStatus":true
     }
   },
   "response":{
@@ -205,6 +206,10 @@
             "conditionActive":true
           }
         ]
+      },
+      "stabilityControlsStatus":{
+        "escSystem":"ON",
+        "trailerSwayControl":"ON"
       }
     }
   }

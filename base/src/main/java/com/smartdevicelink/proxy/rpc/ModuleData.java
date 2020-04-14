@@ -49,6 +49,7 @@ public class ModuleData extends RPCStruct {
 	public static final String KEY_MODULE_ID = "moduleId";
     public static final String KEY_TLC_CONTROL_DATA = "tlcControlData";
 	public static final String KEY_OBSSH_CONTROL_DATA = "obsshControlData";
+	public static final String KEY_PTTB_CONTROL_DATA = "pttbControlData";
 
 	public ModuleData() {
 	}
@@ -243,5 +244,25 @@ public class ModuleData extends RPCStruct {
      */
     public ObsshControlData getObsshControlData() {
         return (ObsshControlData) getObject(ObsshControlData.class, KEY_OBSSH_CONTROL_DATA);
+	}
+
+    /**
+     * Sets the pttbControlData.
+     *
+     * @param pttbControlData
+     * @since SmartDeviceLink 5.0.0
+     */
+    public void setPttbControlData(PttbControlData pttbControlData) {
+        setValue(KEY_PTTB_CONTROL_DATA, pttbControlData);
+    }
+
+    /**
+     * Gets the pttbControlData.
+     *
+     * @return PttbControlData
+     * @since SmartDeviceLink 5.0.0
+     */
+    public PttbControlData getPttbControlData() {
+        return (PttbControlData) getObject(PttbControlData.class, KEY_PTTB_CONTROL_DATA);
     }
 }

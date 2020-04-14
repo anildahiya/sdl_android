@@ -46,6 +46,7 @@ public class RemoteControlCapabilities extends RPCStruct {
 	public static final String KEY_LIGHT_CONTROL_CAPABILITIES = "lightControlCapabilities";
     public static final String KEY_TLC_CONTROL_CAPABILITIES = "tlcControlCapabilities";
 	public static final String KEY_OBSSH_CONTROL_CAPABILITIES = "obsshControlCapabilities";
+	public static final String KEY_PTTB_CONTROL_CAPABILITIES = "pttbControlCapabilities";
 
 	public RemoteControlCapabilities() {
 	}
@@ -228,5 +229,26 @@ public class RemoteControlCapabilities extends RPCStruct {
     @SuppressWarnings("unchecked")
     public List<ObsshControlCapabilities> getObsshControlCapabilities() {
         return (List<ObsshControlCapabilities>) getObject(ObsshControlCapabilities.class, KEY_OBSSH_CONTROL_CAPABILITIES);
+	}
+
+    /**
+     * Sets the pttbControlCapabilities.
+     *
+     * @param pttbControlCapabilities If included, the platform supports Pttb controls.
+     * @since SmartDeviceLink 5.0.0
+     */
+    public void setPttbControlCapabilities(List<PttbControlCapabilities> pttbControlCapabilities) {
+        setValue(KEY_PTTB_CONTROL_CAPABILITIES, pttbControlCapabilities);
+    }
+
+    /**
+     * Gets the pttbControlCapabilities.
+     *
+     * @return List<PttbControlCapabilities> If included, the platform supports Pttb controls.
+     * @since SmartDeviceLink 5.0.0
+     */
+    @SuppressWarnings("unchecked")
+    public List<PttbControlCapabilities> getPttbControlCapabilities() {
+        return (List<PttbControlCapabilities>) getObject(PttbControlCapabilities.class, KEY_PTTB_CONTROL_CAPABILITIES);
     }
 }

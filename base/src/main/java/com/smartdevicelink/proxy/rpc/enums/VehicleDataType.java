@@ -72,6 +72,7 @@ public enum VehicleDataType {
     /**
      * Notifies PRNDLData may be subscribed
      */
+    @Deprecated
     VEHICLEDATA_PRNDL,
     /**
      * Notifies TIREPRESSUREData may be subscribed
@@ -175,7 +176,8 @@ public enum VehicleDataType {
     VEHICLEDATA_SEATOCCUPANCY,
     VEHICLEDATA_STABILITYCONTROLSSTATUS,
     VEHICLEDATA_WINDOWSTATUS,
-    VEHICLEDATA_CLIMATEDATA;
+    VEHICLEDATA_CLIMATEDATA,
+    VEHICLEDATA_GEARSTATUS;
 
      /**
      * Convert String to VehicleDataType

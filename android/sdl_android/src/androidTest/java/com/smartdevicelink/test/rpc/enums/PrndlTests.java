@@ -47,6 +47,10 @@ public class PrndlTests extends TestCase {
 		PRNDL enumSeventh = PRNDL.valueForString(example);
 		example = "EIGHTH";
 		PRNDL enumEighth = PRNDL.valueForString(example);
+		example = "NINTH";
+		PRNDL enumNinth = PRNDL.valueForString(example);
+		example = "TENTH";
+		PRNDL enumTenth = PRNDL.valueForString(example);
 		example = "UNKNOWN";
 		PRNDL enumUnknown = PRNDL.valueForString(example);
 		example = "FAULT";
@@ -66,6 +70,8 @@ public class PrndlTests extends TestCase {
 		assertNotNull("SIXTH returned null", enumSixth);
 		assertNotNull("SEVENTH returned null", enumSeventh);
 		assertNotNull("EIGHTH returned null", enumEighth);
+		assertNotNull("NINTH returned null", enumNinth);
+		assertNotNull("TENTH returned null", enumTenth);
 		assertNotNull("UNKNOWN returned null", enumUnknown);
 		assertNotNull("FAULT returned null", enumFault);
 	}
@@ -119,6 +125,8 @@ public class PrndlTests extends TestCase {
 		enumTestList.add(PRNDL.SIXTH);
 		enumTestList.add(PRNDL.SEVENTH);	
 		enumTestList.add(PRNDL.EIGHTH);
+		enumTestList.add(PRNDL.NINTH);
+		enumTestList.add(PRNDL.TENTH);
 		enumTestList.add(PRNDL.UNKNOWN);	
 		enumTestList.add(PRNDL.FAULT);	
 

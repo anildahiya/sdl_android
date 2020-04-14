@@ -10,6 +10,7 @@ import com.smartdevicelink.proxy.rpc.ECallInfo;
 import com.smartdevicelink.proxy.rpc.EmergencyEvent;
 import com.smartdevicelink.proxy.rpc.FuelRange;
 import com.smartdevicelink.proxy.rpc.GPSData;
+import com.smartdevicelink.proxy.rpc.GearStatus;
 import com.smartdevicelink.proxy.rpc.GetVehicleDataResponse;
 import com.smartdevicelink.proxy.rpc.Grid;
 import com.smartdevicelink.proxy.rpc.HeadLampStatus;
@@ -38,6 +39,7 @@ import com.smartdevicelink.proxy.rpc.enums.PRNDL;
 import com.smartdevicelink.proxy.rpc.enums.PowerModeQualificationStatus;
 import com.smartdevicelink.proxy.rpc.enums.PowerModeStatus;
 import com.smartdevicelink.proxy.rpc.enums.PrimaryAudioSource;
+import com.smartdevicelink.proxy.rpc.enums.TransmissionType;
 import com.smartdevicelink.proxy.rpc.enums.TurnSignal;
 import com.smartdevicelink.proxy.rpc.enums.VehicleDataEventStatus;
 import com.smartdevicelink.proxy.rpc.enums.VehicleDataNotificationStatus;
@@ -90,6 +92,7 @@ public class VehicleDataHelper{
 	public static final WindowStatus WINDOW_STATUS = new WindowStatus();
 	public static final List<WindowStatus> WINDOW_STATUS_LIST = new ArrayList<WindowStatus>(1);
 	public static final ClimateData CLIMATE_DATA = new ClimateData();
+	public static final GearStatus GEAR_STATUS = new GearStatus();
 
 	//other variables inside some of the above objects
     // tire status
@@ -211,6 +214,11 @@ public class VehicleDataHelper{
 	public static final WindowState WINDOW_STATUS_STATE = Test.GENERAL_WINDOW_STATE;
 
 	public static final JSONArray JSON_FUEL_RANGE = new JSONArray();
+
+	// gear status
+	public static final PRNDL GEAR_STATUS_USER_SELECTED_GEAR = PRNDL.PARK;
+	public static final PRNDL GEAR_STATUS_ACTUAL_GEAR = PRNDL.PARK;
+	public static final TransmissionType GEAR_STATUS_TRANSMISSION_TYPE = TransmissionType.AUTOMATIC;
 
 	//the OnVehicleData which stores all the information above
 	public static final OnVehicleData VEHICLE_DATA = new OnVehicleData();
@@ -349,6 +357,11 @@ public class VehicleDataHelper{
 		CLIMATE_DATA.setCabinTemperature(Test.GENERAL_TEMPERATURE);
 		CLIMATE_DATA.setAtmosphericPressure(Test.GENERAL_FLOAT);
 
+		//GEAR_STATUS set up
+		GEAR_STATUS.setUserSelectedGear(GEAR_STATUS_USER_SELECTED_GEAR);
+		GEAR_STATUS.setActualGear(GEAR_STATUS_ACTUAL_GEAR);
+		GEAR_STATUS.setTransmissionType(GEAR_STATUS_TRANSMISSION_TYPE);
+
 		// FUEL_RANGE and FUEL_RANGE_LIST set up
 		FUEL_RANGE.setType(FUEL_RANGE_TYPE);
 		FUEL_RANGE.setRange(FUEL_RANGE_RANGE);
@@ -401,6 +414,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA.setStabilityControlsStatus(STABILITY_CONTROLS_STATUS);
 		VEHICLE_DATA.setWindowStatus(WINDOW_STATUS_LIST);
 		VEHICLE_DATA.setClimateData(CLIMATE_DATA);
+		VEHICLE_DATA.setGearStatus(GEAR_STATUS);
 
 		//set up the GetVehicleDataResponse object
 		VEHICLE_DATA_RESPONSE.setSpeed(SPEED);
@@ -438,6 +452,7 @@ public class VehicleDataHelper{
 		VEHICLE_DATA_RESPONSE.setStabilityControlsStatus(STABILITY_CONTROLS_STATUS);
 		VEHICLE_DATA_RESPONSE.setWindowStatus(WINDOW_STATUS_LIST);
 		VEHICLE_DATA_RESPONSE.setClimateData(CLIMATE_DATA);
+		VEHICLE_DATA_RESPONSE.setGearStatus(GEAR_STATUS);
 	}
 	
     private VehicleDataHelper(){}	

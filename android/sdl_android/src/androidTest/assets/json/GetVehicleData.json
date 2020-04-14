@@ -37,7 +37,8 @@
       "seatOccupancy":true,
       "stabilityControlsStatus":true,
       "WindowStatus":true,
-      "climateData":true
+      "climateData":true,
+      "gearStatus":true
     }
   },
   "response":{
@@ -239,6 +240,11 @@
           "value":100.0
         },
         "atmosphericPressure":100.0
+      },
+      "gearStatus":{
+        "userSelectedGear":"PARK",
+        "actualGear":"PARK",
+        "transmissionType":"AUTOMATIC"
       }
     }
   }

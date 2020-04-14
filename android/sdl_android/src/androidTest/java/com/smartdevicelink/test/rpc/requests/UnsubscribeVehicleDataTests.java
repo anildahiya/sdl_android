@@ -60,6 +60,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		msg.setStabilityControlsStatus(Test.GENERAL_BOOLEAN);
 		msg.setWindowStatus(Test.GENERAL_BOOLEAN);
 		msg.setClimateData(Test.GENERAL_BOOLEAN);
+		msg.setGearStatus(Test.GENERAL_BOOLEAN);
 
 		return msg;
 	}
@@ -114,6 +115,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 			result.put(UnsubscribeVehicleData.KEY_STABILITY_CONTROLS_STATUS, Test.GENERAL_BOOLEAN);
 			result.put(UnsubscribeVehicleData.KEY_WINDOW_STATUS, Test.GENERAL_BOOLEAN);
 			result.put(UnsubscribeVehicleData.KEY_CLIMATE_DATA, Test.GENERAL_BOOLEAN);
+			result.put(UnsubscribeVehicleData.KEY_GEAR_STATUS, Test.GENERAL_BOOLEAN);
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -161,6 +163,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getStabilityControlsStatus());
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getWindowStatus());
 		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getClimateData());
+		assertTrue(Test.TRUE,( (UnsubscribeVehicleData) msg ).getGearStatus());
 
 		// Invalid/Null Tests
 		UnsubscribeVehicleData msg = new UnsubscribeVehicleData();
@@ -202,6 +205,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 		assertNull(Test.NULL, msg.getStabilityControlsStatus());
 		assertNull(Test.NULL, msg.getWindowStatus());
 		assertNull(Test.NULL, msg.getClimateData());
+		assertNull(Test.NULL, msg.getGearStatus());
 	}
 
 	/**
@@ -258,6 +262,7 @@ public class UnsubscribeVehicleDataTests extends BaseRpcTests {
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_STABILITY_CONTROLS_STATUS), cmd.getStabilityControlsStatus());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_WINDOW_STATUS), cmd.getWindowStatus());
 			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_CLIMATE_DATA), cmd.getClimateData());
+			assertEquals(Test.MATCH, JsonUtils.readBooleanFromJsonObject(parameters, UnsubscribeVehicleData.KEY_GEAR_STATUS), cmd.getGearStatus());
 
 		} 
 		catch (JSONException e) {

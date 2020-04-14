@@ -65,6 +65,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 		msg.setStabilityControlsStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS.ordinal()));
 		msg.setWindowStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_WINDOWSTATUS.ordinal()));
 		msg.setClimateData(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_CLIMATEDATA.ordinal()));
+		msg.setGearStatus(Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_GEARSTATUS.ordinal()));
 
 		return msg;
 	}
@@ -123,6 +124,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 	        result.put(SubscribeVehicleDataResponse.KEY_STABILITY_CONTROLS_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_WINDOW_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_WINDOWSTATUS.ordinal()).serializeJSON());
 	        result.put(SubscribeVehicleDataResponse.KEY_CLIMATE_DATA, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_CLIMATEDATA.ordinal()).serializeJSON());
+	        result.put(SubscribeVehicleDataResponse.KEY_GEAR_STATUS, Test.GENERAL_VEHICLEDATARESULT_LIST.get(VehicleDataType.VEHICLEDATA_GEARSTATUS.ordinal()).serializeJSON());
 		} catch (JSONException e) {
 			fail(Test.JSON_FAIL);
 		}
@@ -169,6 +171,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 		VehicleDataResult testStabilityControlsStatus     = ( (UnsubscribeVehicleDataResponse) msg ).getStabilityControlsStatus();
 		VehicleDataResult testWindowStatus     = ( (UnsubscribeVehicleDataResponse) msg ).getWindowStatus();
 		VehicleDataResult testClimateData     = ( (UnsubscribeVehicleDataResponse) msg ).getClimateData();
+		VehicleDataResult testGearStatus     = ( (UnsubscribeVehicleDataResponse) msg ).getGearStatus();
 
 		// Valid Tests
 		assertTrue(Test.TRUE, testGps.getDataType().equals(VehicleDataType.VEHICLEDATA_GPS));
@@ -205,6 +208,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 	    assertTrue(Test.TRUE, testStabilityControlsStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_STABILITYCONTROLSSTATUS));
 		assertTrue(Test.TRUE, testWindowStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_WINDOWSTATUS));
 	    assertTrue(Test.TRUE, testClimateData.getDataType().equals(VehicleDataType.VEHICLEDATA_CLIMATEDATA));
+	    assertTrue(Test.TRUE, testGearStatus.getDataType().equals(VehicleDataType.VEHICLEDATA_GEARSTATUS));
 
         // Invalid/Null Tests
 		UnsubscribeVehicleDataResponse msg = new UnsubscribeVehicleDataResponse();
@@ -245,6 +249,7 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
         assertNull(Test.NULL, msg.getStabilityControlsStatus());
         assertNull(Test.NULL, msg.getWindowStatus());
         assertNull(Test.NULL, msg.getClimateData());
+        assertNull(Test.NULL, msg.getGearStatus());
     }
 
     /**
@@ -402,6 +407,10 @@ public class UnsubscribeVehicleDataResponseTest extends BaseRpcTests {
 			JSONObject climateData = JsonUtils.readJsonObjectFromJsonObject(parameters, UnsubscribeVehicleDataResponse.KEY_CLIMATE_DATA);
 			VehicleDataResult referenceClimateData = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(climateData));
 			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceClimateData, cmd.getClimateData()));
+
+			JSONObject gearStatus = JsonUtils.readJsonObjectFromJsonObject(parameters, UnsubscribeVehicleDataResponse.KEY_GEAR_STATUS);
+			VehicleDataResult referenceGearStatus = new VehicleDataResult(JsonRPCMarshaller.deserializeJSONObject(gearStatus));
+			assertTrue(Test.TRUE, Validator.validateVehicleDataResult(referenceGearStatus, cmd.getGearStatus()));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

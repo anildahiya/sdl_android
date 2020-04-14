@@ -266,6 +266,10 @@ public class GetVehicleData extends RPCRequest {
 	public static final String KEY_EXTERNAL_TEMPERATURE = "externalTemperature";
 	public static final String KEY_FUEL_LEVEL = "fuelLevel";
 	public static final String KEY_VIN = "vin";
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final String KEY_PRNDL = "prndl";
 	public static final String KEY_TIRE_PRESSURE = "tirePressure";
 	public static final String KEY_ENGINE_TORQUE = "engineTorque";
@@ -296,6 +300,7 @@ public class GetVehicleData extends RPCRequest {
 	public static final String KEY_STABILITY_CONTROLS_STATUS = "stabilityControlsStatus";
 	public static final String KEY_WINDOW_STATUS = "windowStatus";
 	public static final String KEY_CLIMATE_DATA = "climateData";
+	public static final String KEY_GEAR_STATUS = "gearStatus";
 
 	/**
 	 * Constructs a new GetVehicleData object
@@ -389,10 +394,23 @@ public class GetVehicleData extends RPCRequest {
     public Boolean getVin() {
         return getBoolean(KEY_VIN);
     }
-    
+
+    /**
+     * Sets the prndl.
+     *
+     * @param prndl See PRNDL. This parameter is deprecated starting RPC Spec 6.0, please see gearStatus.
+     * @since SmartDeviceLink 6.0
+     */
     public void setPrndl(Boolean prndl) {
         setParameters(KEY_PRNDL, prndl);
     }
+
+    /**
+     * Gets the prndl.
+     *
+     * @return Boolean See PRNDL. This parameter is deprecated starting RPC Spec 6.0, please see gearStatus.
+     * @since SmartDeviceLink 6.0
+     */
     public Boolean getPrndl() {
         return getBoolean(KEY_PRNDL);
     }
@@ -679,5 +697,25 @@ public class GetVehicleData extends RPCRequest {
      */
     public Boolean getClimateData() {
         return getBoolean(KEY_CLIMATE_DATA);
+    }
+
+    /**
+     * Sets the gearStatus.
+     *
+     * @param gearStatus See GearStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public void setGearStatus(Boolean gearStatus) {
+        setParameters(KEY_GEAR_STATUS, gearStatus);
+    }
+
+    /**
+     * Gets the gearStatus.
+     *
+     * @return Boolean See GearStatus
+     * @since SmartDeviceLink 6.0
+     */
+    public Boolean getGearStatus() {
+        return getBoolean(KEY_GEAR_STATUS);
     }
 }

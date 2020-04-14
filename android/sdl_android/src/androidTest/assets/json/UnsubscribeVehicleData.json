@@ -36,7 +36,8 @@
       "seatOccupancy":true,
       "stabilityControlsStatus":true,
       "windowStatus":true,
-      "climateData":true
+      "climateData":true,
+      "gearStatus":true
     }
   },
   "response":{
@@ -177,6 +178,10 @@
       },
       "climateData":{
         "dataType":"VEHICLEDATA_CLIMATEDATA",
+        "resultCode":"SUCCESS"
+      },
+      "gearStatus":{
+        "dataType":"VEHICLEDATA_GEARSTATUS",
         "resultCode":"SUCCESS"
       }
     }

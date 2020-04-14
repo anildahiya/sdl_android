@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2019, SmartDeviceLink Consortium, Inc.
+ * Copyright (c) 2017 - 2020, SmartDeviceLink Consortium, Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -13,9 +13,9 @@
  * disclaimer in the documentation and/or other materials provided with the
  * distribution.
  *
- * Neither the name of the SmartDeviceLink Consortium, Inc. nor the names of its
- * contributors may be used to endorse or promote products derived from this 
- * software without specific prior written permission.
+ * Neither the name of the SmartDeviceLink Consortium Inc. nor the names of
+ * its contributors may be used to endorse or promote products derived
+ * from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -31,25 +31,24 @@
  */
 package com.smartdevicelink.proxy.rpc.enums;
 
-public enum ModuleType {
-	CLIMATE,
-	RADIO,
-	SEAT,
-	AUDIO,
-	LIGHT,
-	HMI_SETTINGS,
-    /**
-     * @since SmartDeviceLink 6.0.0
-     */
-    TLC,
-	OBSSH,
-	;
+/**
+ * @since SmartDeviceLink 5.0.0
+ */
+public enum ObsshDisplayUnit {
+    KG,
+    LB;
 
-	public static ModuleType valueForString(String value) {
-		try {
-			return valueOf(value);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    /**
+     * Convert String to ObsshDisplayUnit
+     *
+     * @param value String
+     * @return ObsshDisplayUnit
+     */
+    public static ObsshDisplayUnit valueForString(String value) {
+        try {
+            return valueOf(value);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

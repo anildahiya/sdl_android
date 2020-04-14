@@ -45,6 +45,8 @@ public class RemoteControlCapabilities extends RPCStruct {
 	public static final String KEY_HMI_SETTINGS_CONTROL_CAPABILITIES = "hmiSettingsControlCapabilities";
 	public static final String KEY_LIGHT_CONTROL_CAPABILITIES = "lightControlCapabilities";
     public static final String KEY_TLC_CONTROL_CAPABILITIES = "tlcControlCapabilities";
+	public static final String KEY_OBSSH_CONTROL_CAPABILITIES = "obsshControlCapabilities";
+
 	public RemoteControlCapabilities() {
 	}
 
@@ -205,5 +207,26 @@ public class RemoteControlCapabilities extends RPCStruct {
     @SuppressWarnings("unchecked")
     public List<TlcControlCapabilities> getTlcControlCapabilities() {
         return (List<TlcControlCapabilities>) getObject(TlcControlCapabilities.class, KEY_TLC_CONTROL_CAPABILITIES);
+	}
+
+    /**
+     * Sets the obsshControlCapabilities.
+     *
+     * @param obsshControlCapabilities If included, the platform supports OBSSH controls.
+     * @since SmartDeviceLink 5.0.0
+     */
+    public void setObsshControlCapabilities(List<ObsshControlCapabilities> obsshControlCapabilities) {
+        setValue(KEY_OBSSH_CONTROL_CAPABILITIES, obsshControlCapabilities);
+    }
+
+    /**
+     * Gets the obsshControlCapabilities.
+     *
+     * @return List<ObsshControlCapabilities> If included, the platform supports OBSSH controls.
+     * @since SmartDeviceLink 5.0.0
+     */
+    @SuppressWarnings("unchecked")
+    public List<ObsshControlCapabilities> getObsshControlCapabilities() {
+        return (List<ObsshControlCapabilities>) getObject(ObsshControlCapabilities.class, KEY_OBSSH_CONTROL_CAPABILITIES);
     }
 }

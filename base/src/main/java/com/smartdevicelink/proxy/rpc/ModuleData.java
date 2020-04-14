@@ -48,6 +48,8 @@ public class ModuleData extends RPCStruct {
 	public static final String KEY_HMI_SETTINGS_CONTROL_DATA = "hmiSettingsControlData";
 	public static final String KEY_MODULE_ID = "moduleId";
     public static final String KEY_TLC_CONTROL_DATA = "tlcControlData";
+	public static final String KEY_OBSSH_CONTROL_DATA = "obsshControlData";
+
 	public ModuleData() {
 	}
 
@@ -221,5 +223,25 @@ public class ModuleData extends RPCStruct {
      */
     public TlcControlData getTlcControlData() {
         return (TlcControlData) getObject(TlcControlData.class, KEY_TLC_CONTROL_DATA);
+	}
+
+    /**
+     * Sets the obsshControlData.
+     *
+     * @param obsshControlData
+     * @since SmartDeviceLink 5.0.0
+     */
+    public void setObsshControlData(ObsshControlData obsshControlData) {
+        setValue(KEY_OBSSH_CONTROL_DATA, obsshControlData);
+    }
+
+    /**
+     * Gets the obsshControlData.
+     *
+     * @return ObsshControlData
+     * @since SmartDeviceLink 5.0.0
+     */
+    public ObsshControlData getObsshControlData() {
+        return (ObsshControlData) getObject(ObsshControlData.class, KEY_OBSSH_CONTROL_DATA);
     }
 }

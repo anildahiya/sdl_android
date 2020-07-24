@@ -17,6 +17,7 @@ import com.smartdevicelink.protocol.SdlProtocol;
 import com.smartdevicelink.protocol.enums.FunctionID;
 import com.smartdevicelink.proxy.SdlProxyBase;
 import com.smartdevicelink.proxy.TTSChunkFactory;
+import com.smartdevicelink.proxy.rpc.AppCapability;
 import com.smartdevicelink.proxy.rpc.AppInfo;
 import com.smartdevicelink.proxy.rpc.AppServiceCapability;
 import com.smartdevicelink.proxy.rpc.AppServiceData;
@@ -110,6 +111,7 @@ import com.smartdevicelink.proxy.rpc.WeatherServiceManifest;
 import com.smartdevicelink.proxy.rpc.WindowCapability;
 import com.smartdevicelink.proxy.rpc.WindowTypeCapabilities;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
+import com.smartdevicelink.proxy.rpc.enums.AppCapabilityType;
 import com.smartdevicelink.proxy.rpc.enums.AppHMIType;
 import com.smartdevicelink.proxy.rpc.enums.AppInterfaceUnregisteredReason;
 import com.smartdevicelink.proxy.rpc.enums.AppServiceType;
@@ -345,6 +347,7 @@ public class TestValues {
 	public static final VideoStreamingProtocol         GENERAL_VIDEOSTREAMINGPROTOCOL         = VideoStreamingProtocol.RAW;
 	public static final VideoStreamingCodec            GENERAL_VIDEOSTREAMINGCODEC            = VideoStreamingCodec.H264;
 	public static final VideoStreamingCapability       GENERAL_VIDEOSTREAMINGCAPABILITY       = new VideoStreamingCapability();
+	public static final List<VideoStreamingCapability> GENERAL_VIDEOSTREAMINGCAPABILITY_LIST  = new ArrayList<>();
 	public static final VideoStreamingFormat           GENERAL_VIDEOSTREAMINGFORMAT           = new VideoStreamingFormat();
 	public static final RGBColor                       GENERAL_RGBCOLOR                       = new RGBColor();
 	public static final TemplateColorScheme            GENERAL_DAYCOLORSCHEME                 = new TemplateColorScheme();
@@ -378,9 +381,11 @@ public class TestValues {
 	public static final WeatherServiceData             GENERAL_WEATHERSERVICEDATA             = new WeatherServiceData();
 	public static final NavigationServiceData          GENERAL_NAVIGATIONSERVICEDATA          = new NavigationServiceData();
 	public static final AppServiceData                 GENERAL_APPSERVICEDATA                 = new AppServiceData();
+	public static final AppCapability                  GENERAL_APPCAPABILITY                  = new AppCapability();
 	public static final NavigationAction               GENERAL_NAVIGATIONACTION               = NavigationAction.STAY;
 	public static final NavigationJunction             GENERAL_NAVIGATION_JUNCTION            = NavigationJunction.BIFURCATION;
 	public static final Direction                      GENERAL_DIRECTION                      = Direction.RIGHT;
+	public static final AppCapabilityType              GENERAL_APP_CAPABILITY_TYPE            = AppCapabilityType.VIDEO_STREAMING;
 	public static final NavigationInstruction          GENERAL_NAVIGATION_INSTRUCTION         = new NavigationInstruction();
 	public static final Version                        GENERAL_VERSION                        = new Version("4.0.0");
 	public static final ModuleType 					   GENERAL_MODULETYPE           		  = ModuleType.CLIMATE;
@@ -887,6 +892,10 @@ public class TestValues {
 		GENERAL_VIDEOSTREAMINGCAPABILITY.setSupportedFormats(GENERAL_VIDEOSTREAMINGFORMAT_LIST);
 		GENERAL_VIDEOSTREAMINGCAPABILITY.setIsHapticSpatialDataSupported(GENERAL_BOOLEAN);
 
+		VideoStreamingCapability videoStreamingCapability = new VideoStreamingCapability();
+		GENERAL_VIDEOSTREAMINGCAPABILITY_LIST.add(videoStreamingCapability);
+		GENERAL_VIDEOSTREAMINGCAPABILITY.setAdditionalVideoStreamingCapabilities(GENERAL_VIDEOSTREAMINGCAPABILITY_LIST);
+
 		GENERAL_CLIMATECONTROLCAPABILITIES.setModuleName(GENERAL_STRING);
 		GENERAL_CLIMATECONTROLCAPABILITIES.setFanSpeedAvailable(GENERAL_BOOLEAN);
 		GENERAL_CLIMATECONTROLCAPABILITIES.setDesiredTemperatureAvailable(GENERAL_BOOLEAN);
@@ -1101,6 +1110,9 @@ public class TestValues {
 		GENERAL_APPSERVICEDATA.setServiceID(GENERAL_STRING);
 		GENERAL_APPSERVICEDATA.setWeatherServiceData(GENERAL_WEATHERSERVICEDATA);
 		GENERAL_APPSERVICEDATA.setMediaServiceData(GENERAL_MEDIASERVICEDATA);
+
+		GENERAL_APPCAPABILITY.setAppCapabilityType(GENERAL_APP_CAPABILITY_TYPE);
+		GENERAL_APPCAPABILITY.setVideoStreamingCapability(GENERAL_VIDEOSTREAMINGCAPABILITY);
 
 		GENERAL_NAVIGATION_INSTRUCTION.setLocationDetails(GENERAL_LOCATIONDETAILS);
 		GENERAL_NAVIGATION_INSTRUCTION.setAction(GENERAL_NAVIGATIONACTION);

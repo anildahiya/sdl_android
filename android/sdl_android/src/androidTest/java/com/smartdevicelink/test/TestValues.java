@@ -115,6 +115,8 @@ import com.smartdevicelink.proxy.rpc.WindowState;
 import com.smartdevicelink.proxy.rpc.WindowStatus;
 import com.smartdevicelink.proxy.rpc.WindowTypeCapabilities;
 import com.smartdevicelink.proxy.rpc.ClimateData;
+import com.smartdevicelink.proxy.rpc.SeatOccupancy;
+import com.smartdevicelink.proxy.rpc.SeatStatus;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
 import com.smartdevicelink.proxy.rpc.enums.AppHMIType;
 import com.smartdevicelink.proxy.rpc.enums.AppInterfaceUnregisteredReason;
@@ -429,6 +431,11 @@ public class TestValues {
     public static final DynamicUpdateCapabilities GENERAL_DYNAMICUPDATECAPABILITIES = new DynamicUpdateCapabilities();
     public static final WindowState GENERAL_WINDOWSTATE = new WindowState();
 
+    public static final SeatOccupancy GENERAL_SEAT_OCCUPANCY = new SeatOccupancy();
+    public static final List<SeatStatus> GENERAL_SEATS_OCCUPIED = new ArrayList<SeatStatus>(1);
+    public static final List<SeatStatus> GENERAL_SEATS_BELTED = new ArrayList<SeatStatus>(1);
+    public static final SeatStatus GENERAL_SEAT_STATUS = new SeatStatus();
+    public static final SeatLocation GENERAL_SEAT_LOCATION = new SeatLocation();
 
     public static final VehicleDataResult GENERAL_OEM_CUSTOM_VEHICLE_DATA = new VehicleDataResult();
     public static final TemplateConfiguration GENERAL_TEMPLATE_CONFIGURATION = new TemplateConfiguration();
@@ -448,7 +455,6 @@ public class TestValues {
     public static final FuelType GENERAL_FUELTYPE = FuelType.GASOLINE;
     public static final LockScreenConfig GENERAL_LOCKSCREENCONFIG = new LockScreenConfig();
     public static final Grid GENERAL_GRID = new Grid();
-    public static final SeatLocation GENERAL_SEAT_LOCATION = new SeatLocation();
     public static final ModuleInfo GENERAL_MODULE_INFO = new ModuleInfo();
     public static final StabilityControlsStatus GENERAL_STABILITY_CONTROL_STATUS = new StabilityControlsStatus();
     public static final VehicleDataStatus GENERAL_ESC_SYSTEM = VehicleDataStatus.ON;
@@ -593,6 +599,10 @@ public class TestValues {
     public static final JSONObject JSON_DISPLAYCAPABILITY = new JSONObject();
     public static final JSONArray JSON_DISPLAYCAPABILITY_LIST = new JSONArray();
     public static final JSONObject JSON_DYNAMICUPDATECAPABILITIES = new JSONObject();
+    public static final JSONArray JSON_GENERAL_SEATS_OCCUPIED = new JSONArray();
+    public static final JSONArray JSON_GENERAL_SEATS_BELTED = new JSONArray();
+    public static final JSONObject JSON_OBJECT_GENERAL_SEATS_BELTED = new JSONObject();
+    public static final JSONObject JSON_OBJECT_GENERAL_SEATS_OCCUPIED = new JSONObject();
 
     static {
         GENERAL_TOUCHEVENTCAPABILITIES.setDoublePressAvailable(GENERAL_BOOLEAN);
@@ -1160,8 +1170,28 @@ public class TestValues {
         GENERAL_CLIMATEDATA.setAtmosphericPressure(GENERAL_FLOAT);
         GENERAL_CLIMATEDATA.setCabinTemperature(GENERAL_TEMPERATURE);
         GENERAL_CLIMATEDATA.setExternalTemperature(GENERAL_TEMPERATURE);
+        // SEAT_OCCUPANCY
+        GENERAL_SEAT_LOCATION.setGrid(GENERAL_LOCATION_GRID);
+
+        GENERAL_SEAT_STATUS.setConditionActive(GENERAL_BOOLEAN);
+        GENERAL_SEAT_STATUS.setSeatLocation(GENERAL_SEAT_LOCATION);
+
+        GENERAL_SEATS_BELTED.add(GENERAL_SEAT_STATUS);
+        GENERAL_SEATS_OCCUPIED.add(GENERAL_SEAT_STATUS);
+
+        GENERAL_SEAT_OCCUPANCY.setSeatsBelted(GENERAL_SEATS_BELTED);
+        GENERAL_SEAT_OCCUPANCY.setSeatsOccupied(GENERAL_SEATS_OCCUPIED);
 
         try {
+
+            JSON_OBJECT_GENERAL_SEATS_OCCUPIED.put(SeatStatus.KEY_SEAT_LOCATION, GENERAL_SEAT_LOCATION.serializeJSON());
+            JSON_OBJECT_GENERAL_SEATS_OCCUPIED.put(SeatStatus.KEY_CONDITION_ACTIVE, GENERAL_BOOLEAN);
+            JSON_GENERAL_SEATS_OCCUPIED.put(JSON_OBJECT_GENERAL_SEATS_OCCUPIED);
+
+            JSON_OBJECT_GENERAL_SEATS_BELTED.put(SeatStatus.KEY_SEAT_LOCATION, GENERAL_SEAT_LOCATION.serializeJSON());
+            JSON_OBJECT_GENERAL_SEATS_BELTED.put(SeatStatus.KEY_CONDITION_ACTIVE,GENERAL_BOOLEAN);
+            JSON_GENERAL_SEATS_BELTED.put(JSON_OBJECT_GENERAL_SEATS_BELTED);
+
             JSON_HMIPERMISSIONS.put(HMIPermissions.KEY_ALLOWED, GENERAL_HMILEVEL_LIST);
             JSON_HMIPERMISSIONS.put(HMIPermissions.KEY_USER_DISALLOWED, GENERAL_HMILEVEL_LIST);
 

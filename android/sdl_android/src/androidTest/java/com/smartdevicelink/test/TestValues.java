@@ -114,6 +114,7 @@ import com.smartdevicelink.proxy.rpc.WindowCapability;
 import com.smartdevicelink.proxy.rpc.WindowState;
 import com.smartdevicelink.proxy.rpc.WindowStatus;
 import com.smartdevicelink.proxy.rpc.WindowTypeCapabilities;
+import com.smartdevicelink.proxy.rpc.ClimateData;
 import com.smartdevicelink.proxy.rpc.enums.AmbientLightStatus;
 import com.smartdevicelink.proxy.rpc.enums.AppHMIType;
 import com.smartdevicelink.proxy.rpc.enums.AppInterfaceUnregisteredReason;
@@ -405,6 +406,7 @@ public class TestValues {
     public static final LightStatus GENERAL_LIGHTSTATUS = LightStatus.OFF;
     public static final RadioBand GENERAL_RADIOBAND = RadioBand.AM;
     public static final ClimateControlData GENERAL_CLIMATECONTROLDATA = new ClimateControlData();
+    public static final ClimateData GENERAL_CLIMATEDATA = new ClimateData();
     public static final SeatControlData GENERAL_SEATCONTROLDATA = new SeatControlData();
     public static final RdsData GENERAL_RDSDATA = new RdsData();
     public static final StationIDNumber GENERAL_STATIONIDNUMBER = new StationIDNumber();
@@ -1153,6 +1155,11 @@ public class TestValues {
         GENERAL_WINDOW_STATUS.setState(TestValues.GENERAL_WINDOW_STATE);
         GENERAL_STABILITY_CONTROL_STATUS.setEscSystem(GENERAL_ESC_SYSTEM);
         GENERAL_STABILITY_CONTROL_STATUS.setTrailerSwayControl(GENERAL_S_WAY_CONTROL);
+
+        // Climate Data
+        GENERAL_CLIMATEDATA.setAtmosphericPressure(GENERAL_FLOAT);
+        GENERAL_CLIMATEDATA.setCabinTemperature(GENERAL_TEMPERATURE);
+        GENERAL_CLIMATEDATA.setExternalTemperature(GENERAL_TEMPERATURE);
 
         try {
             JSON_HMIPERMISSIONS.put(HMIPermissions.KEY_ALLOWED, GENERAL_HMILEVEL_LIST);
